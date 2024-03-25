@@ -31,9 +31,16 @@ public class HomeController : Controller
     public IActionResult ScheduleView()
     {
         return View("Judge/ScheduleView");
+    }
 
     public IActionResult OpeningPage()
     {
+        return View();
+    }
+
+    public IActionResult ProfIndex()
+    {
+        ViewData["GradingProgress"] = 70;
         return View();
     }
 

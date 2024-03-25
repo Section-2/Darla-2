@@ -1,0 +1,25 @@
+﻿@* @model IEnumerable<TeacherAssistant> *@
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Username</th>
+        <th>Password</th>
+        <th>Action</th>
+    </tr>
+    @* @foreach (var ta in Model) *@
+    @* { *@
+        <tr>
+            <td>Name</td>
+            <td>Username</td>
+            <td>Password</td>
+            <td>
+                <form method="post" action="/YourControllerName/DeleteTA">
+                    <input type="hidden" name="Id"/>
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+    @* } *@
+</table>
+
