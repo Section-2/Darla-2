@@ -8,6 +8,5 @@ public class EFGradingRepository : IGradingRepository
     {
         _context = temp;
     }
-
     public IQueryable<Survey> Surveys => _context.Surveys;
 }
