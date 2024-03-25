@@ -51,6 +51,13 @@ public class HomeController : Controller
         return View();
     }
 
+    //Allowing access to StudentSubmission
+    public IActionResult StudentProgress()
+    {
+        return View();
+    }
+
+
     public IActionResult ProfIndex()
     {
         ViewData["GradingProgress"] = 70;
