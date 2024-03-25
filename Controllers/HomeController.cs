@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Darla.Models;
 
 namespace Darla.Controllers;
 
@@ -18,14 +17,20 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult Privacy()
+    public IActionResult AllGrades()
     {
         return View();
     }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
+    public IActionResult ClassRubric()
     {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        return View();
+    }
+    public IActionResult MissingReq()
+    {
+        return View();
+    }
+    public IActionResult TAGradingProgress()
+    {
+        return View();
     }
 }
