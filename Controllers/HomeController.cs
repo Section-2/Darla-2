@@ -16,4 +16,15 @@ public class HomeController : Controller
     {
         return View();
     }
+
+    public IActionResult JudgePage()
+    {
+        return View();
+    }
+
+    public IActionResult OpeningPage()
+    {
+        return View();
+    }
+
 }
