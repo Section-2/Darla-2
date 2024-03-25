@@ -17,6 +17,19 @@ public class HomeController : Controller
         return View();
     }
 
+    public IActionResult AllGrades()
+    {
+        return View();
+    }
+    public IActionResult ClassRubric()
+    {
+        return View();
+    }
+    public IActionResult TaGradingProgress()
+    {
+        return View();
+    }
+    
     public IActionResult JudgePage()
     {
         return View();

@@ -1,0 +1,88 @@
+@{
+    ViewData["Title"] = "Total Grading Progress";
+}
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+
+<style>
+    .collapse-row .btn-link {
+        width: 100%;
+        text-align: left;
+        padding: 10px;
+        font-weight: bold;
+    }
+
+    .nested-table {
+        width: 100%;
+    }
+
+    .nested-table th, .nested-table td {
+        text-align: center;
+    }
+
+    .dropdown-toggle {
+        float: left;
+    }
+
+    .main-content {
+        min-height: 80vh;
+        padding-bottom: 100px;
+    }
+</style>
+
+<div class="main-content">
+    <div class="container mt-4">
+        <div class="text-center mb-4">
+            <h2>Total Grading Progress</h2>
+        </div>
+
+        @foreach (var course in new[] { "IS 401", "IS 413", "IS 414", "IS 455" })
+        {
+            <div id="@course.Replace(" ", "")-row" class="collapse-row">
+                <button class="btn btn-light btn-link" type="button" data-toggle="collapse" data-target="#@course.Replace(" ", "")-content" aria-expanded="false">
+                    @course
+                </button>
+                <div class="collapse" id="@course.Replace(" ", "")-content">
+                    <div class="card card-body">
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Select Section
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                @foreach (var section in new[] { "Section 1", "Section 2", "Section 3", "Section 4" })
+                                {
+                                    <a class="dropdown-item" href="#">Section #</a>
+                                }
+                            </div>
+                        </div>
+                        <table class="table mt-3 nested-table">
+                            <thead>
+                                <tr>
+                                    <th>Group Number</th>
+                                    <th>TA Assignment</th>
+                                    <th>Graded</th>
+                                    <th>Stats</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 1; i <= 10; i++)
+                                {
+                                    <tr>
+                                        <td>Group 1-@i</td>
+                                        <td></td> <!-- TA Assignment -->
+                                        <td>X</td> <!-- Graded -->
+                                        <td>0%</td> <!-- Stats -->
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
