@@ -25,18 +25,13 @@ public class HomeController : Controller
 
     public IActionResult judge_survey()
     {
-        return View();
+        return View("Judge/judge_survey");
+    }
 
     // Action to open judge schedule
     public IActionResult ScheduleView()
     {
         return View("Judge/ScheduleView");
 
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }
