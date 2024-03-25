@@ -1,17 +1,57 @@
-
 @{
-    Layout = null;
+    ViewData["Title"] = "Judge Survey";
 }
 
-<!DOCTYPE html>
+<div class="container mt-5">
+    <h2>Judge Survey</h2>
+    <form asp-controller="Home" asp-action="judge_survey" method="post">
+        <div class="form-group">
+            <label for="Name">Name</label>
+            <input type="text" id="Name" name="Name" class="form-control" placeholder="Your name">
+        </div>
 
-<html>
-<head>
-    <title>Survey</title>
-</head>
-<body>
-<div>
-      <p>Testing</p>
+        <div class="form-group">
+            <label for="FavoriteColor">Favorite Color</label>
+            <input type="text" id="FavoriteColor" name="FavoriteColor" class="form-control" placeholder="Favorite color">
+        </div>
+
+        <div class="form-group">
+            <label for="Age">Age</label>
+            <input type="range" class="custom-range" id="Age" name="Age" min="18" max="100" value="30">
+            <small class="form-text text-muted">Age: <span id="ageValue">30</span></small>
+        </div>
+
+        <div class="form-group">
+            <label for="Satisfaction">Satisfaction Level (1-10)</label>
+            <input type="range" class="custom-range" id="Satisfaction" name="Satisfaction" min="1" max="10" value="5">
+            <small class="form-text text-muted">Satisfaction: <span id="satisfactionValue">5</span></small>
+        </div>
+
+        <div class="form-group">
+            <label>Contact Preference</label>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="ContactPreference" id="emailContact" value="Email" checked>
+                <label class="form-check-label" for="emailContact">Email</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="ContactPreference" id="phoneContact" value="Phone">
+                <label class="form-check-label" for="phoneContact">Phone</label>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
 </div>
-</body>
-</html>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("Age").oninput = function() {
+                document.getElementById("ageValue").innerText = this.value;
+            };
+            document.getElementById("Satisfaction").oninput = function() {
+                document.getElementById("satisfactionValue").innerText = this.value;
+            };
+        });
+    </script>
+}
