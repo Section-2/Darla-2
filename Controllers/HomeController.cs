@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Darla.Models;
 
+// test 2
 namespace Darla.Controllers;
 
 public class HomeController : Controller
