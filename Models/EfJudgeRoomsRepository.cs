@@ -7,4 +7,6 @@ public class EfJudgeRoomsRepository : IJudgeRoomsRepository
     {
         _context = temp;
     }
+    
+    public IQueryable<JudgeRoom> JudgeRooms => _context.JudgeRooms;
 }
