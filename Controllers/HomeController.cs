@@ -6,7 +6,7 @@ namespace Darla.Controllers;
 
 public class HomeController : Controller
 {
-    //test
+    //test test
     private readonly ILogger<HomeController> _logger;
 
     public HomeController(ILogger<HomeController> logger)
