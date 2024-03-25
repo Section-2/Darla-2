@@ -25,10 +25,6 @@ public class HomeController : Controller
     {
         return View();
     }
-    public IActionResult MissingReq()
-    {
-        return View();
-    }
     public IActionResult TaGradingProgress()
     {
         return View();
