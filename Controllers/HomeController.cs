@@ -12,7 +12,7 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult chooseIdentity()
+    public IActionResult BYULogin()
     {
         return View();
     }
