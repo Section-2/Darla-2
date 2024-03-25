@@ -23,6 +23,16 @@ public class HomeController : Controller
         return View();
     }
 
+    public IActionResult AddTA()
+    {
+        return View();
+    }
+
+    public IActionResult ListTA()
+    {
+        return View();
+    }
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
