@@ -17,6 +17,19 @@ public class HomeController : Controller
         return View();
     }
 
+    public IActionResult AllGrades()
+    {
+        return View();
+    }
+    public IActionResult ClassRubric()
+    {
+        return View();
+    }
+    public IActionResult TaGradingProgress()
+    {
+        return View();
+    }
+    
     public IActionResult JudgePage()
     {
         return View();
@@ -31,11 +44,25 @@ public class HomeController : Controller
     public IActionResult ScheduleView()
     {
         return View("Judge/ScheduleView");
+    }
 
     }
 
     public IActionResult OpeningPage()
     {
+        return View();
+    }
+
+    //Allowing access to StudentSubmission
+    public IActionResult StudentProgress()
+    {
+        return View();
+    }
+
+
+    public IActionResult ProfIndex()
+    {
+        ViewData["GradingProgress"] = 70;
         return View();
     }
 
