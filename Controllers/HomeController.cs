@@ -22,6 +22,12 @@ public class HomeController : Controller
     {
         return View();
     }
+    
+    // Action to open judge schedule
+    public IActionResult ScheduleView()
+    {
+        return View("Judge/ScheduleView");
+    }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
