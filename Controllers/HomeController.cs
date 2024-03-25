@@ -23,9 +23,15 @@ public class HomeController : Controller
         return View();
     }
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
+    public IActionResult judge_survey()
     {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        return View("Judge/judge_survey");
+    }
+
+    // Action to open judge schedule
+    public IActionResult ScheduleView()
+    {
+        return View("Judge/ScheduleView");
+
     }
 }
