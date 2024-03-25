@@ -2,8 +2,8 @@ namespace Darla.Models;
 
 public class EfJudgeRoomsRepository : IJudgeRoomsRepository
 {
-    private RatingContext _context;
-    public EfJudgeRoomsRepository(RatingContext temp)
+    private GradingContext _context;
+    public EfJudgeRoomsRepository(GradingContext temp)
     {
         _context = temp;
     }
