@@ -46,6 +46,8 @@ public class HomeController : Controller
         return View("Judge/ScheduleView");
     }
 
+    }
+
     public IActionResult OpeningPage()
     {
         return View();
