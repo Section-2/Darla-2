@@ -10,7 +10,7 @@ var app = builder.Build();
 
 builder.Services.AddDbContext<IntexGraderContext>(options =>
 {
-    options.UseSqlite(builder.Configuration["ConnectionStrings:IntextConnection"]);
+    options.UseSqlite(builder.Configuration["ConnectionStrings:IntexConnection"]);
 });
 
 builder.Services.AddScoped<IIntexRepository, EFIntexRepository>();
