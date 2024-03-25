@@ -15,19 +15,29 @@ public partial class IntexGraderContext : DbContext
     {
     }
 
-    public virtual DbSet<Assignment> Assignments { get; set; }
-
     public virtual DbSet<Grade> Grades { get; set; }
 
     public virtual DbSet<JudgeRoom> JudgeRooms { get; set; }
 
+    public virtual DbSet<PeerEvaluation> PeerEvaluations { get; set; }
+
+    public virtual DbSet<PeerEvaluationQuestion> PeerEvaluationQuestions { get; set; }
+
     public virtual DbSet<Permission> Permissions { get; set; }
 
-    public virtual DbSet<PresentationSurvey> PresentationSurveys { get; set; }
+    public virtual DbSet<Presentation> Presentations { get; set; }
+
+    public virtual DbSet<Room> Rooms { get; set; }
 
     public virtual DbSet<RoomSchedule> RoomSchedules { get; set; }
 
+    public virtual DbSet<Rubric> Rubrics { get; set; }
+
     public virtual DbSet<StudentTeam> StudentTeams { get; set; }
+
+    public virtual DbSet<Team> Teams { get; set; }
+
+    public virtual DbSet<TeamSubmission> TeamSubmissions { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
@@ -39,204 +49,241 @@ public partial class IntexGraderContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Assignment>(entity =>
-        {
-            entity.ToTable("assignments");
-
-            entity.Property(e => e.AssignmentId)
-                .ValueGeneratedNever()
-                .HasColumnType("INT")
-                .HasColumnName("assignment_id");
-            entity.Property(e => e.AssignmentDescription)
-                .HasColumnType("VARCHAR(45)")
-                .HasColumnName("assignment_description");
-            entity.Property(e => e.ClassCode)
-                .HasColumnType("INT")
-                .HasColumnName("class_code");
-            entity.Property(e => e.MaxPoints)
-                .HasColumnType("INT")
-                .HasColumnName("max_points");
-            entity.Property(e => e.Subcategory)
-                .HasColumnType("VARCHAR(45)")
-                .HasColumnName("subcategory");
-        });
-
         modelBuilder.Entity<Grade>(entity =>
         {
-            entity.HasKey(e => new { e.AssignmentId, e.StudentGradesNetId });
+            entity.ToTable("grade");
 
-            entity.ToTable("grades");
-
-            entity.Property(e => e.AssignmentId)
-                .HasColumnType("INT")
-                .HasColumnName("assignment_id");
-            entity.Property(e => e.StudentGradesNetId)
-                .HasColumnType("INT")
-                .HasColumnName("student_grades_net_id");
-            entity.Property(e => e.ClassCode)
-                .HasColumnType("INT")
-                .HasColumnName("class_code");
-            entity.Property(e => e.Comments)
-                .HasColumnType("VARCHAR(45)")
-                .HasColumnName("comments");
-            entity.Property(e => e.Points)
-                .HasColumnType("INT")
-                .HasColumnName("points");
+            entity.Property(e => e.GradeId).HasColumnName("grade_id");
+            entity.Property(e => e.AssignmentId).HasColumnName("assignment_id");
+            entity.Property(e => e.Comments).HasColumnName("comments");
+            entity.Property(e => e.PointsEarned)
+                .HasColumnType("NUMERIC")
+                .HasColumnName("points_earned");
+            entity.Property(e => e.TeamNumber).HasColumnName("team_number");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
 
             entity.HasOne(d => d.Assignment).WithMany(p => p.Grades)
                 .HasForeignKey(d => d.AssignmentId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
-            entity.HasOne(d => d.StudentGradesNet).WithMany(p => p.Grades)
-                .HasForeignKey(d => d.StudentGradesNetId)
+            entity.HasOne(d => d.User).WithMany(p => p.Grades)
+                .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         modelBuilder.Entity<JudgeRoom>(entity =>
         {
-            entity.HasKey(e => new { e.JudgeCode, e.RoomCode });
+            entity.HasKey(e => e.UserId);
 
-            entity.ToTable("judge_rooms");
+            entity.ToTable("judge_room");
 
-            entity.Property(e => e.JudgeCode)
-                .HasColumnType("INT")
-                .HasColumnName("judge_code");
-            entity.Property(e => e.RoomCode)
-                .HasColumnType("VARCHAR(45)")
-                .HasColumnName("room_code");
+            entity.Property(e => e.UserId)
+                .ValueGeneratedNever()
+                .HasColumnName("user_id");
+            entity.Property(e => e.RoomId).HasColumnName("room_id");
 
-            entity.HasOne(d => d.JudgeCodeNavigation).WithMany(p => p.JudgeRooms)
-                .HasForeignKey(d => d.JudgeCode)
+            entity.HasOne(d => d.Room).WithMany(p => p.JudgeRooms)
+                .HasForeignKey(d => d.RoomId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
+
+            entity.HasOne(d => d.User).WithOne(p => p.JudgeRoom)
+                .HasForeignKey<JudgeRoom>(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+        });
+
+        modelBuilder.Entity<PeerEvaluation>(entity =>
+        {
+            entity.ToTable("peer_evaluation");
+
+            entity.Property(e => e.PeerEvaluationId)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("peer_evaluation_id");
+            entity.Property(e => e.EvaluatorId).HasColumnName("evaluator_id");
+            entity.Property(e => e.QuestionId).HasColumnName("question_id");
+            entity.Property(e => e.Rating).HasColumnName("rating");
+            entity.Property(e => e.SubjectId).HasColumnName("subject_id");
+
+            entity.HasOne(d => d.Evaluator).WithMany(p => p.PeerEvaluationEvaluators)
+                .HasForeignKey(d => d.EvaluatorId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            entity.HasOne(d => d.PeerEvaluationNavigation).WithOne(p => p.PeerEvaluation)
+                .HasForeignKey<PeerEvaluation>(d => d.PeerEvaluationId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            entity.HasOne(d => d.Subject).WithMany(p => p.PeerEvaluationSubjects)
+                .HasForeignKey(d => d.SubjectId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+        });
+
+        modelBuilder.Entity<PeerEvaluationQuestion>(entity =>
+        {
+            entity.HasKey(e => e.QuestionId);
+
+            entity.ToTable("peer_evaluation_question");
+
+            entity.Property(e => e.QuestionId)
+                .ValueGeneratedNever()
+                .HasColumnName("question_id");
+            entity.Property(e => e.Question).HasColumnName("question");
         });
 
         modelBuilder.Entity<Permission>(entity =>
         {
             entity.HasKey(e => e.PermissionType);
 
-            entity.ToTable("permissions");
+            entity.ToTable("permission");
 
             entity.Property(e => e.PermissionType)
                 .ValueGeneratedNever()
-                .HasColumnType("INT")
                 .HasColumnName("permission_type");
-            entity.Property(e => e.PermissionDescription)
-                .HasColumnType("VARCHAR(45)")
-                .HasColumnName("permission_description");
+            entity.Property(e => e.PermissionDescription).HasColumnName("permission_description");
         });
 
-        modelBuilder.Entity<PresentationSurvey>(entity =>
+        modelBuilder.Entity<Presentation>(entity =>
         {
-            entity.HasKey(e => new { e.JudgeId, e.TeamNumber });
+            entity.ToTable("presentation");
 
-            entity.ToTable("presentation_surveys");
-
+            entity.Property(e => e.PresentationId)
+                .ValueGeneratedNever()
+                .HasColumnName("presentation_id");
+            entity.Property(e => e.Awards).HasColumnName("awards");
+            entity.Property(e => e.ClientNeedsNotes).HasColumnName("client_needs_notes");
+            entity.Property(e => e.ClientNeedsScore).HasColumnName("client_needs_score");
+            entity.Property(e => e.CommunicationNotes).HasColumnName("communication_notes");
+            entity.Property(e => e.CommunicationScore).HasColumnName("communication_score");
+            entity.Property(e => e.DemonstrationNotes).HasColumnName("demonstration_notes");
+            entity.Property(e => e.DemonstrationScore).HasColumnName("demonstration_score");
             entity.Property(e => e.JudgeId)
-                .HasColumnType("INT")
+                .HasColumnType("NUMERIC")
                 .HasColumnName("judge_id");
-            entity.Property(e => e.TeamNumber)
-                .HasColumnType("INT")
-                .HasColumnName("team_number");
-            entity.Property(e => e.ClientNeedsNotes)
-                .HasColumnType("VARCHAR(45)")
-                .HasColumnName("client_needs_notes");
-            entity.Property(e => e.ClientNeedsScore)
-                .HasColumnType("VARCHAR(45)")
-                .HasColumnName("client_needs_score");
-            entity.Property(e => e.CommunicationNotes)
-                .HasColumnType("VARCHAR(45)")
-                .HasColumnName("communication_notes");
-            entity.Property(e => e.CommunicationScore)
-                .HasColumnType("VARCHAR(45)")
-                .HasColumnName("communication_score");
-            entity.Property(e => e.ConsideredAwards)
-                .HasColumnType("VARCHAR(45)")
-                .HasColumnName("considered_awards");
-            entity.Property(e => e.DemonstrationNotes)
-                .HasColumnType("VARCHAR(45)")
-                .HasColumnName("demonstration_notes");
-            entity.Property(e => e.DemonstrationScore)
-                .HasColumnType("VARCHAR(45)")
-                .HasColumnName("demonstration_score");
-            entity.Property(e => e.TeamRank)
-                .HasColumnType("VARCHAR(45)")
-                .HasColumnName("team_rank");
+            entity.Property(e => e.TeamNumber).HasColumnName("team_number");
+            entity.Property(e => e.TeamRank).HasColumnName("team_rank");
+
+            entity.HasOne(d => d.Judge).WithMany(p => p.Presentations)
+                .HasForeignKey(d => d.JudgeId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            entity.HasOne(d => d.TeamNumberNavigation).WithMany(p => p.Presentations)
+                .HasForeignKey(d => d.TeamNumber)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+        });
+
+        modelBuilder.Entity<Room>(entity =>
+        {
+            entity.ToTable("room");
+
+            entity.Property(e => e.RoomId)
+                .ValueGeneratedNever()
+                .HasColumnName("room_id");
+            entity.Property(e => e.RoomName).HasColumnName("room_name");
         });
 
         modelBuilder.Entity<RoomSchedule>(entity =>
         {
-            entity.HasKey(e => new { e.RoomCode, e.Timeslot });
+            entity.HasKey(e => e.RoomId);
 
             entity.ToTable("room_schedule");
 
-            entity.Property(e => e.RoomCode)
-                .HasColumnType("VARCHAR(45)")
-                .HasColumnName("room_code");
-            entity.Property(e => e.Timeslot)
-                .HasColumnType("VARCHAR(45)")
-                .HasColumnName("timeslot");
-            entity.Property(e => e.TeamNumber)
-                .HasColumnType("VARCHAR(45)")
-                .HasColumnName("team_number");
-            entity.Property(e => e.TeamSection)
-                .HasColumnType("VARCHAR(45)")
-                .HasColumnName("team_section");
+            entity.Property(e => e.RoomId)
+                .ValueGeneratedNever()
+                .HasColumnName("room_id");
+            entity.Property(e => e.TeamNumber).HasColumnName("team_number");
+            entity.Property(e => e.Timeslot).HasColumnName("timeslot");
+
+            entity.HasOne(d => d.Room).WithOne(p => p.RoomSchedule)
+                .HasForeignKey<RoomSchedule>(d => d.RoomId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            entity.HasOne(d => d.TeamNumberNavigation).WithMany(p => p.RoomSchedules)
+                .HasForeignKey(d => d.TeamNumber)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+        });
+
+        modelBuilder.Entity<Rubric>(entity =>
+        {
+            entity.HasKey(e => e.AssignmentId);
+
+            entity.ToTable("rubric");
+
+            entity.Property(e => e.AssignmentId).HasColumnName("assignment_id");
+            entity.Property(e => e.ClassCode).HasColumnName("class_code");
+            entity.Property(e => e.Decsription).HasColumnName("decsription");
+            entity.Property(e => e.InstructorNotes).HasColumnName("instructor_notes");
+            entity.Property(e => e.MaxPoints).HasColumnName("max_points");
+            entity.Property(e => e.Subcategory).HasColumnName("subcategory");
         });
 
         modelBuilder.Entity<StudentTeam>(entity =>
         {
-            entity.HasKey(e => new { e.StudentNetId, e.TeamNumber });
+            entity.HasKey(e => e.UserId);
 
-            entity.ToTable("student_teams");
+            entity.ToTable("student_team");
 
-            entity.Property(e => e.StudentNetId)
-                .HasColumnType("INT")
-                .HasColumnName("student_net_id");
+            entity.Property(e => e.UserId)
+                .ValueGeneratedNever()
+                .HasColumnName("user_id");
+            entity.Property(e => e.TeamNumber).HasColumnName("team_number");
+
+            entity.HasOne(d => d.User).WithOne(p => p.StudentTeam)
+                .HasForeignKey<StudentTeam>(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+        });
+
+        modelBuilder.Entity<Team>(entity =>
+        {
+            entity.HasKey(e => e.TeamNumber);
+
+            entity.ToTable("team");
+
             entity.Property(e => e.TeamNumber)
-                .HasColumnType("INT")
+                .ValueGeneratedNever()
                 .HasColumnName("team_number");
+        });
 
-            entity.HasOne(d => d.StudentNet).WithMany(p => p.StudentTeams)
-                .HasForeignKey(d => d.StudentNetId)
+        modelBuilder.Entity<TeamSubmission>(entity =>
+        {
+            entity.HasKey(e => e.TeamNumber);
+
+            entity.ToTable("team_submission");
+
+            entity.Property(e => e.TeamNumber)
+                .ValueGeneratedNever()
+                .HasColumnName("team_number");
+            entity.Property(e => e.GithubLink).HasColumnName("github_link");
+            entity.Property(e => e.Timestamp).HasColumnName("timestamp");
+            entity.Property(e => e.VideoLink).HasColumnName("video_link");
+
+            entity.HasOne(d => d.TeamNumberNavigation).WithOne(p => p.TeamSubmission)
+                .HasForeignKey<TeamSubmission>(d => d.TeamNumber)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.NetId);
+            entity.ToTable("user");
 
-            entity.ToTable("users");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+            entity.Property(e => e.FirstName).HasColumnName("first_name");
+            entity.Property(e => e.LastName).HasColumnName("last_name");
+            entity.Property(e => e.NetId).HasColumnName("net_id");
+            entity.Property(e => e.PermissionType).HasColumnName("permission_type");
 
-            entity.Property(e => e.NetId)
-                .ValueGeneratedNever()
-                .HasColumnType("INT")
-                .HasColumnName("net_id");
-            entity.Property(e => e.FirstName)
-                .HasColumnType("VARCHAR(45)")
-                .HasColumnName("first_name");
-            entity.Property(e => e.LastName)
-                .HasColumnType("VARCHAR(45)")
-                .HasColumnName("last_name");
-            entity.Property(e => e.PermissionsType)
-                .HasColumnType("INT")
-                .HasColumnName("permissions_type");
-
-            entity.HasOne(d => d.PermissionsTypeNavigation).WithMany(p => p.Users).HasForeignKey(d => d.PermissionsType);
+            entity.HasOne(d => d.PermissionTypeNavigation).WithMany(p => p.Users)
+                .HasForeignKey(d => d.PermissionType)
+                .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         modelBuilder.Entity<UserPassword>(entity =>
         {
             entity.HasKey(e => e.UserId);
 
-            entity.ToTable("user_passwords");
+            entity.ToTable("user_password");
 
             entity.Property(e => e.UserId)
                 .ValueGeneratedNever()
-                .HasColumnType("INT")
                 .HasColumnName("user_id");
-            entity.Property(e => e.UserPassword1)
-                .HasColumnType("VARCHAR(45)")
-                .HasColumnName("user_password");
+            entity.Property(e => e.UserPassword1).HasColumnName("user_password");
 
             entity.HasOne(d => d.User).WithOne(p => p.UserPassword)
                 .HasForeignKey<UserPassword>(d => d.UserId)
