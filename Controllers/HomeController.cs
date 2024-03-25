@@ -24,6 +24,12 @@ public class HomeController : Controller
         return View();
     }
 
+    //Allowing access to StudentSubmission
+    public IActionResult StudentProgress()
+    {
+        return View();
+    }
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
