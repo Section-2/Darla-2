@@ -22,6 +22,16 @@ public class HomeController : Controller
         return View();
     }
 
+    public IActionResult judge_survey()
+    {
+        return View("Judge/judge_survey");
+    }
+
+    // Action to open judge schedule
+    public IActionResult ScheduleView()
+    {
+        return View("Judge/ScheduleView");
+
     public IActionResult OpeningPage()
     {
         return View();
