@@ -29,7 +29,7 @@ public class HomeController : Controller
     {
         return View();
     }
-    public IActionResult TAGradingProgress()
+    public IActionResult TaGradingProgress()
     {
         return View();
     }
