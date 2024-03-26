@@ -65,5 +65,4 @@ public class HomeController : Controller
         ViewData["GradingProgress"] = 70;
         return View();
     }
-
-}
+    
