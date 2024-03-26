@@ -1,7 +1,102 @@
 @{
+    var groups = new List<dynamic>
+    {
+        new { Name = "Group A", Score = 85 },
+        new { Name = "Group B", Score = 90 },
+        new { Name = "Group D", Score = 99 },
+        new { Name = "Group E", Score = 30 },
+        new { Name = "Group F", Score = 45 },
+        new { Name = "Group G", Score = 77 },
+        new { Name = "Group H", Score = 90 },
+        new { Name = "Group I", Score = 76 },
+        new { Name = "Group J", Score = 81 },
+        new { Name = "Group K", Score = 82 },
+        new { Name = "Group C", Score = 75 }
+    };
 }
 <h1>all grades</h1>
 <p>this view will display a table with the list of all the groups, their scores, and the ability to sort from highest to lowest, etc.</p>
 <a asp-controller="Home" asp-action="Index">index</a>
 <a asp-controller="Home" asp-action="ClassRubric">class rubric</a>
 <a asp-controller="Home" asp-action="TaGradingProgress">ta grade progress</a>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+
+<style>
+    .collapse-row .btn-link {
+        width: 100%;
+        text-align: left;
+        padding: 10px;
+        font-weight: bold;
+    }
+
+    .nested-table {
+        width: 100%;
+    }
+
+    .nested-table th, .nested-table td {
+        text-align: center;
+    }
+
+    .dropdown-toggle {
+        float: left;
+    }
+
+    .main-content {
+        min-height: 80vh;
+        padding-bottom: 100px;
+    }
+</style>
+
+<div class="main-content">
+    <div class="container mt-4">
+        <div class="text-center mb-4">
+            <h2>Group Scores</h2>
+            <button id="sortBtn" class="btn btn-primary">Sort Scores</button>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Group Name</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody id="scoresTable">
+                @foreach (var group in groups)
+                {
+                    <tr>
+                        <td>@group.Name</td>
+                        <td>@group.Score</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('sortBtn').addEventListener('click', function() {
+            var table, rows, switching, i, x, y, shouldSwitch;
+            table = document.getElementById("scoresTable");
+            switching = true;
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+                for (i = 0; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName("TD")[1];
+                    y = rows[i + 1].getElementsByTagName("TD")[1];
+                    if (Number(x.innerHTML) < Number(y.innerHTML)) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                }
+            }
+        });
+    </script>
+}
