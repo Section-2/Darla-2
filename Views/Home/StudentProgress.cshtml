@@ -9,26 +9,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Submissions with Rubric Details</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            window.toggleRubricDetails = function(courseId) {
-                var details = document.getElementById(`rubricDetails-${courseId}`);
-                details.classList.toggle("hidden");
-            }
-
-            window.updateProgress = function(courseId) {
-                const checkboxes = document.querySelectorAll(`#rubricDetails-${courseId} input[type='checkbox']`);
-                const total = checkboxes.length;
-                const checked = Array.from(checkboxes).filter(checkbox => checkbox.checked).length;
-                const progress = total > 0 ? (checked / total) * 100 : 0;
-
-                const progressBar = document.getElementById(`progressBar-${courseId}`);
-                progressBar.style.width = `${progress}%`;
-                const progressText = document.getElementById(`progressText-${courseId}`);
-                progressText.innerText = `${progress.toFixed(0)}%`;
-            }
-        });
-    </script>
 </head>
 <body class="bg-blue-200 min-h-screen">
     <div class="container mx-auto p-4">
@@ -39,11 +19,12 @@
         </div>
         <h1 class="text-3xl font-bold text-center mb-6">Student Submissions</h1>
 
+@*Logic to write out all of the classes, their dropdown rubirc information, checkboxes, etc*@
         @{
             var courses = new[] { "IS 401", "IS 413", "IS 414", "IS 455" };
             foreach (var course in courses)
             {
-                <div onclick="toggleRubricDetails('@course')" class="bg-white p-4 rounded shadow cursor-pointer mb-2 flex justify-between items-center">
+                <div onclick="toggleRubricDetails('@course')" class="bg-white p-4 rounded shadow cursor-pointer mb-2 flex justify-between items-start">
                     <h2 class="text-xl font-bold">@course Rubric Details</h2>
                     <div class="flex items-center">
                         <div class="w-64 bg-gray-200 rounded-full h-2.5">
@@ -53,27 +34,20 @@
                     </div>
                 </div>
                 <div id="rubricDetails-@course" class="bg-gray-100 p-4 rounded shadow mb-4 hidden">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div class="md:col-span-2">
-                            <h3 class="text-lg font-semibold">Requirements</h3>
-                            @for (int i = 0; i < 5; i++)
-                            {
-                                <div class="flex justify-between items-center mt-4">
-                                    <div class="text-md">Requirement @(i + 1) for @course</div>
-                                    <div class="text-md font-bold">Points: @(i * 5 + 10)</div>
-                                </div>
-                            }
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-semibold">Completed</h3>
-                            @for (int i = 0; i < 5; i++)
-                            {
-                                <div class="flex items-center mt-4">
+                    <!-- Single grid for requirements and checkboxes ensures alignment -->
+                    <div class="grid grid-cols-1 gap-4">
+                        <h3 class="text-lg font-semibold">Requirements</h3>
+                        @for (int i = 0; i < 5; i++)
+                        {
+                            <!-- Grid layout for each requirement + checkbox pair -->
+                            <div class="flex justify-between items-start mt-4">
+                                <div class="text-md flex-grow">Requirement @(i + 1) for @course:</div>
+                                <div class="flex-shrink-0 flex items-center ml-4">
                                     <input type="checkbox" class="transform scale-125" onchange="updateProgress('@(course)')">
-                                    <label class="ml-2">Done</label>
+                                    <label class="ml-2 text-md font-bold">Completed</label>
                                 </div>
-                            }
-                        </div>
+                            </div>
+                        }
                     </div>
                 </div>
             }
@@ -102,27 +76,36 @@
     </div>
 
     <script>
-        function toggleRubricDetails(courseId) {
-            var details = document.getElementById(`rubricDetails-${courseId}`);
-            details.classList.toggle("hidden");
-        }
+        // Ensure DOM is fully loaded before attaching event handlers
+        document.addEventListener("DOMContentLoaded", function () {
+            // Function to toggle visibility of rubric details
+            window.toggleRubricDetails = function (courseId) {
+                var details = document.getElementById(`rubricDetails-${courseId}`);
+                details.classList.toggle("hidden");
+            };
 
-        //this is not working yet
-        function updateProgress(courseId) {
-            const checkboxes = document.querySelectorAll(`#rubricDetails-${courseId} input[type='checkbox']`);
-            const total = checkboxes.length;
-            const checked = Array.from(checkboxes).filter(checkbox => checkbox.checked).length;
-            const progress = total > 0 ? (checked / total) * 100 : 0;
+            // Function to update progress bar and text
+            window.updateProgress = function (courseId) {
+                // This escaping is necessary only for the CSS selector used with querySelectorAll
+                const escapedCourseId = courseId.replace(/ /g, '\\ ');
 
-            const progressBar = document.getElementById(`progressBar-${courseId}`);
-            const progressText = document.getElementById(`progressText-${courseId}`);
+                // Use querySelectorAll with escapedCourseId for the checkboxes
+                const checkboxes = document.querySelectorAll(`#rubricDetails-${escapedCourseId} input[type='checkbox']`);
+                const total = checkboxes.length;
+                const checked = Array.from(checkboxes).filter(checkbox => checkbox.checked).length;
+                const progress = total > 0 ? (checked / total) * 100 : 0;
 
-            // Ensure the progress bar and text are updated correctly
-            if (progressBar && progressText) {
-                progressBar.style.width = `${progress}%`;
-                progressText.innerText = `${progress.toFixed(0)}%`;
-            }
-        }
+                // Use getElementById with the original courseId for element IDs without escaped characters
+                const progressBar = document.getElementById(`progressBar-${courseId}`);
+                const progressText = document.getElementById(`progressText-${courseId}`);
+
+                // Update the progress bar and text
+                if (progressBar && progressText) {
+                    progressBar.style.width = `${progress}%`;
+                    progressText.innerText = `${progress.toFixed(0)}%`;
+                }
+            };
+        });
     </script>
 </body>
 </html>
