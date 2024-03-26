@@ -1,9 +1,19 @@
+using Darla.Models;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+builder.Services.AddDbContext<IntexGraderContext>(options =>
+{
+    options.UseSqlite(builder.Configuration["ConnectionStrings:IntexConnection"]);
+});
+
+builder.Services.AddScoped<IIntexRepository, EFIntexRepository>();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -23,5 +33,9 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+    name: "student",
+    pattern: "{controller=Student}/{action=StudentDashboard}/{id?}");
 
 app.Run();
