@@ -1,29 +1,85 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Darla.Models;
 
 namespace Darla.Controllers;
 
 public class StudentController : Controller
 {
-  
+    private readonly DarlaDbContext _context;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+    public StudentController(DarlaDbContext context, IHttpContextAccessor httpContextAccessor)
+    {
+        _context = context;
+        _httpContextAccessor = httpContextAccessor;
+    }
+
+    public class DashboardViewModel
+    {
+        public TimeSpan Countdown { get; set; }
+        public string RoomNumber { get; set; }
+        public string PresentationTime { get; set; }
+        public int TeamNumber { get; set; }
+        public List<string> TeamMembers { get; set; }
+    }
+
+    private DashboardViewModel GetDashboardData(int userId)
+    {
+        var teamNumber = _context.StudentTeams
+            .FirstOrDefault(st => st.UserId == userId)?.TeamNumber ?? throw new Exception("User is not part of a team.");
+
+        var roomSchedule = _context.RoomSchedules
+            .Include(rs => rs.Room)
+            .FirstOrDefault(rs => rs.TeamNumber == teamNumber) ?? throw new Exception("No room schedule found for the team.");
+
+        var teamMembers = _context.StudentTeams
+            .Where(st => st.TeamNumber == teamNumber)
+            .Select(st => st.User.FirstName + " " + st.User.LastName)
+            .ToList();
+
+        var presentationTime = DateTime.Parse(roomSchedule.Timeslot);
+        var countdown = presentationTime - DateTime.Now;
+
+        return new DashboardViewModel
+        {
+            Countdown = countdown,
+            RoomNumber = roomSchedule.Room.RoomId.ToString(),
+            PresentationTime = roomSchedule.Timeslot,
+            TeamNumber = teamNumber,
+            TeamMembers = teamMembers
+        };
+    }
 
     public IActionResult StudentDashboard()
     {
-
-        //this has to load a count down timer based the present time and the appointment time
-
-        //It has to pull the appointment information assosiated with the student's group.
-        //       this includes group number, locaiton/roomnumber, time of appointment, 
-        
-        //list the group number and the group members
-        //
-
-
-
-
-        return View();
+        var userId = _httpContextAccessor.HttpContext.User.Identity.GetUserId();
+        var dashboardData = GetDashboardData(userId);
+        return View(dashboardData);
     }
+}
+
+
+    // public IActionResult StudentDashboard()
+    // {
+    //
+    //     //this has to load a count down timer based the present time and the appointment time
+    //
+    //     //It has to pull the appointment information assosiated with the student's group.
+    //     //       this includes group number, locaiton/roomnumber, time of appointment, 
+    //     
+    //     //list the group number and the group members
+    //     //  
+    //
+    //
+    //
+    //
+    //     return View();
+    // }
 
     public IActionResult StudentProgress()
     {
@@ -42,7 +98,7 @@ public class StudentController : Controller
         // then it needs to dynamically pull all assignments asssosiated with the ruberic id
         //          each assignment has the attributes assignmentID:int, rubericID:int, completed: bool, pintsOnGrade: int, isDeliverable:bool, description:string
         //          the description, points, and complete need to be displayed for each assignment with the complete states bring determind by a chekc box. this may be another action called updateCompletedStatus
-
+        
 
         return View();
     }
