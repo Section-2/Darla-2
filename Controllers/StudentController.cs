@@ -6,7 +6,12 @@ namespace Darla.Controllers;
 
 public class StudentController : Controller
 {
-  
+    private IIntexRepository _intexRepo;
+
+    public StudentController(IIntexRepository temp)
+    {
+        _intexRepo = temp;
+    }
 
     public IActionResult StudentDashboard()
     {
