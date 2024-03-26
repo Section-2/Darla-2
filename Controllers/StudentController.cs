@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Darla.Models;
+using AspNetCore;
 
 namespace Darla.Controllers;
 
@@ -32,7 +33,10 @@ public class StudentController : Controller
 
     public IActionResult StudentProgress()
     {
-        //this is the page that shows the ruberic
+        //get all unique class codes from the rubric table and add them to a list classed classcodes that is passed to the view
+        //get get the userID from the session
+        //get the TeamNumnber from StudentTeams where userID matches userID
+        //this is the page that shows the classes
         // it needs to pull the classes that will be graded. possibly the classes that the students are enrolled in. jsut assume you are pulling all classes from the db
         //then from those classes it needs to dynamically pull the ruberic for each class in a list that can be clicked to take the user to that ruberic's details
        
@@ -81,6 +85,27 @@ public class StudentController : Controller
         
         //optional:
         //if the complete status is true then make a copy of that submission and incremetn the submissionVersion value by so that multiple same submissions can be differentiated by submissionVersion 
+        return View();
+    }
+
+    public IActionResult StudentPeerReview()
+    {
+
+        //This view needs to pull the group info and so that each team memer can be seen and selected to be peer reviewd by the user.
+        // so just return a variable to the view that holds the student info where group ID matches the group ID of the user
+        return View();
+    }
+
+    public IActionResult PeerEvaluation()
+    {
+        //generate the peer eval quiz
+        return View();
+    }
+
+    public IActionResult SubmitPeerEval()
+    {
+        //submit the eval, update the data base
+        //retrun to the StudentPeerReview view
         return View();
     }
 }
