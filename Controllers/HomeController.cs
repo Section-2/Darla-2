@@ -46,8 +46,6 @@ public class HomeController : Controller
         return View("Judge/ScheduleView");
     }
 
-    }
-
     public IActionResult OpeningPage()
     {
         return View();
@@ -59,8 +57,6 @@ public class HomeController : Controller
         return View();
     }
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
     public IActionResult ProfIndex()
     {
         ViewData["GradingProgress"] = 70;
