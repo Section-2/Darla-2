@@ -8,7 +8,7 @@ public class StudentController : Controller
 {
   
 
-    public IActionResult Index()
+    public IActionResult StudentDashboard()
     {
         return View();
     }
