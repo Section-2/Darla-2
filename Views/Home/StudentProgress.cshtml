@@ -1,5 +1,5 @@
 ﻿@{
-    Layout = null; // Assuming you're using this page independently without a layout page
+    Layout = null; 
 }
 
 <!DOCTYPE html>
@@ -7,58 +7,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rubric and Submissions</title>
+    <title>Student Submissions with Rubric Details</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            window.toggleRubricDetails = function(courseId) {
+                var details = document.getElementById(`rubricDetails-${courseId}`);
+                details.classList.toggle("hidden");
+            }
+
+            window.updateProgress = function(courseId) {
+                const checkboxes = document.querySelectorAll(`#rubricDetails-${courseId} input[type='checkbox']`);
+                const total = checkboxes.length;
+                const checked = Array.from(checkboxes).filter(checkbox => checkbox.checked).length;
+                const progress = total > 0 ? (checked / total) * 100 : 0;
+
+                const progressBar = document.getElementById(`progressBar-${courseId}`);
+                progressBar.style.width = `${progress}%`;
+                const progressText = document.getElementById(`progressText-${courseId}`);
+                progressText.innerText = `${progress.toFixed(0)}%`;
+            }
+        });
+    </script>
 </head>
-<body>
-    <div class="container mx-auto px-4 py-8">
-        <div class="flex items-center mb-8">
+<body class="bg-blue-200 min-h-screen">
+    <div class="container mx-auto p-4">
+        <div class="text-right mb-4">
             <button onclick="window.history.back()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                 Back
             </button>
-            <h1 class="mx-auto text-4xl font-bold">Rubric and Submissions</h1>
         </div>
+        <h1 class="text-3xl font-bold text-center mb-6">Student Submissions</h1>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            @* Dynamically generate course buttons and progress bars *@
-            @foreach (var course in new[] { "IS 401", "IS 413", "IS 414", "IS 455" })
+        @{
+            var courses = new[] { "IS 401", "IS 413", "IS 414", "IS 455" };
+            foreach (var course in courses)
             {
-                <div class="bg-white shadow-md rounded p-4 hover:bg-gray-100 cursor-pointer">
-                    <button class="text-lg font-semibold w-full text-left">
-                        @course
-                    </button>
-                    <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2 relative">
-                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: 50%"></div> <!-- Adjust width based on progress -->
-                        <span class="absolute right-0 top-0 text-sm transform translate-x-1/2">50%</span> <!-- Adjusted for end of progress bar -->
+                <div onclick="toggleRubricDetails('@course')" class="bg-white p-4 rounded shadow cursor-pointer mb-2 flex justify-between items-center">
+                    <h2 class="text-xl font-bold">@course Rubric Details</h2>
+                    <div class="flex items-center">
+                        <div class="w-64 bg-gray-200 rounded-full h-2.5">
+                            <div id="progressBar-@course" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+                        </div>
+                        <div id="progressText-@course" class="ml-2">0%</div>
+                    </div>
+                </div>
+                <div id="rubricDetails-@course" class="bg-gray-100 p-4 rounded shadow mb-4 hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="md:col-span-2">
+                            <h3 class="text-lg font-semibold">Requirements</h3>
+                            @for (int i = 0; i < 5; i++)
+                            {
+                                <div class="flex justify-between items-center mt-4">
+                                    <div class="text-md">Requirement @(i + 1) for @course</div>
+                                    <div class="text-md font-bold">Points: @(i * 5 + 10)</div>
+                                </div>
+                            }
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold">Completed</h3>
+                            @for (int i = 0; i < 5; i++)
+                            {
+                                <div class="flex items-center mt-4">
+                                    <input type="checkbox" class="transform scale-125" onchange="updateProgress('@(course)')">
+                                    <label class="ml-2">Done</label>
+                                </div>
+                            }
+                        </div>
                     </div>
                 </div>
             }
+        }
+ 
 
-            @* Submissions Card centered and with a controlled width *@
-            <div class="col-span-1 md:col-span-2 mx-auto bg-white shadow-md rounded p-4 w-full md:w-3/4 lg:w-1/2">
-                <h2 class="text-2xl font-bold mb-4">Submissions</h2>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <p class="font-semibold">GitHub Link</p>
-                        <button onclick="openSubmissionPopup('github')" class="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                            Submit
-                        </button>
-                    </div>
-                    <div>
-                        <p class="font-semibold">Video Walk-through</p>
-                        <button onclick="openSubmissionPopup('video')" class="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                            Submit
-                        </button>
-                    </div>
-                </div>
+        <div class="bg-white p-4 rounded shadow mt-6">
+            <h2 class="text-xl font-bold mb-4">Submissions</h2>
+            <div>
+                <label for="github-link" class="block text-md font-medium text-gray-700">GitHub Link</label>
+                <input type="url" id="github-link" name="github-link" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+            </div>
+        <div class="mt-4">
+                <label for="video-link" class="block text-md font-medium text-gray-700">Video Walk-through</label>
+                <input type="url" id="video-link" name="video-link" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+            </div>
+            <div class="flex justify-end mt-6">
+                <button type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" onclick="alert('GitHub link submitted!');">
+                    Submit GitHub Link
+                </button>
+                <button type="button" class="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" onclick="alert('Video Submitted!');">
+                    Submit Video
+                </button>
             </div>
         </div>
     </div>
 
     <script>
-        function openSubmissionPopup(type) {
-            // Popup logic for submissions
-            alert(`Submit ${type}`);
+        function toggleRubricDetails(courseId) {
+            var details = document.getElementById(`rubricDetails-${courseId}`);
+            details.classList.toggle("hidden");
+        }
+
+        //this is not working yet
+        function updateProgress(courseId) {
+            const checkboxes = document.querySelectorAll(`#rubricDetails-${courseId} input[type='checkbox']`);
+            const total = checkboxes.length;
+            const checked = Array.from(checkboxes).filter(checkbox => checkbox.checked).length;
+            const progress = total > 0 ? (checked / total) * 100 : 0;
+
+            const progressBar = document.getElementById(`progressBar-${courseId}`);
+            const progressText = document.getElementById(`progressText-${courseId}`);
+
+            // Ensure the progress bar and text are updated correctly
+            if (progressBar && progressText) {
+                progressBar.style.width = `${progress}%`;
+                progressText.innerText = `${progress.toFixed(0)}%`;
+            }
         }
     </script>
 </body>
