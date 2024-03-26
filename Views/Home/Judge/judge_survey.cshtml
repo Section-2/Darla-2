@@ -79,9 +79,9 @@
    
     <form asp-controller="Home" asp-action="judge_survey" method="post">
         <div class="form-group">
-            <label for="Satisfaction">Satisfaction Level (1-10)</label>
+            <label for="Satisfaction">Rate (1-10)</label>
             <input type="range" class="custom-range" id="Satisfaction" name="Satisfaction" min="1" max="10" value="5">
-            <small class="form-text text-muted">Satisfaction: <span id="satisfactionValue">5</span></small>
+            <small class="form-text text-muted">Score: <span id="satisfactionValue">5</span></small>
         </div>
         <br/>
         <div>
@@ -89,15 +89,31 @@
             <textarea class="note-taking-box" rows="10" placeholder="Enter notes here..."></textarea>
         </div>
         
+        <br/><br/>
         
-        <div>Technology Demonstration</div>
-        
-        <div class="form-group">
-            <label for="Knowledge">Knowledge (1-10)</label>
-            <input type="range" class="custom-range" id="Knowledge" name="Knowledge" min="1" max="10" value="5">
-            <small class="form-text text-muted">Knowledge: <span id="knowledgeValue">5</span></small>
+        <div>
+            <h3>How effective was the team in DEMONSTRATING THEIR SOLUTION?</h3>
+            <p>Items that may factor into your scoring of this item:</p>
+            <ul>
+                <li>Website Implementation and Functionality</li>
+                <li>System Usability and Enjoyable User Experience</li>
+                <li>A Coherent Narrative/Story When Describing System</li>
+                <li>Presence or Lack of Errors/Bugs</li>
+            </ul>
         </div>
         
+        <div class="form-group">
+            <label for="Knowledge">Rate (1-10)</label>
+            <input type="range" class="custom-range" id="Knowledge" name="Knowledge" min="1" max="10" value="5">
+            <small class="form-text text-muted">Score: <span id="knowledgeValue">5</span></small>
+        </div>
+        
+        <div>
+            <label >Do you have any complements or critiques for the group about their technology demo?</label>
+            <textarea class="note-taking-box" rows="10" placeholder="Enter notes here..."></textarea>
+        </div>
+        
+        <br/><br/>
         
         
         
