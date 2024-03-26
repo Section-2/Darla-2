@@ -41,22 +41,68 @@
         background: #007bff;
         cursor: pointer;
     }
+    .note-taking-box {
+            width: 100%; /* Full width of the screen */
+            padding: 15px; /* Padding inside the box */
+            margin: 10px 0; /* Margin around the box */
+            box-sizing: border-box; /* Ensures padding does not affect the total width */
+            border: 2px solid #ccc; /* Border color */
+            border-radius: 8px; /* Rounded corners */
+            resize: vertical; /* Allows the box to be resized vertically */
+            outline: none; /* Removes the default focus outline */
+            height: 50px;
+        }
+        /* Style adjustments for when the text box is in focus */
+    .note-taking-box:focus {
+        border-color: #4A90E2; /* Changes border color on focus */
+    }
 </style>
 
 <div class="container mt-5">
-    <h2>Judge Survey</h2>
+    <h1 style="text-align: center">Judge Survey</h1>
+    <br/><br/>
+    <div>
+        <h3>How effective was the team in COMMUNICATING?</h3>
+        <p>Items that may factor into your scoring of this item:</p>
+        <ul>
+            <li>Dress, Appearance, Confidence</li>
+            <li>Engaging with the Audience</li>
+            <li>Organization and Timing</li>
+            <li>Professionalism</li>
+            <li>Transitions</li>
+            <li>Question Handling</li>
+        </ul>
+
+    </div>
+    
+    
+   
     <form asp-controller="Home" asp-action="judge_survey" method="post">
         <div class="form-group">
             <label for="Satisfaction">Satisfaction Level (1-10)</label>
             <input type="range" class="custom-range" id="Satisfaction" name="Satisfaction" min="1" max="10" value="5">
             <small class="form-text text-muted">Satisfaction: <span id="satisfactionValue">5</span></small>
         </div>
-
+        <br/>
+        <div>
+            <label >Do you have any complements or critiques for the group about their communication and delivery?</label>
+            <textarea class="note-taking-box" rows="10" placeholder="Enter notes here..."></textarea>
+        </div>
+        
+        
+        <div>Technology Demonstration</div>
+        
         <div class="form-group">
             <label for="Knowledge">Knowledge (1-10)</label>
             <input type="range" class="custom-range" id="Knowledge" name="Knowledge" min="1" max="10" value="5">
             <small class="form-text text-muted">Knowledge: <span id="knowledgeValue">5</span></small>
         </div>
+        
+        
+        
+        
+        
+        <div>System and Quality</div>
 
         <div class="form-group">
             <label for="ServiceSpeed">Service Speed (1-10)</label>
