@@ -74,12 +74,13 @@ button:hover {
     color: #37323E;
     padding: 0 5px;
 }
+
 </style>
 
 <div>
     <h2>Create an Account</h2>
     <form method="post">
-        <label asp-for="NetId">Net Id</label>
+        <label asp-for="NetId">NetID</label>
         <input asp-for="NetId">
 
         <label asp-for="FirstName">First Name</label>
@@ -89,7 +90,14 @@ button:hover {
         <input asp-for="LastName">
         
         <label asp-for="PermissionType">Permission Type</label>
-        <input asp-for="PermissionType">
+        <select asp-for="PermissionType">
+            <option value="" selected disabled></option>
+            <option value="1">Student</option>
+            <option value="2">Professor</option>
+            <option value="3">TA</option>
+            <option value="4">Judge</option>
+            <option value="5">Coordinator</option>
+        </select>
 
         <button type="submit">Create Account</button>
     </form>
