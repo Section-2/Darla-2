@@ -1,30 +1,43 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿document.addEventListener('DOMContentLoaded', () => {
+    function updateOrder() {
+        const itemOrder = Array.from(document.querySelectorAll('.container .box')).map((item, index) => ({
+            id: item.dataset.teamnumber, // Assuming you have data-teamnumber as an identifier
+            position: index
+        }));
+        localStorage.setItem('itemOrder', JSON.stringify(itemOrder));
+    }
 
-// Write your JavaScript code.
+    function loadOrder() {
+        const itemOrderStr = localStorage.getItem('itemOrder');
+        if (!itemOrderStr) return;
+        const itemOrder = JSON.parse(itemOrderStr);
+        const container = document.querySelector('.container');
 
+        // Create a map of id to box elements
+        const itemsMap = {};
+        document.querySelectorAll('.container .box').forEach(item => {
+            itemsMap[item.dataset.teamnumber] = item;
+        });
 
-// #####--- this is the judges JavaScript Code ---##### //
-document.addEventListener('DOMContentLoaded', (event) => {
+        // Sort the container's children according to the saved order
+        itemOrder.forEach(({ id }) => {
+            if (itemsMap[id]) {
+                container.appendChild(itemsMap[id]);
+            }
+        });
+    }
 
     let dragSrcEl = null;
 
     function handleDragStart(e) {
-        this.style.opacity = '0.4';
-
         dragSrcEl = this;
-
         e.dataTransfer.effectAllowed = 'move';
-        e.dataTransfer.setData('text/html', this.innerHTML);
+        e.dataTransfer.setData('text/html', this.outerHTML);
     }
 
     function handleDragOver(e) {
-        if (e.preventDefault) {
-            e.preventDefault();
-        }
-
+        e.preventDefault();
         e.dataTransfer.dropEffect = 'move';
-
         return false;
     }
 
@@ -37,45 +50,45 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
 
     function handleDrop(e) {
-        if (e.stopPropagation) {
-            e.stopPropagation(); // stops the browser from redirecting.
-        }
+        e.stopPropagation();
+        e.preventDefault();
 
         if (dragSrcEl !== this) {
-            const draggedContent = e.dataTransfer.getData('text/html');
-
-            // Swap the HTML content between the dragged element and the target element
-            const targetContent = this.innerHTML;
-            this.innerHTML = dragSrcEl.innerHTML;
-            dragSrcEl.innerHTML = targetContent;
-
-            // Optionally, you might want to update other attributes or properties of the elements as well
+            dragSrcEl.parentNode.removeChild(dragSrcEl);
+            const dropHTML = e.dataTransfer.getData('text/html');
+            this.insertAdjacentHTML('beforebegin',dropHTML);
+            const dropElem = this.previousSibling;
+            addDnDEvents(dropElem);
 
             // Clear the dragged content from the source element
             e.dataTransfer.clearData();
+
+            // Update the order in local storage after drop
+            updateOrder();
         }
 
         return false;
     }
 
-
     function handleDragEnd(e) {
         this.style.opacity = '1';
-
         items.forEach(function (item) {
             item.classList.remove('over');
         });
     }
 
+    function addDnDEvents(elem) {
+        elem.addEventListener('dragstart', handleDragStart, false);
+        elem.addEventListener('dragenter', handleDragEnter, false);
+        elem.addEventListener('dragover', handleDragOver, false);
+        elem.addEventListener('dragleave', handleDragLeave, false);
+        elem.addEventListener('drop', handleDrop, false);
+        elem.addEventListener('dragend', handleDragEnd, false);
+    }
+
+    // Load the order as soon as possible
+    loadOrder();
 
     let items = document.querySelectorAll('.container .box');
-    items.forEach(function(item) {
-        item.addEventListener('dragstart', handleDragStart, false);
-        item.addEventListener('dragenter', handleDragEnter, false);
-        item.addEventListener('dragover', handleDragOver, false);
-        item.addEventListener('dragleave', handleDragLeave, false);
-        item.addEventListener('drop', handleDrop, false);
-        item.addEventListener('dragend', handleDragEnd, false);
-    });
+    items.forEach(addDnDEvents);
 });
-// ####--- end Judges JavaScript ---##### //
