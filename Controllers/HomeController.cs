@@ -56,8 +56,7 @@ public class HomeController : Controller
         return View();
     }
 
-    //Allowing access to StudentSubmission
-    public IActionResult StudentProgress()
+    public IActionResult Privacy()
     {
         return View();
     }
