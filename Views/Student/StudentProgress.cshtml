@@ -99,6 +99,9 @@
                 <button type="button" class="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" data-bs-toggle="modal" data-bs-target="#videoModal">
                     Submit Video
                 </button>
+                <button type="button" class="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" data-bs-toggle="modal" data-bs-target="#projectInfoModal">
+                    Submit Project Info
+                </button>
             </div>
         </div>
         <h2>Class Codes</h2>
@@ -151,23 +154,30 @@
             // Perform any necessary validation or processing
             alert('GitHub link submitted: ' + githubLink);
             $('#exampleModal').modal('hide');
-        };
+        }
 
         function submitVideo() {
             var githubLink = document.getElementById('submitVideo').value;
             // Perform any necessary validation or processing
             alert('Video submitted: ' + submitVideo);
             $('#exampleModal').modal('hide');
-        };
+        }
+
+        function submitPorjectInfo() {
+            var githubLink = document.getElementById('githubLinkInput').value;
+            // Perform any necessary validation or processing
+            alert('GitHub link submitted: ' + githubLink);
+            $('#exampleModal').modal('hide');
+        }
     </script>
 </body>
 
 <!-- GitHub Modal -->
-<div class="modal fade" id="githubModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="githubModal" tabindex="-1" aria-labelledby="githubModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Github Link Submission</h1>
+                <h1 class="modal-title fs-5" id="githubModalLabel">Github Link Submission</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -180,14 +190,13 @@
         </div>
     </div>
 </div>
-</html>
 
 <!-- Video Modal -->
-<div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Video Submission</h1>
+                <h1 class="modal-title fs-5" id="videoModalModalLabel">Video Submission</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -200,28 +209,15 @@
         </div>
     </div>
 </div>
-</html>
 
-<script>
-    function submitGitHubLink() {
-        var githubLink = document.getElementById('githubLinkInput').value;
-        // Perform any necessary validation or processing
-        alert('GitHub link submitted: ' + githubLink);
-        $('#exampleModal').modal('hide');
-    }
-</script>
 
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Launch demo modal
-</button>
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Project Info Modal -->
+<div class="modal fade" id="projectInfoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Project Info Submission</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -229,7 +225,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-primary">Submit</button>
             </div>
         </div>
     </div>
