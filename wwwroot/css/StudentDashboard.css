@@ -71,6 +71,13 @@ body {
     margin-bottom: 20px;
 }
 
+.icon,
+.text {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+
 .timer {
     display: flex;
     justify-content: center;
