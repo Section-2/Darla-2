@@ -1,16 +1,172 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "INTEX Grading Summary";
 }
-<h1>Index</h1>
-<p>this view is just to have a home page when running the project. nav links show each page</p>
-<a asp-controller="Home" asp-action="AllGrades">all grades</a>
-<a asp-controller="Home" asp-action="ClassRubric">class rubric</a>
-<a asp-controller="Home" asp-action="TaGradingProgress">ta grade progress</a>
 
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+
+<style>
+    .quadrant {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        border: 1px solid #dee2e6;
+        background-color: #f8f9fa;
+    }
+
+        .quadrant h2 {
+            font-size: 1.5rem; /* Smaller headers */
+        }
+
+    .grading-progress {
+        font-size: 48px; /* Larger grading progress */
+    }
+
+    /* Updated table style for borderless and no headers */
+    .grading-table, .grading-table th, .grading-table td {
+        border: none;
+        text-align: left;
+        padding: 8px;
+    }
+
+    .top-groups ol {
+        padding-left: 20px;
+    }
+</style>
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">@ViewData["Title"]</h1>
+
+    <div class="row">
+        <div class="col d-flex justify-content-end">
+            <div class="dropdown">
+                <button class="btn dropdown-toggle" type="button" id="sectionSortDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Sort by Section
+                </button>
+                <div class="dropdown-menu" aria-labelledby="sectionSortDropdown">
+                    <a class="dropdown-item section-sort-selector active" href="#" data-sort-section="all">All Sections</a>
+                    @foreach (var sect in new[] { "Section 1", "Section 2", "Section 3", "Section 4" })
+                    {
+                        <a class="dropdown-item section-sort-selector" href="#" data-sort-section="@sect">@sect</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Grading Progress Quadrant -->
+        <div class="col-md-6">
+            <div class="quadrant">
+                <h2>Grading Progress</h2>
+                @{
+                    Random rand = new Random();
+                    double avgPercentage = rand.Next(0, 101); // Random average percentage
+                                                              // Adjusted color logic based on new criteria
+                    string color = avgPercentage < 30 ? "#dc3545" : avgPercentage < 70 ? "#ffc107" : "#28a745";
+                }
+                <p class="grading-progress" style="color: @color;">@Math.Round(avgPercentage) %</p> <!-- Dynamically colored and rounded -->
+            </div>
+        </div>
+
+        <!-- Left to Grade Quadrant -->
+        <div class="col-md-6">
+            <div class="quadrant">
+                <h2>Left To Grade</h2>
+                <table class="grading-table">
+                    @{
+                        // Dynamic generation of class grading information
+                        string[] classes = { "IS 401", "IS 413", "IS 414", "IS 455" };
+                        for (int i = 0; i < classes.Length; i++)
+                        {
+                            int graded = rand.Next(0, 241); // Random number of groups graded
+                            int total = 240;
+                            <tr>
+                                <td>@classes[i]</td>
+                                <td>@graded/@total (@Math.Round((double)graded / total * 100) %)</td>
+                            </tr>
+                        }
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <!-- Top 4 Groups Quadrant -->
+        <div class="col-md-6">
+            <div class="quadrant top-groups">
+                <h2>Top 4 Groups</h2>
+                <ol>
+                    <li>Group 2-9</li>
+                    @{
+                        // Dynamic generation of top groups
+                        List<string> groups = Enumerable.Range(1, 4).Select(x => $"Group {rand.Next(1, 5)}-{rand.Next(1, 11)}").ToList();
+                        groups.Insert(0, "Group 2-9"); // Ensure Group 2-9 is always first
+                        groups = groups.Distinct().ToList(); // Remove duplicates
+                        foreach (var group in groups.Skip(1).Take(3))
+                        {
+                            <li>@group</li>
+                        }
+                    }
+                </ol>
+            </div>
+        </div>
 
 <div class="text-center">
     <h1 class="display-4">Intex Grading</h1>
     <p>Schedule View <a href="@Url.Action("JudgeDashboard", "Home")">CLICK HERE FOR SCHEDULE VIEW</a></p>
     <p>Schedule View <a href="@Url.Action("judge_survey", "Home")">CLICK HERE FOR SURVEY VIEW</a></p>
+        <!-- Buttons Quadrant -->
+        <div class="col-md-6 d-flex align-items-center justify-content-around">
+            <button type="button" class="btn btn-primary" asp-controller="TA" asp-action="TaGradingProgress">Start Grading</button>
+            <button type="button" class="btn btn-secondary">Sign Out</button>
+        </div>
+    </div>
 </div>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Add event listener for the Sort by Section dropdown
+        $('.section-sort-selector').click(function (e) {
+            e.preventDefault();
+            var selectedSection = $(this).data('sort-section');
+            var selectedText = $(this).text();
+            $('#sectionSortDropdown').text(selectedText); // Update the dropdown button text
+
+            // Update Left to Grade Per Class based on selected section
+            // Assume 'grades' object contains the grades for each section and class
+            var grades = {
+                "Section 1": { "IS 401": 45, "IS 413": 50, "IS 414": 55, "IS 455": 60 },
+                // Define grades for other sections...
+            };
+
+            // Clear the table and repopulate based on selected section
+            $('.grading-table tbody').empty();
+            if (selectedSection === "all") {
+                // If All Sections is selected, calculate and display aggregate data
+                // This part will need dynamic data handling
+            } else {
+                var sectionGrades = grades[selectedSection];
+                for (var className in sectionGrades) {
+                    $('.grading-table tbody').append(`<tr><td>${className}</td><td>${sectionGrades[className]}/60</td></tr>`);
+                }
+            }
+
+            // Update Top 4 Groups based on selected section
+            // This part will need dynamic data handling
+            $('.top-groups ol').empty();
+            $('.top-groups ol').append('<li>Group 2-9</li>'); // Group 2-9 is always included
+            // Dynamically add other top groups from the selected section
+
+            $('.section-sort-selector').removeClass('active');
+            $(this).addClass('active');
+        });
+
+        // Automatically select All Sections on page load
+        $('.section-sort-selector[data-sort-section="all"]').trigger('click');
+    });
+</script>
 <a asp-controller="Student" asp-action="StudentDashboard" class="btn btn-primary">View Student Progress</a>

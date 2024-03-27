@@ -1,7 +1,9 @@
 ﻿using Darla.Models;
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
 using Microsoft.EntityFrameworkCore;
+namespace Darla.Controllers;
 
 
 class StudentController : Controller

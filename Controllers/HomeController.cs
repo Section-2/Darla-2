@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 using Darla.Models;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using SQLitePCL;
@@ -101,6 +100,13 @@ public class HomeController : Controller
         return View();
     }
     public IActionResult ProfFullRubric()
+    //Allowing access to StudentSubmission
+    public IActionResult StudentProgress()
+    {
+        return View();
+    }
+
+    public IActionResult ProfIndex()
     {
         ViewData["GradingProgress"] = 70;
         return View();
