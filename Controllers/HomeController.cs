@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Darla.Models;
 using Microsoft.AspNetCore.Mvc;
 //using Darla.Models;
 
@@ -6,6 +7,7 @@ namespace Darla.Controllers;
 
 public class HomeController : Controller
 {
+    private IIntexRepository _repo;
 
     public IActionResult Index()
     {
@@ -34,22 +36,35 @@ public class HomeController : Controller
     {
         return View();
     }
-
+    
     public IActionResult judge_survey()
     {
-<<<<<<< Updated upstream
         return View("Judge/judge_survey");
-=======
-        return View();
->>>>>>> Stashed changes
+    }
+
+    [HttpGet]
+    public IActionResult AddPresentationScore()
+    {
+        var presentationData = _repo.Presentations;
+
+        return View(new Presentation());
+    }
+
+    [HttpPost]
+    public IActionResult AddPresentationScore(Presentation p)
+    {
+        if (ModelState.IsValid)
+        {
+            _repo.AddPresentationScore(p);
+        }
+
+        return RedirectToAction("ScheduleView", new Presentation());
     }
 
     // Action to open judge schedule
     public IActionResult ScheduleView()
     {
         return View("Judge/ScheduleView");
-    }
-
     }
 
     public IActionResult OpeningPage()
