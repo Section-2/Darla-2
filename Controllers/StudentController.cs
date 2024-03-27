@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-//using Darla.Models;
+﻿using Darla.Models;
+using Microsoft.AspNetCore.Mvc;
+
 
 namespace Darla.Controllers;
 
