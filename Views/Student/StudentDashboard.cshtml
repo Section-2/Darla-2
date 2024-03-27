@@ -7,23 +7,105 @@
     var teamMemberNames = ViewBag.TeamMemberNames as List<string>;
 }
 
-<h1>Team Number: @RoomSchedule.TeamNumber</h1>
-<h1>Time Slot: @RoomSchedule.Timeslot</h1>
+<link rel="stylesheet" href="css/StudentDashboard.css">
 
-@if (teamMemberNames != null && teamMemberNames.Any())
-{
-    <h2>Team Members:</h2>
-    <ul>
-        @foreach (var name in teamMemberNames)
-        {
-            <li>@name</li>
-        }
-    </ul>
-}
-else
-{
-    <p>No team members found for this team.</p>
-}
+<section class="header-section">
+  <div class="container">
+    <h1 class="welcome-message">Welcome Student!</h1>
+    <button href="#" class="back-to-home">Back to Home</button>
+  </div>
+</section>
 
-<h1>This is A Test</h1>
-<a href="@Url.Action("StudentProgress", "Student")" class="btn btn-primary">View Student Progress</a>
+<main class="main-content">
+  <section class="presentation-info">
+    <div class="container">
+      <div class="card presentation-card">
+        <div class="title">Your Presentation</div>
+        <div class="info">
+          <i class="fa-solid fa-clock icon" style="color: #2e91ff"></i>
+          <div class="text">@RoomSchedule.Timeslot</div>
+        </div>
+        <br />
+        <div class="info">
+          <i class="fa-solid fa-door-open icon" style="color: #2e91ff"></i>
+          <div class="text">@RoomSchedule.Room</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="group-info">
+    <div class="container">
+      <div class="card group-card">
+        <div class="title">@RoomSchedule.TeamNumber</div>
+        <div class="members">
+          @if (teamMemberNames != null && teamMemberNames.Any())
+          {
+            @foreach (var name in teamMemberNames)
+            {
+              <p>@name</p>
+            }
+          }
+          else
+          {
+            <p>No team members found for this team.</p>
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="countdown-info">
+    <div class="container">
+      <div class="card countdown-card">
+        <div class="title">Countdown</div>
+        <div class="timer">
+          <div class="label-digit">
+            <div class="label">DAYS</div>
+            <div class="digit">00</div>
+          </div>
+          <div class="label-digit">
+            <div class="label"></div>
+            <div class="digit">:</div>
+          </div>
+          <div class="label-digit">
+            <div class="label">HOURS</div>
+            <div class="digit">00</div>
+          </div>
+          <div class="label-digit">
+            <div class="label"></div>
+            <div class="digit">:</div>
+          </div>
+          <div class="label-digit">
+            <div class="label">MINUTES</div>
+            <div class="digit">00</div>
+          </div>
+          <div class="label-digit">
+            <div class="label"></div>
+            <div class="digit">:</div>
+          </div>
+          <div class="label-digit">
+            <div class="label">SECONDS</div>
+            <div class="digit">00</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="resources-info">
+    <div class="container">
+      <div class="card resources-card">
+        <div class="title">Resources and Submission</div>
+        <div class="links">
+          <a href="@Url.Action("StudentProgress", "Student")" class="btn btn-primary">View Student Progress</a>
+          <a href="@Url.Action("StudentPeerReview", "Student")" class="link">Peer Evaluation</a>
+          <a href="#" class="link">Submission Form</a>
+          <a href="#" class="link">Sign Out</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="https://kit.fontawesome.com/4c16b1756d.js" crossorigin="anonymous"></script>
