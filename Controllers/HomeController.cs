@@ -1,13 +1,19 @@
 using System.Diagnostics;
+using Darla.Models;
 using Microsoft.AspNetCore.Mvc;
-//using Darla.Models;
+using Darla.Models;
 
 // test 2
 namespace Darla.Controllers;
 
 public class HomeController : Controller
 {
-
+    private readonly IIntexRepository _intexRepo;
+    
+    public HomeController(IIntexRepository intexRepo)
+    {
+        _intexRepo = intexRepo;
+    }
     public IActionResult Index()
     {
         return View();
@@ -44,18 +50,16 @@ public class HomeController : Controller
     // Action to open judge schedule
     public IActionResult ScheduleView()
     {
-        return View("Judge/ScheduleView");
-    }
-
+        var roomSchedules = _intexRepo.RoomSchedulesWithRooms;
+        return View("Judge/ScheduleView", roomSchedules);
     }
 
     public IActionResult OpeningPage()
     {
-        return View();
+        return View("Judge/ScheduleView");
     }
 
-    //Allowing access to StudentSubmission
-    public IActionResult StudentProgress()
+    public IActionResult RubricDetails()
     {
         return View();
     }
@@ -65,6 +69,12 @@ public class HomeController : Controller
         return View();
     }
 
+
+//Allowing access to StudentSubmission
+    public IActionResult StudentProgress()
+    {
+        return View();
+    }
 
     public IActionResult ProfIndex()
     {
