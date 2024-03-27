@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Darla.Models;
 using AspNetCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace Darla.Controllers;
 
@@ -39,10 +40,20 @@ public class StudentController : Controller
         //this is the page that shows the classes
         // it needs to pull the classes that will be graded. possibly the classes that the students are enrolled in. jsut assume you are pulling all classes from the db
         //then from those classes it needs to dynamically pull the ruberic for each class in a list that can be clicked to take the user to that ruberic's details
-       
+
         //send submission in a viewbag to the page to dynamically appear on the submissions part of the studetn progress page
         //      var submissions = getSubmissions();
-         return View();
+
+        var userId = 1; // Replace with actual user identification logic.
+        var classes = _intexRepo.Rubrics
+       .Select(r => r.ClassCode) // Project each Rubric to its ClassCode.
+       .Distinct() // Ensure each class code is unique.
+       .ToList(); // Execute the query and convert the result to a List.
+                  //var submissions = GetSubmissions(userId);
+                  //ViewBag.Submissions = submissions;
+
+        return View(classes);
+        
     }
 
     public IActionResult RubericDetails()
