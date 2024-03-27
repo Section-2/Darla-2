@@ -5,6 +5,23 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
 
 <style>
+    .header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .back-arrow {
+        font-size: 24px;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+    
+    .no-hover {
+                text-decoration: none !important;
+                color: inherit !important;
+    }
+    
     .collapse-row .btn-link {
         width: 100%;
         text-align: left;
@@ -31,6 +48,9 @@
 </style>
 
 <div class="main-content">
+        <div class="header">
+            <a asp-controller="Home" asp-action="Index" class="back-arrow no-hover">&#x2190;</a>
+        </div>
     <div class="container mt-4">
         <div class="text-center mb-4">
             <h2>Total Grading Progress</h2>
@@ -65,10 +85,10 @@
 
         <table class="table mt-3" id="gradingTable">
             <thead id="tableHead">
-                <!-- Headers will be added dynamically -->
+            <!-- Headers will be added dynamically -->
             </thead>
             <tbody id="tableBody">
-                <!-- Content will be added dynamically -->
+            <!-- Content will be added dynamically -->
             </tbody>
         </table>
     </div>
