@@ -74,13 +74,13 @@ public class StudentController : Controller
         
     }
 
-    public IActionResult RubericDetails()
+    public IActionResult RubericDetails(int classCode)
     {
-        //when you click on a class ruberic
-        // then it needs to dynamically pull all assignments asssosiated with the ruberic id
-        //          each assignment has the attributes assignmentID:int, rubericID:int, completed: bool, pintsOnGrade: int, isDeliverable:bool, description:string
-        //          the description, points, and complete need to be displayed for each assignment with the complete states bring determind by a chekc box. this may be another action called updateCompletedStatus
+        // Retrieve all rubrics with the given classId from the repository
+        List<Rubric> rubrics = _intexRepo.Rubrics.Where(r => r.ClassCode == classCode).ToList();
 
+        // Assign the rubrics to the ViewBag
+        ViewBag.Rubrics = rubrics;
 
         return View();
     }

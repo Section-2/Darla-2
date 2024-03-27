@@ -1,3 +1,4 @@
+
 @{
     ViewData["Title"] = "Class Rubric";
     var requirements = new List<string> {
@@ -12,6 +13,7 @@
         "Establish secure communication channels for Imperial fleet coordination",
         "Develop redundant life support systems for critical areas"
     };
+    var rubrics = ViewBag.Rubrics as List<Rubric>;
 }
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
