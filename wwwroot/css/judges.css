@@ -54,3 +54,14 @@ body {
     width: 200px;
     text-align: center;
 }
+
+#saveOrderButton {
+    padding: 10px 20px;
+    margin-top: 10px;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+#saveOrderButton:hover {
+    background-color: #e0e0e0; /* Light grey background on hover */
+}

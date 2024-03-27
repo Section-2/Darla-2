@@ -60,26 +60,39 @@
     }
 
     function handleDrop(e) {
-        // Prevent the default action and stop propagation
         e.stopPropagation();
         e.preventDefault();
 
-        // Check if the item being dragged is dropped on a different item
         if (dragSrcEl !== this) {
             // Remove the dragged element from its original position
             dragSrcEl.parentNode.removeChild(dragSrcEl);
-            // Insert the dragged element before the element it was dropped on
-            this.insertAdjacentHTML('beforebegin', e.dataTransfer.getData('text/html'));
-            // Update the newly inserted element with event listeners
-            const dropElem = this.previousSibling;
+
+            // Insert the dragged element before or after the target element
+            // depending on whether it's being dragged up or down.
+            let target = this;
+            const dropHTML = e.dataTransfer.getData('text/html');
+            if (this.nextSibling && dragSrcEl.nextSibling === this.nextSibling.nextSibling) {
+                target = this.nextSibling;
+                target.insertAdjacentHTML('afterend', dropHTML);
+            } else {
+                target.insertAdjacentHTML('beforebegin', dropHTML);
+            }
+            const dropElem = (this.nextSibling && dragSrcEl.nextSibling === this.nextSibling.nextSibling)
+                ? target.nextSibling
+                : this.previousSibling;
+
             addDnDEvents(dropElem);
 
-            // Update the order in localStorage
+            // Clear the dragged content from the source element
+            e.dataTransfer.clearData();
+
+            // Update the order in local storage after drop
             updateOrder();
         }
 
         return false;
     }
+
 
     function handleDragEnd(e) {
         // Reset the opacity and remove 'over' class from all items
@@ -96,6 +109,21 @@
         elem.addEventListener('drop', handleDrop, false);
         elem.addEventListener('dragend', handleDragEnd, false);
     }
+
+    function resetOpacity() {
+        const boxes = document.querySelectorAll('.ranking-list .box');
+        boxes.forEach(box => {
+            box.style.opacity = '';  // Reset opacity to default
+            box.classList.remove('over');  // Remove the 'over' class to get rid of the dotted outline
+        });
+    }
+
+    // Event listener for the "Save" button
+    const saveButton = document.getElementById('saveOrderButton');
+    saveButton.addEventListener('click', () => {
+        resetOpacity();
+        // Here you can also implement any other save logic if needed
+    })
 
     // Initial setup
     let dragSrcEl = null;
