@@ -12,11 +12,11 @@ namespace Darla.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly IIntexRepository _intexRepo;
+    private IIntexRepository _repo;
     
-    public HomeController(IIntexRepository intexRepo)
+    public HomeController(IIntexRepository Repo)
     {
-        _intexRepo = intexRepo;
+        _repo = Repo;
     }
 
     public IActionResult Index()
@@ -47,21 +47,33 @@ public class HomeController : Controller
         return View();
     }
 
+    [HttpGet]
     public IActionResult judge_survey()
     {
-        return View("Judge/judge_survey");
+        return View("Judge/judge_survey",new Presentation());
+    }
+
+    [HttpPost]
+    public IActionResult judge_survey(Presentation p)
+    {
+        if (ModelState.IsValid)
+        {
+            _repo.AddPresentationScore(p);
+        }
+
+        return RedirectToAction("JudgeDashboard", new Presentation());
     }
 
     // Action to open judge schedule
-    public IActionResult ScheduleView()
+    public IActionResult JudgeDashboard()
     {
-        var roomSchedules = _intexRepo.RoomSchedulesWithRooms;
-        return View("Judge/ScheduleView", roomSchedules);
+        var roomSchedules = _repo.RoomSchedulesWithRooms;
+        return View("Judge/JudgeDashboard", roomSchedules);
     }
 
     public IActionResult OpeningPage()
     {
-        return View("Judge/ScheduleView");
+        return View("Judge/JudgeDashboard");
     }
 
     public IActionResult RubricDetails()

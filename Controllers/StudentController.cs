@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 
-public class StudentController : Controller
+class StudentController : Controller
 {
     private IIntexRepository _intexRepo;
 
