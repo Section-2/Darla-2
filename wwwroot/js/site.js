@@ -78,5 +78,4 @@ document.addEventListener('DOMContentLoaded', (event) => {
         item.addEventListener('dragend', handleDragEnd, false);
     });
 });
-
 // ####--- end Judges JavaScript ---##### //
