@@ -60,14 +60,13 @@
  
 
         <div class="bg-white p-4 rounded shadow mt-6">
-            @{
-                List<TeamSubmission> submissions = ViewBag.Submissions;
-            }
+     
 
-            @if (submissions != null && submissions.Any())
+            @if (Submissions != null)
             {
+                // This genereateas all submission from the db that match the TeamNumber
                 <div class="submissions-list">
-                    @foreach (var submission in submissions)
+                    @foreach (var submission in Submissions)
                     {
                         <div class="submission">
                             <div>
@@ -108,26 +107,7 @@
             }
         </ul>
 
-        <h2>Submissions</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Team Submission Name</th>
-                    <th>time stamp</th>
-                    <!-- Other headers based on TeamSubmission properties -->
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var submission in Submissions)
-                {
-                    <tr>
-                        <td>@submission.TeamNumber</td> <!-- Replace 'Name' with actual property name -->
-                        <td>@submission.Timestamp</td> <!-- Format date as needed -->
-                        <!-- Other properties of the submission -->
-                    </tr>
-                }
-            </tbody>
-        </table>
+      
     </div>
 
     <script>
