@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&family=Share+Tech&display=swap');
+
+:root {
+    --color-background-primary: #37323E;
+    --color-background-content: #BFBDC1;
+    --color-yellow: #DEB841;
+    --color-white: #FFFFFF;
+    --color-light-gray: #BFBDC1;
+    --color-gray: #6D6A75;
+    --color-dark-gray: #37323E;
+}
+
+/* General Styling */
+body {
+    background-color: var(--color-background-primary);
+    font-family: 'Share Tech', sans-serif;
+}
+
+h1 {
+    color: var(--color-yellow);
+    font-size: 3em;
+    font-family: 'Rubik', sans-serif;
+    font-weight: bold;
+}
+
+h2 {
+    color: var(--color-white);
+    font-size: 2em;
+    font-family: 'Rubik', sans-serif;
+}
+
+h3 {
+    color: var(--color-dark-gray);
+    font-size: 1.5em;
+    font-family: 'Rubik', sans-serif;
+}
+
+h4 {
+    color: var(--color-gray);
+    font-size: 1.25em;
+    font-family: 'Rubik', sans-serif;
+}
+
+h5 {
+    color: var(--color-gray);
+    font-size: 1em;
+    font-family: 'Rubik', sans-serif;
+}
+
+h6 {
+    color: var(--color-gray);
+    font-size: 0.75em;
+    font-family: 'Rubik', sans-serif;
+}
+
+p {
+    color: var(--color-light-gray);
+    font-size: 1.25em;
+    font-family: 'Share Tech', sans-serif;
+}
+
+.darla-content {
+    background-color: var(--color-background-content);
+    padding: 20px;
+    border-radius: 15px;
+}
+
+    .darla-content p {
+        color: var(--color-dark-gray);
+        font-size: 1.25em;
+        font-family: 'Share Tech', sans-serif;
+    }
+
+span {
+    color: var(--color-yellow);
+    font-weight: bold;
+}
+
+.back-button {
+}
+
+.darla-content button {
+    background-color: var(--color-dark-gray);
+    color: var(--color-white);
+    border: none;
+    width: 100px;
+    height: 50px;
+    font-size: 1.5em;
+    cursor: pointer;
+    border-radius: 15px;
+    transition: .2s;
+}
+
+    .darla-content button:hover {
+        background-color: var(--color-yellow);
+        color: var(--color-dark-gray);
+    }
+
+.darla-content span {
+    color: var(--color-white);
+    font-weight: bold;
+}
+
+button {
+    background-color: var(--color-yellow);
+    color: var(--color-dark-gray);
+    border: none;
+    width: 100px;
+    height: 50px;
+    font-size: 1.5em;
+    cursor: pointer;
+    border-radius: 15px;
+    transition: .2s;
+}
+
+    button:hover {
+        background-color: var(--color-gray);
+        color: var(--color-white);
+    }
