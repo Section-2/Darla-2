@@ -7,6 +7,13 @@ namespace Darla.Controllers;
 public class HomeController : Controller
 {
 
+    private IIntexRepository _repo;
+
+    public HomeController(IIntexRepository temp)
+    {
+        _repo = temp;
+    }
+
     public IActionResult Index()
     {
         return View();
@@ -66,6 +73,65 @@ public class HomeController : Controller
     {
         ViewData["GradingProgress"] = 70;
         return View();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public IActionResult TeacherViewEvaluationSingle(int evaluatorId)
+    {
+    var evaluationData = (from pe in _context.PeerEvaluations
+                          join st in _context.StudentTeams on pe.EvaluatorId equals st.UserId
+                          join u in _context.Users on st.UserId equals u.UserId
+                          join pq in _context.PeerEvaluationQuestions on pe.QuestionId equals pq.QuestionId
+                          where pe.EvaluatorId == evaluatorId
+                          select new
+                          {
+                              PeerEvaluatonId = pe.PeerEvaluationId,
+                              EvaluatorId = pe.EvaluatorId,
+                              Question = pq.Question,
+                              SubjectId = pe.SubjectId,
+                              Rating = pe.Rating,
+                              EvaluatorName = u.UserName,
+                          }).ToList();
+
+    return View();
     }
 
 }
