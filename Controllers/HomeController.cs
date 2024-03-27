@@ -64,12 +64,6 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult RubricDetails()
-    {
-        return View();
-    }
-
-
 //Allowing access to StudentSubmission
     public IActionResult StudentProgress()
     {
