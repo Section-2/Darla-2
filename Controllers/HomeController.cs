@@ -9,6 +9,8 @@ public class HomeController : Controller
 {
     private IIntexRepository _repo;
     
+    private readonly IIntexRepository _intexRepo;
+    
     public HomeController(IIntexRepository intexRepo)
     {
         _repo = intexRepo;
@@ -49,7 +51,6 @@ public class HomeController : Controller
     [HttpGet]
     public IActionResult AddPresentationScore()
     {
-        var presentationData = _repo.Presentations;
 
         return View(new Presentation());
     }
@@ -68,6 +69,8 @@ public class HomeController : Controller
     // Action to open judge schedule
     public IActionResult ScheduleView()
     {
+        return View("Judge/ScheduleView");
+        var roomSchedules = _intexRepo.RoomSchedulesWithRooms;
         var roomSchedules = _repo.RoomSchedulesWithRooms;
         return View("Judge/ScheduleView", roomSchedules);
     }
