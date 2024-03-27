@@ -2,6 +2,7 @@
     Layout = null; // Assuming you're using this page independently without a layout page
 
     //DONT THINK WE NEED THIS ANYMORE
+    var rubrics = ViewBag.Rubrics as List<Rubric>;
 }
 
 <!DOCTYPE html>
@@ -49,6 +50,33 @@
                 </div>
             </div>
         </div>
+     @*    this is a test *@
+        @if (rubrics != null && rubrics.Any())
+        {
+            <table>
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Max Points</th>
+                        <!-- Add other headers as necessary -->
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var rubric in rubrics)
+                    {
+                        <tr>
+                            <td>@rubric.Decsription</td>
+                            <td>@rubric.MaxPoints</td>
+                            <!-- Add other properties as necessary -->
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No rubrics found for the class code.</p>
+        }
     </div>
 </body>
 </html>

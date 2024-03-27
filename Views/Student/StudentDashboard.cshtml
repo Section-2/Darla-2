@@ -2,6 +2,27 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    // This line will retrieve the value from the ViewBag and assign it to a local variable.
+    var RoomSchedule = ViewBag.RoomSchedule;
+    var teamMemberNames = ViewBag.TeamMemberNames as List<string>;
+}
+
+<h1>Team Number: @RoomSchedule.TeamNumber</h1>
+<h1>Time Slot: @RoomSchedule.Timeslot</h1>
+
+@if (teamMemberNames != null && teamMemberNames.Any())
+{
+    <h2>Team Members:</h2>
+    <ul>
+        @foreach (var name in teamMemberNames)
+        {
+            <li>@name</li>
+        }
+    </ul>
+}
+else
+{
+    <p>No team members found for this team.</p>
 }
 
 <h1>This is A Test</h1>
