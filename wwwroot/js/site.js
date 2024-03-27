@@ -1,69 +1,80 @@
 ﻿document.addEventListener('DOMContentLoaded', () => {
     function updateOrder() {
-        const itemOrder = Array.from(document.querySelectorAll('.container .box')).map((item, index) => ({
-            id: item.dataset.teamnumber, // Assuming you have data-teamnumber as an identifier
+        // Create an array that represents the current order of items
+        const itemOrder = Array.from(document.querySelectorAll('.ranking-list .box')).map((item, index) => ({
+            id: item.dataset.teamnumber,
             position: index
         }));
+        // Store the item order in localStorage
         localStorage.setItem('itemOrder', JSON.stringify(itemOrder));
     }
 
     function loadOrder() {
+        // Retrieve the stored item order from localStorage
         const itemOrderStr = localStorage.getItem('itemOrder');
         if (!itemOrderStr) return;
         const itemOrder = JSON.parse(itemOrderStr);
-        const container = document.querySelector('.container');
+        const rankingList = document.querySelector('.ranking-list');
 
         // Create a map of id to box elements
         const itemsMap = {};
-        document.querySelectorAll('.container .box').forEach(item => {
+        document.querySelectorAll('.ranking-list .box').forEach(item => {
             itemsMap[item.dataset.teamnumber] = item;
         });
 
-        // Sort the container's children according to the saved order
+        // Sort the rankingList's children according to the saved order
         itemOrder.forEach(({ id }) => {
             if (itemsMap[id]) {
-                container.appendChild(itemsMap[id]);
+                rankingList.appendChild(itemsMap[id]);
             }
         });
     }
 
-    let dragSrcEl = null;
-
     function handleDragStart(e) {
+        // Set the opacity of the element being dragged
+        this.style.opacity = '0.4';
+
+        // Store the element being dragged
         dragSrcEl = this;
+
+        // Set the data transfer object
         e.dataTransfer.effectAllowed = 'move';
         e.dataTransfer.setData('text/html', this.outerHTML);
     }
 
     function handleDragOver(e) {
+        // Prevent default to allow drop
         e.preventDefault();
         e.dataTransfer.dropEffect = 'move';
         return false;
     }
 
     function handleDragEnter(e) {
+        // Add a visual cue when an item is dragged over another
         this.classList.add('over');
     }
 
     function handleDragLeave(e) {
+        // Remove the visual cue when the dragged item leaves another item
         this.classList.remove('over');
     }
 
     function handleDrop(e) {
+        // Prevent the default action and stop propagation
         e.stopPropagation();
         e.preventDefault();
 
+        // Check if the item being dragged is dropped on a different item
         if (dragSrcEl !== this) {
+            // Remove the dragged element from its original position
             dragSrcEl.parentNode.removeChild(dragSrcEl);
-            const dropHTML = e.dataTransfer.getData('text/html');
-            this.insertAdjacentHTML('beforebegin',dropHTML);
+            // Insert the dragged element before the element it was dropped on
+            this.insertAdjacentHTML('beforebegin', e.dataTransfer.getData('text/html'));
+            // Update the newly inserted element with event listeners
             const dropElem = this.previousSibling;
             addDnDEvents(dropElem);
 
-            // Clear the dragged content from the source element
-            e.dataTransfer.clearData();
-
-            // Update the order in local storage after drop
+            // Update the order in localStorage
             updateOrder();
         }
 
@@ -71,13 +82,13 @@
     }
 
     function handleDragEnd(e) {
+        // Reset the opacity and remove 'over' class from all items
         this.style.opacity = '1';
-        items.forEach(function (item) {
-            item.classList.remove('over');
-        });
+        items.forEach(item => item.classList.remove('over'));
     }
 
     function addDnDEvents(elem) {
+        // Attach all the necessary event listeners for drag and drop to an element
         elem.addEventListener('dragstart', handleDragStart, false);
         elem.addEventListener('dragenter', handleDragEnter, false);
         elem.addEventListener('dragover', handleDragOver, false);
@@ -86,9 +97,9 @@
         elem.addEventListener('dragend', handleDragEnd, false);
     }
 
-    // Load the order as soon as possible
+    // Initial setup
+    let dragSrcEl = null;
     loadOrder();
-
-    let items = document.querySelectorAll('.container .box');
+    let items = document.querySelectorAll('.ranking-list .box');
     items.forEach(addDnDEvents);
 });
