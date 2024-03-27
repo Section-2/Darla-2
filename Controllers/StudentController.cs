@@ -89,7 +89,7 @@ namespace Darla.Controllers
                 throw new Exception("User is not part of a team.");
             }
 
-            var submissions = _context.TeamSubmissions
+            List<TeamSubmission> submissions = _context.TeamSubmissions
                 .Where(ts => ts.TeamNumber == teamNumber.Value)
                 .Select(ts => new TeamSubmission
                 {
@@ -116,15 +116,15 @@ namespace Darla.Controllers
                 return View("Error", "User is not part of a team.");
             }
 
-            var classes = _context.Rubrics
+            List<int> classes = _context.Rubrics
                 .Select(r => r.ClassCode)
                 .Distinct()
                 .ToList();
 
-            var submissions = GetSubmissions(userId);
+            List<TeamSubmission> submissions = GetSubmissions(userId);
             ViewBag.Submissions = submissions;
-
-            return View(classes);
+            ViewBag.Classes = classes;
+            return View();
         }
     }
 

@@ -1,5 +1,8 @@
 ﻿@{
     Layout = null; 
+   
+    var Submissions = ViewBag.Submissions;
+    var Classes = ViewBag.Classes;
 }
 
 <!DOCTYPE html>
@@ -11,6 +14,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
 </head>
 <body class="bg-blue-200 min-h-screen">
+
     <div class="container mx-auto p-4">
         <div class="text-right mb-4">
             <button onclick="window.history.back()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
@@ -73,6 +77,34 @@
                 </button>
             </div>
         </div>
+        <h2>Class Codes</h2>
+        <ul>
+            @foreach (var classCode in Classes)
+            {
+                <li>@classCode</li>
+            }
+        </ul>
+
+        <h2>Submissions</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Team Submission Name</th>
+                    <th>time stamp</th>
+                    <!-- Other headers based on TeamSubmission properties -->
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var submission in Submissions)
+                {
+                    <tr>
+                        <td>@submission.TeamNumber</td> <!-- Replace 'Name' with actual property name -->
+                        <td>@submission.Timestamp</td> <!-- Format date as needed -->
+                        <!-- Other properties of the submission -->
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 
     <script>
