@@ -2,15 +2,11 @@
 @using System.Collections.Generic
 @model IQueryable<RoomSchedule> 
 
-@{
-    //var judgeName = "Jenna Fox";
-    //var roomId = 123; // Example RoomId, replace with the actual ID.
-}
-
 <!DOCTYPE html>
 <html>  
 <head>
     <title>Judge Schedule and Ranking</title>
+    <link rel="stylesheet" href="~/css/judges.css" asp-append-version="true"/>
     <style>
         .schedule-container {
             display: flex;
@@ -23,10 +19,18 @@
         }
         .ranking-list {
             display: flex;
-            align-items: center;
+            flex-direction: column;
+            align-items: start;
         }
-        .ranking-list input {
-            margin-right: 10px;
+        .box {
+            cursor: move; /* Change the cursor to indicate draggable items */
+            margin: 5px 0; /* Adjust based on your design */
+            padding: 10px;
+            background-color: #f0f0f0;
+            border: 1px dashed #ddd;
+        }
+        .box.drag-over {
+            border-color: #999;
         }
     </style>
 </head>
@@ -34,11 +38,10 @@
 
 <div class="schedule-container">
     <div class="schedule">
-        <h1>JUDGE: </h1>
+        <h1>JUDGE:</h1>
         <h2>Schedule & Surveys</h2>
         <h3>ROOM W310</h3>
         @{
-            //var roomSchedules = Model.Where(rs => rs.RoomId == roomId).OrderBy(rs => rs.Timeslot).ToList();
             int count = 0;
             foreach (RoomSchedule schedule in Model)
             {
@@ -53,18 +56,18 @@
   
     <div class="ranking">
         <h2>Group Ranking</h2>
-        @{
-            int rankCount = 0;
-            foreach (RoomSchedule schedule in Model) // Reuse the filtered and sorted list
-            {
-                <div class="ranking-list">
-                    <input type="number" name="teamRank_@schedule.TeamNumber" min="1" max="5" />
-                    Team @schedule.TeamNumber
-                </div>
+        <div id="rankingList" class="ranking-list">
+            @{
+                foreach (RoomSchedule schedule in Model) // Reuse the filtered and sorted list
+                {
+                    <div draggable="true" class="box" data-teamnumber="@schedule.TeamNumber">
+                        Team @schedule.TeamNumber
+                    </div>
+                }
             }
-        }
+        </div>
     </div>
 </div>
-
+<script src="~/js/site.js"></script>
 </body>
 </html>
