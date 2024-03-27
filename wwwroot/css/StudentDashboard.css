@@ -1,0 +1,112 @@
+body {
+    font-family: Montserrat, sans-serif;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.header-section {
+    padding: 20px 0;
+}
+
+.header-section .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.back-to-home {
+    border-radius: 20px;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    background-color: #2e91ff;
+    color: #fff;
+    padding: 15px 30px;
+    font: 700 20px Montserrat, sans-serif;
+}
+
+.welcome-message {
+    color: #6c6b6b;
+    font: 500 36px Montserrat, sans-serif;
+    margin: 0;
+}
+
+.main-content {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.presentation-card .info {
+    text-align: left; /* Align text to the left */
+    display: flex; /* Use flexbox for alignment */
+    align-items: center; /* Center items vertically */
+    justify-content: center; /* Center items horizontally */
+}
+
+.presentation-card .icon {
+    font-size: 24px; /* Adjust the size of the icon */
+    margin-right: 10px; /* Add spacing between the icon and text */
+}
+
+.presentation-card .text {
+    font-size: 18px; /* Adjust the size of the text */
+    text-align: left; /* Align text to the left */
+}
+
+.card {
+    border-radius: 8px;
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(99, 96, 96, 1);
+    background-color: #fff;
+    padding: 30px;
+    margin-bottom: 20px;
+}
+
+.title {
+    font-family: Montserrat, sans-serif;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.timer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.label-digit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.digit {
+    font-size: 36px;
+}
+
+.label {
+    color: #6c6b6b;
+    font-size: 18px;
+    margin-top: 5px;
+}
+
+.links {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.link {
+    border-radius: 20px;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    background-color: #2e91ff;
+    color: #fff;
+    padding: 15px 30px;
+    text-decoration: none;
+    margin: 0 10px;
+}
