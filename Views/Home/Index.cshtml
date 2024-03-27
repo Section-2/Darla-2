@@ -114,6 +114,10 @@
             </div>
         </div>
 
+<div class="text-center">
+    <h1 class="display-4">Intex Grading</h1>
+    <p>Schedule View <a href="@Url.Action("JudgeDashboard", "Home")">CLICK HERE FOR SCHEDULE VIEW</a></p>
+    <p>Schedule View <a href="@Url.Action("judge_survey", "Home")">CLICK HERE FOR SURVEY VIEW</a></p>
         <!-- Buttons Quadrant -->
         <div class="col-md-6 d-flex align-items-center justify-content-around">
             <button type="button" class="btn btn-primary" asp-controller="TA" asp-action="TaGradingProgress">Start Grading</button>
@@ -165,3 +169,4 @@
         $('.section-sort-selector[data-sort-section="all"]').trigger('click');
     });
 </script>
+<a asp-controller="Student" asp-action="StudentDashboard" class="btn btn-primary">View Student Progress</a>

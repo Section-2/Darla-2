@@ -10,7 +10,7 @@ namespace Darla.Controllers
         //Controller
         private IIntexRepository _repo;
 
-        public TAController(IIntexRepository temp) 
+        public TAController(IIntexRepository temp)
         {
             _repo = temp;
         }
@@ -26,7 +26,7 @@ namespace Darla.Controllers
 
         public IActionResult TaGradingProgress()
         {
-            return View();
+            return View("~/Views/Home/TA/TaGradingProgress.cshtml");
         }
 
         public IActionResult ClassRubric()

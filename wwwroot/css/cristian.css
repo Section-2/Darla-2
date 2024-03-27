@@ -1,0 +1,65 @@
+/*styling for FORMS and TABLES*/
+
+.darla-table-border { /* this  class is for a div directly outside of the table, it WON't go on the table tag itself! */
+    border-radius: 10px;
+    border: 1px solid #cccccca4;
+    min-width: 30%;
+    display: inline-block;
+    overflow: hidden;
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
+    padding: 1rem;
+    margin-bottom: 3rem;
+    background-color: #ffffff;
+    border-radius: .5rem;
+}
+.darla-table-border-dark { /* this  class is for a div directly outside of the table, it WON't go on the table tag itself! */
+    border-radius: 10px;
+    border: 1px solid #cccccca4;
+    min-width: 30%;
+    display: inline-block;
+    overflow: hidden;
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+    box-shadow: 0 .75rem 1rem rgba(0, 0, 0, 0.3); /* Increased shadow intensity */
+    padding: 1.5rem; /* Increased padding for stretching effect */
+    margin-bottom: 4rem; /* Increased margin for stretching effect */
+    background-color: #212529;
+    border-radius: 0.5rem;
+}
+
+.darla-form-border { /* this  class is for a div directly outside of the table, it WON't go on the table tag itself! */
+    border-radius: 10px;
+    border: 2px solid #cccccca4;
+    min-width: 30%;
+    display: inline-block;
+    overflow: hidden;
+    width: 50%;
+    padding-left: 10px;
+    padding-right: 10px;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
+    padding: 1rem;
+    margin-bottom: 3rem;
+    background-color: #ffffff;
+    border-radius: .5rem;
+}
+.darla-form-border-dark { /* this  class is for a div directly outside of the table, it WON't go on the table tag itself! */
+    color: white;
+    border-radius: 10px;
+    border: 2px solid #cccccca4;
+    min-width: 30%;
+    display: inline-block;
+    overflow: hidden;
+    width: 50%;
+    padding-left: 10px;
+    padding-right: 10px;
+    box-shadow: 0 .75rem 1rem rgba(0, 0, 0, 0.3); /* Increased shadow intensity */
+    padding: 1.5rem; /* Increased padding for stretching effect */
+    margin-bottom: 4rem; /* Increased margin for stretching effect */
+    background-color: #212529;
+    border-radius: 0.5rem;
+}
+
