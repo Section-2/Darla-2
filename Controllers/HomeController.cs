@@ -69,8 +69,6 @@ public class HomeController : Controller
     // Action to open judge schedule
     public IActionResult ScheduleView()
     {
-        return View("Judge/ScheduleView");
-        var roomSchedules = _intexRepo.RoomSchedulesWithRooms;
         var roomSchedules = _repo.RoomSchedulesWithRooms;
         return View("Judge/ScheduleView", roomSchedules);
     }
