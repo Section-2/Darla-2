@@ -1,7 +1,17 @@
+using Darla.Models;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<IntexGraderContext>(options =>
+{
+    options.UseSqlite(builder.Configuration["ConnectionStrings:IntexConnection"]);
+});
+
+builder.Services.AddScoped<IIntexRepository, EFIntexRepository>();
 
 var app = builder.Build();
 
