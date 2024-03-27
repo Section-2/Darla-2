@@ -1,8 +1,5 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Darla.Models;
-using AspNetCore;
-using Microsoft.EntityFrameworkCore;
 
 namespace Darla.Controllers;
 
@@ -31,7 +28,7 @@ public class StudentController : Controller
 
         return View();
     }
-
+    [HttpGet]
     public IActionResult StudentProgress()
     {
         //get all unique class codes from the rubric table and add them to a list classed classcodes that is passed to the view
@@ -44,7 +41,7 @@ public class StudentController : Controller
         //send submission in a viewbag to the page to dynamically appear on the submissions part of the studetn progress page
         //      var submissions = getSubmissions();
 
-        var userId = 1; // Replace with actual user identification logic.
+       // var userId = 1; // Replace with actual user identification logic.
         var classes = _intexRepo.Rubrics
        .Select(r => r.ClassCode) // Project each Rubric to its ClassCode.
        .Distinct() // Ensure each class code is unique.
@@ -76,20 +73,20 @@ public class StudentController : Controller
         return View();
     }
 
-    public IActionResult getSubmissions()
-    {
+    //public IActionResult getSubmissions()
+    //{
 
-        //this action will check all assignmetns across all ruberics to and get the addignmetns id of those that have a isDeliverable peramiter of True
-        // so it should take the Group ID as a peramiter so that it can add submisssions to the submissison table the are assosiated with that group
+    //    //this action will check all assignmetns across all ruberics to and get the addignmetns id of those that have a isDeliverable peramiter of True
+    //    // so it should take the Group ID as a peramiter so that it can add submisssions to the submissison table the are assosiated with that group
 
-        // reference the draw.io for what the submission table looks like
-        //it should then return a list of submission. this function will be called on the Student progress page
-        var submissions = [];
+    //    // reference the draw.io for what the submission table looks like
+    //    //it should then return a list of submission. this function will be called on the Student progress page
+    //    //var submissions = [];
 
-        return submissions;
-    }
+    //    return submissions;
+    //}
      
-    public IActionResult submit(groupID, assignmentID ,file)
+    public IActionResult submit()
     {
         //this function needs to be able to receive the group ID, the assignmentID, and the file and add those to the submission that matches the groupID and assignmetnID
         //then it updates the compelete status of the submission to true, 
