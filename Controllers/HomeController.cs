@@ -3,6 +3,7 @@ using Darla.Models;
 using Microsoft.AspNetCore.Mvc;
 using Darla.Models;
 
+// test 2
 namespace Darla.Controllers;
 
 public class HomeController : Controller
@@ -56,6 +57,11 @@ public class HomeController : Controller
     public IActionResult OpeningPage()
     {
         return View("Judge/ScheduleView");
+    }
+
+    public IActionResult RubricDetails()
+    {
+        return View();
     }
 
     public IActionResult RubricDetails()
