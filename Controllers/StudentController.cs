@@ -1,6 +1,7 @@
 ﻿//using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Darla.Models;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace Darla.Controllers;
@@ -14,21 +15,24 @@ public class StudentController : Controller
         _intexRepo = temp;
     }
 
-    public IActionResult StudentDashboard()
+    public async Task<IActionResult> StudentDashboard()
     {
+        var userId = 1; // Assuming you will get the user's ID from somewhere.
 
-        //this has to load a count down timer based the present time and the appointment time
+        // Retrieve the team number associated with the user.
+        var teamNumber = await _intexRepo.StudentTeams
+            .Where(st => st.UserId == userId)
+            .Select(st => (int?)st.TeamNumber)
+            .FirstOrDefaultAsync(); // Corrected the typo here
 
-        //It has to pull the appointment information assosiated with the student's group.
-        //       this includes group number, locaiton/roomnumber, time of appointment, 
-        
-        //list the group number and the group members
-        //
+        // You would probably use 'teamNumber' to get more details about the appointment.
 
+        // ... your additional logic to get the appointment information
 
+        // Pass the data to the view if necessary. For example, you could use a ViewModel or dynamic ViewBag/ViewData.
+        // ViewBag.TeamNumber = teamNumber;
 
-
-        return View();
+        return View(); // Make sure to pass the necessary data to the view if needed.
     }
 
     public IActionResult StudentProgress()
