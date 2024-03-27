@@ -1,0 +1,34 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model List<User>
+
+<table class="table table-striped">
+    <thead class="fw-bold">
+        <tr>
+            <td>User ID</td>
+            <td>Net ID</td>
+            <td>First Name</td>
+            <td>Last Name</td>
+            <td>Permission Type</td>
+        </tr>
+    </thead>
+
+    @foreach (var x in Model)
+    {
+        <tbody>
+            <tr>
+                <td>@x.UserId</td>
+                <td>@x.NetId</td>
+                <td>@x.FirstName</td>
+                <td>@x.LastName</td>
+                <td>@x.PermissionType</td>
+
+                <td><a class="btn btn-info" asp-controller="Home" asp-action="Edit" asp-route-id="@x.UserId">Edit</a></td>
+                <td><a class="btn btn-danger" asp-controller="Home" asp-action="Delete" asp-route-id="@x.UserId">Delete</a></td>
+            </tr>
+        </tbody>
+    }
+</table>

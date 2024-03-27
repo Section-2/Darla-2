@@ -2,11 +2,20 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Darla.Models;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using SQLitePCL;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Darla.Controllers;
 
 public class HomeController : Controller
 {
+    public IntexGraderContext _context;
+
+    public HomeController(IntexGraderContext context)
+    {
+        _context = context;
+    }
 
     public IActionResult Index()
     {
@@ -51,14 +60,14 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult Privacy()
-    {
-        return View();
-    }
-
     public IActionResult ProfIndex()
     {
         ViewData["GradingProgress"] = 70;
+        return View();
+    }
+
+    public IActionResult AddJudge()
+    {
         return View();
     }
     public IActionResult ProfFullRubric()
