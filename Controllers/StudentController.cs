@@ -36,7 +36,7 @@ public class StudentController : Controller
          return View();
     }
 
-    public IActionResult RubericDetails()
+    public IActionResult RubricDetails()
     {
         //when you click on a class ruberic
         // then it needs to dynamically pull all assignments asssosiated with the ruberic id
