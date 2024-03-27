@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using Darla.Models;
 using Microsoft.AspNetCore.Mvc;
-//using Darla.Models;
+using Darla.Models;
 
 namespace Darla.Controllers;
 
@@ -55,7 +55,7 @@ public class HomeController : Controller
 
     public IActionResult OpeningPage()
     {
-        return View();
+        return View("Judge/ScheduleView");
     }
 
     //Allowing access to StudentSubmission
@@ -63,7 +63,6 @@ public class HomeController : Controller
     {
         return View();
     }
-
 
     public IActionResult ProfIndex()
     {
