@@ -37,7 +37,11 @@ public class HomeController : Controller
 
     public IActionResult judge_survey()
     {
+<<<<<<< Updated upstream
         return View("Judge/judge_survey");
+=======
+        return View();
+>>>>>>> Stashed changes
     }
 
     // Action to open judge schedule
