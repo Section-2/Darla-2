@@ -1,0 +1,33 @@
+body {
+    font-family: "Benton Sans", "Helvetica Neue", helvetica, arial, sans-serif;
+    margin: 2em;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr; /* Single column */
+    gap: 10px;
+}
+
+.box {
+    border: 3px solid #666;
+    background-color: #ddd;
+    border-radius: .5em;
+    padding: 10px;
+    cursor: move;
+}
+
+.box.over {
+    border: 3px dotted #666;
+}
+
+[draggable] {
+    user-select: none;
+}
+.dropzone {
+    border: 2px solid black; /* Black border */
+    padding: 10px;
+    margin-top: 20px; /* Added margin for separation */
+    width: 200px; /* Added width for better visibility */
+    text-align: center; /* Center the text */
+}
