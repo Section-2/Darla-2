@@ -3,12 +3,7 @@
 @model List<Rubric>
 
     <h2>Task Information</h2>
-
-<<<<<<< Updated upstream
     @foreach (var classCode in new[] { 402, 413, 414, 455 })
-=======
-    @foreach (var rubric in @Model)
->>>>>>> Stashed changes
 {
     <table>
         <tr>
@@ -26,17 +21,10 @@
         @foreach(var rubric in Model.Where(r => r.ClassCode == classCode))
         {
         <tr>
-<<<<<<< Updated upstream
             <td>@rubric.Subcategory</td>
             <td>@rubric.Decsription</td>
             <td>@rubric.InstructorNotes</td>
             <td>@rubric.MaxPoints</td>
-=======
-            <td>@rbk.subcategory</td>
-            <td>@rbk.description</td>
-            <td>@rbk.instructor_notes</td>
-            <td>@rbk.max_points</td>
->>>>>>> Stashed changes
         </tr>
         }
         <tr>
