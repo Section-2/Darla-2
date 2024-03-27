@@ -2,11 +2,20 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Darla.Models;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using SQLitePCL;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Darla.Controllers;
 
 public class HomeController : Controller
 {
+    public IntexGraderContext _context;
+
+    public HomeController(IntexGraderContext context)
+    {
+        _context = context;
+    }
 
     public IActionResult Index()
     {
@@ -67,5 +76,11 @@ public class HomeController : Controller
     public IActionResult AddJudge()
     {
         return View();
+    }
+    
+    public IActionResult ProfJudgeListView()
+    {
+    var query = _context.User.Where(x => x.permission_type == 4);
+    return View();
     }
 }

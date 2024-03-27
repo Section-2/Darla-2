@@ -3,22 +3,22 @@
 *@
 @{
 }
-@* @model ScaffoldedModel *@ 
+@model User
 <h1>Add a Judge!</h1>
 <button type="button" asp-controller="JudgeList">Go Back</button>
 <div>
     <form>
-        <input type="hidden" asp-for="user_id" />
-        <label asp-for="first_name">Judge First Name</label>
-        <br /><input asp-for="first_name" /><br /><br />
+        <input type="hidden" asp-for="UserId" />
+        <label asp-for="FirstName">Judge First Name</label>
+        <br /><input asp-for="FirstName" /><br /><br />
 
-        <label asp-for="last_name">Judge Last Name</label>
-        <br /><input asp-for="last_name" /><br /><br />
+        <label asp-for="LastName">Judge Last Name</label>
+        <br /><input asp-for="LastName" /><br /><br />
 
-        <label asp-for="net_id">Net ID</label><br />
-        <input asp-for="net_id" /><br /><br />
+        <label asp-for="NetId">Net ID</label><br />
+        <input asp-for="NetId" /><br /><br />
 
-        <select asp-for="permission_type">
+        <select asp-for="PermissionType">
             Please select a Permission: 
             <option value="">Select a Permission</option>
             <option value="1">Judge</option>

@@ -3,8 +3,8 @@
 *@
 @{
 }
-@* @model ScaffoldModel<something>
- *@
+@model List<User>
+
 <table class="table table-striped">
     <thead class="fw-bold">
         <tr>
@@ -20,16 +20,15 @@
     {
         <tbody>
             <tr>
-                <td>@x.user_id</td>
-                <td>@x.net_id</td>
-                <td>@x.first_name</td>
-                <td>@x.last_name</td>
-                <td>@x.permission_type</td>
+                <td>@x.UserId</td>
+                <td>@x.NetId</td>
+                <td>@x.FirstName</td>
+                <td>@x.LastName</td>
+                <td>@x.PermissionType</td>
 
-                <td><a class="btn btn-info" asp-controller="Home" asp-action="Edit" asp-route-id="@x.MovieId">Edit</a></td>
-                <td><a class="btn btn-danger" asp-controller="Home" asp-action="Delete" asp-route-id="@x.MovieId">Delete</a></td>
+                <td><a class="btn btn-info" asp-controller="Home" asp-action="Edit" asp-route-id="@x.UserId">Edit</a></td>
+                <td><a class="btn btn-danger" asp-controller="Home" asp-action="Delete" asp-route-id="@x.UserId">Delete</a></td>
             </tr>
         </tbody>
-
     }
 </table>
