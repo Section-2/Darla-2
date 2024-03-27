@@ -37,11 +37,8 @@ public class HomeController : Controller
 
     public IActionResult judge_survey()
     {
-<<<<<<< Updated upstream
         return View("Judge/judge_survey");
-=======
-        return View();
->>>>>>> Stashed changes
+
     }
 
     // Action to open judge schedule
@@ -50,8 +47,7 @@ public class HomeController : Controller
         return View("Judge/ScheduleView");
     }
 
-    }
-    public IActionResult OpeningPage()
+    public IActionResult openingPage()
     {
         return View();
     }
