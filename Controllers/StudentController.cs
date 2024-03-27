@@ -23,25 +23,25 @@ public class StudentController : Controller
                                  .Select(st => (int?)st.TeamNumber)
                                  .FirstOrDefault();
 
-        
+
         List<string> teamMemberNames = new List<string>();
 
- 
-           RoomSchedule roomSchedule = _intexRepo.RoomSchedules
-                                   .FirstOrDefault(rs => rs.TeamNumber == teamNumber.Value);
 
-            // Get the list of UserIds for the team
-            var userIds = _intexRepo.StudentTeams
-                                  .Where(st => st.TeamNumber == teamNumber.Value)
-                                  .Select(st => st.UserId)
+        RoomSchedule roomSchedule = _intexRepo.RoomSchedules
+                                .FirstOrDefault(rs => rs.TeamNumber == teamNumber.Value);
+
+        // Get the list of UserIds for the team
+        var userIds = _intexRepo.StudentTeams
+                              .Where(st => st.TeamNumber == teamNumber.Value)
+                              .Select(st => st.UserId)
+                              .ToList();
+
+        // Retrieve the names of the Users with those Ids
+        teamMemberNames = _intexRepo.Users
+                                  .Where(u => userIds.Contains(u.UserId))
+                                  .Select(u => u.FirstName + " " + u.LastName)
                                   .ToList();
 
-            // Retrieve the names of the Users with those Ids
-            teamMemberNames = _intexRepo.Users
-                                      .Where(u => userIds.Contains(u.UserId))
-                                      .Select(u => u.FirstName + " " + u.LastName)
-                                      .ToList();
-        
 
         // Pass the data to the view using ViewBag
         ViewBag.TeamNumber = teamNumber;
