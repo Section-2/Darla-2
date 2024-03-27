@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using Darla.Models;
 using Microsoft.AspNetCore.Mvc;
 using Darla.Models;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -80,10 +79,20 @@ public class HomeController : Controller
     {
         return View();
     }
-
-    public IActionResult ProfIndex()
+    //Allowing access to StudentSubmission
+        public IActionResult StudentProgress()
     {
-        ViewData["GradingProgress"] = 70;
+        return View();
+    }
+
+//    public IActionResult ProfIndex()
+//    {
+//        ViewData["GradingProgress"] = 70;
+//        return View();
+//    }
+
+        public IActionResult CreateAccount()
+    {
         return View();
     }
 

@@ -4,13 +4,66 @@
 @{
 }
 
-<form>
-    <h1 class="text-center">Sign In</h1>
-    <label for="username">Username</label>
-    <input id="username" name="username"/>
-    <label for="password">Password</label>
-    <input id="password" name="password"/>
-</form>
+<style>
+    .row-vh-20 {
+        height: 20vh;
+    }
 
-<img src="../../assets/img/BYU_medallion.png" />
+    .row-vh-half {
+        height: 50vh;
+    }
+
+    .row-vh-30 {
+        height: 30vh;
+    }
+</style>
+
+<div class="container">
+    <div class="row row-vh-20">
+        <!-- First Row -->
+    </div>
+
+    <div class="row row-vh-half">
+        <!-- Second Row Content -->
+        <div class="col-md-4 offset-md-1 my-3">
+            <form class="border border-2 rounded p-4 h-100">
+                <h1 class="text-center mb-4">Sign In</h1>
+                <div class="form-group mt-4">
+                    <label for="username" class="text-left">Username:</label>
+                    <input type="text" class="form-control mt-2" id="username" name="username">
+                </div>
+                <div class="form-group mt-4">
+                    <label for="password" class="text-left">Password:</label>
+                    <input type="password" class="form-control mt-2" id="password" name="password">
+                </div>
+                <div class="text-center mt-3">
+                    <a asp-controller="Home" asp-action="CreateAccount">Create a new account</a>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary mt-3">Sign In</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-4 offset-md-2 my-3 text-center">
+            <div>
+                <img src="../../assets/img/BYU_medallion.png" alt="BYU Medallion" class="img-fluid rounded">
+            </div>
+        </div>
+    </div>
+
+    <div class="row row-vh-30">
+        <!-- Third Row -->
+
+        <div class="col d-flex align-items-center justify-content-center">
+            <a asp-controller="Home" asp-action="JudgePage" class="btn btn-secondary">Judge Sign In
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M10.854 7.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L9.293 7H1.5a.5.5 0 0 0 0 1h7.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708z" />
+                </svg>
+            </a>
+        </div>
+    </div>
+</div>
+
+                
+
 
