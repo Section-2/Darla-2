@@ -46,16 +46,17 @@ public class HomeController : Controller
         return View("Judge/ScheduleView");
     }
 
+
     public IActionResult OpeningPage()
     {
         return View();
     }
 
     //Allowing access to StudentSubmission
-//    public IActionResult StudentProgress()
-//    {
-//        return View();
-//    }
+        public IActionResult StudentProgress()
+    {
+        return View();
+    }
 
 //    public IActionResult ProfIndex()
 //    {
