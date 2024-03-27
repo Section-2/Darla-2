@@ -7,17 +7,14 @@ namespace Darla.Controllers;
 
 public class HomeController : Controller
 {
-<<<<<<< HEAD
     private IIntexRepository _repo;
-
-=======
+    
     private readonly IIntexRepository _intexRepo;
     
     public HomeController(IIntexRepository intexRepo)
     {
         _intexRepo = intexRepo;
     }
->>>>>>> ed5b48562a8a64be94cb039ba6d9a3684abe13d7
     public IActionResult Index()
     {
         return View();
@@ -49,15 +46,14 @@ public class HomeController : Controller
     public IActionResult judge_survey()
     {
         return View("Judge/judge_survey");
-<<<<<<< HEAD
     }
 
     [HttpGet]
     public IActionResult AddPresentationScore()
     {
-        var presentationData = _repo.Presentations;
+        var presentationData = _repo.Presentations.ToArray();
 
-        return View(new Presentation());
+        return View(presentationData);
     }
 
     [HttpPost]
@@ -69,19 +65,14 @@ public class HomeController : Controller
         }
 
         return RedirectToAction("ScheduleView", new Presentation());
-=======
->>>>>>> ed5b48562a8a64be94cb039ba6d9a3684abe13d7
     }
 
     // Action to open judge schedule
     public IActionResult ScheduleView()
     {
-<<<<<<< HEAD
         return View("Judge/ScheduleView");
-=======
         var roomSchedules = _intexRepo.RoomSchedulesWithRooms;
         return View("Judge/ScheduleView", roomSchedules);
->>>>>>> ed5b48562a8a64be94cb039ba6d9a3684abe13d7
     }
 
     public IActionResult OpeningPage()
