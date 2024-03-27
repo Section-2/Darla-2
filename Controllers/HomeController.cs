@@ -50,7 +50,7 @@ public class HomeController : Controller
         return View("Judge/judge_survey");
     }
 
-    Action to open judge schedule
+    // Action to open judge schedule
     public IActionResult ScheduleView()
     {
         return View("Judge/ScheduleView");
