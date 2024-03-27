@@ -7,14 +7,12 @@
     var teamMemberNames = ViewBag.TeamMemberNames as List<string>;
 }
 
-<a href="@Url.Action("StudentProgress", "Student")" class="btn btn-primary">View Student Progress</a>
-
 <link rel="stylesheet" href="css/StudentDashboard.css">
 
 <section class="header-section">
   <div class="container">
     <h1 class="welcome-message">Welcome Student!</h1>
-    <button class="back-to-home">Back to Home</button>
+    <button href="#" class="back-to-home">Back to Home</button>
   </div>
 </section>
 
@@ -100,7 +98,7 @@
       <div class="card resources-card">
         <div class="title">Resources and Submission</div>
         <div class="links">
-          <a href="#" class="link">Peer Evaluation</a>
+          <a href="@Url.Action("StudentPeerReview", "Student")" class="link">Peer Evaluation</a>
           <a href="#" class="link">Submission Form</a>
           <a href="#" class="link">Sign Out</a>
         </div>
