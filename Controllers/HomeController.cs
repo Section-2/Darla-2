@@ -58,10 +58,10 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult ProfIndex()
-    {
-        ViewData["GradingProgress"] = 70;
-        return View();
-    }
+//    public IActionResult ProfIndex()
+//    {
+//        ViewData["GradingProgress"] = 70;
+//        return View();
+//    }
 
 }

@@ -4,13 +4,29 @@
 @{
 }
 
-<form>
-    <h1 class="text-center">Sign In</h1>
-    <label for="username">Username</label>
-    <input id="username" name="username"/>
-    <label for="password">Password</label>
-    <input id="password" name="password"/>
-</form>
-
-<img src="../../assets/img/BYU_medallion.png" />
+<div class="container">
+    <div class="row">
+        <!-- Form Column -->
+        <div class="col-md-3 offset-md-1 my-3 text-center">
+            <form class="border rounded p-4">
+                <h1 class="text-center mb-4">Sign In</h1>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" class="form-control" id="username" name="username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" name="password">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+        <!-- Image Column -->
+        <div class="col-md-3 offset-md-1 my-3 text-center">
+            <div>
+                <img src="../../assets/img/BYU_medallion.png" alt="BYU Medallion" class="img-fluid rounded">
+            </div>
+        </div>
+    </div>
+</div>
 
