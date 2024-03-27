@@ -18,19 +18,35 @@ public class StudentController : Controller
     public IActionResult StudentDashboard()
     {
         var userId = 1; // Assuming you will get the user's ID from somewhere.
-
-        // Retrieve the team number associated with the user.
         var teamNumber = _intexRepo.StudentTeams
-            .Where(st => st.UserId == userId)
-            .Select(st => (int?)st.TeamNumber)
-            .FirstOrDefault(); // Synchronous version of FirstOrDefaultAsync
+                                 .Where(st => st.UserId == userId)
+                                 .Select(st => (int?)st.TeamNumber)
+                                 .FirstOrDefault();
 
-        // ... your additional logic to get the appointment information
+        
+        List<string> teamMemberNames = new List<string>();
 
-        // Pass the data to the view if necessary.
-        // Pass the team number to the view using ViewBag
+ 
+           RoomSchedule roomSchedule = _intexRepo.RoomSchedules
+                                   .FirstOrDefault(rs => rs.TeamNumber == teamNumber.Value);
+
+            // Get the list of UserIds for the team
+            var userIds = _intexRepo.StudentTeams
+                                  .Where(st => st.TeamNumber == teamNumber.Value)
+                                  .Select(st => st.UserId)
+                                  .ToList();
+
+            // Retrieve the names of the Users with those Ids
+            teamMemberNames = _intexRepo.Users
+                                      .Where(u => userIds.Contains(u.UserId))
+                                      .Select(u => u.FirstName + " " + u.LastName)
+                                      .ToList();
+        
+
+        // Pass the data to the view using ViewBag
         ViewBag.TeamNumber = teamNumber;
-
+        ViewBag.RoomSchedule = roomSchedule;
+        ViewBag.TeamMemberNames = teamMemberNames;
 
         return View();
     }
