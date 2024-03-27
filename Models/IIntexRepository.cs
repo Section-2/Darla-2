@@ -18,6 +18,5 @@
         IEnumerable<Team> Teams { get; }
         IEnumerable<Room> Rooms { get; }
         IEnumerable<TeamSubmission> TeamSubmissions { get; }
-
     }
 }
