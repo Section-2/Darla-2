@@ -92,7 +92,6 @@ public class StudentController : Controller
     public IActionResult StudentProgress()
     {
         var userId = 1;
-
         var teamNumber = _intexRepo.StudentTeams
             .FirstOrDefault(st => st.UserId == userId)?.TeamNumber;
 
@@ -107,8 +106,17 @@ public class StudentController : Controller
             .ToList();
 
         List<TeamSubmission> submissions = GetSubmissions(userId);
+
+        // Retrieve rubrics for each class
+        Dictionary<int, List<Rubric>> rubricsByClass = classes.ToDictionary(
+            classCode => classCode,
+            classCode => _intexRepo.Rubrics.Where(r => r.ClassCode == classCode).ToList()
+        );
+
         ViewBag.Submissions = submissions;
         ViewBag.Classes = classes;
+        ViewBag.RubricsByClass = rubricsByClass;
+
         return View();
     }
 

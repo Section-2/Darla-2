@@ -4,7 +4,7 @@
 
     var Submissions = ViewBag.Submissions;
     var Classes = ViewBag.Classes;
-    var RubricsByClass = ViewBag.RubricsByClass as Dictionary<string, List<Rubric>>;
+    var RubricsByClass = ViewBag.RubricsByClass as Dictionary<int, List<Rubric>>;
 }
 
 <!DOCTYPE html>
@@ -28,6 +28,7 @@
         <h1 class="text-3xl font-bold text-center mb-6">Student Submissions</h1>
 
 @*Logic to write out all of the classes, their dropdown rubirc information, checkboxes, etc*@
+
         @foreach (var classCode in Classes)
         {
             <div onclick="toggleRubricDetails('@classCode')" class="bg-white p-4 rounded shadow cursor-pointer mb-2 flex justify-between items-start">
@@ -42,15 +43,23 @@
             <div id="rubricDetails-@classCode" class="bg-gray-100 p-4 rounded shadow mb-4 hidden">
                 <div class="grid grid-cols-1 gap-4">
                     <h3 class="text-lg font-semibold">Requirements</h3>
-                    @for (int i = 0; i < 5; i++)
+                    @if (RubricsByClass.ContainsKey(classCode))
                     {
-                        <div class="flex justify-between items-start mt-4">
-                            <div class="text-md flex-grow">Requirement @(i + 1) for @classCode: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
-                            <div class="flex-shrink-0 flex items-center ml-4">
-                                <input type="checkbox" class="transform scale-125" onchange="updateProgress('@classCode')">
-                                <label class="ml-2 text-md font-bold">Completed</label>
+                        var rubrics = RubricsByClass[classCode];
+                        foreach (var rubric in rubrics)
+                        {
+                            <div class="flex justify-between items-start mt-4">
+                                <div class="text-md flex-grow">@rubric.Decsription</div>
+                                <div class="flex-shrink-0 flex items-center ml-4">
+                                    <input type="checkbox" class="transform scale-125" onchange="updateProgress('@classCode')">
+                                    <label class="ml-2 text-md font-bold">Completed</label>
+                                </div>
                             </div>
-                        </div>
+                        }
+                    }
+                    else
+                    {
+                        <p>No rubrics found for the class code.</p>
                     }
                 </div>
             </div>
@@ -100,10 +109,6 @@
                 </button>
             </div>
         </div>
-
-      
-        <a href="@Url.Action("RubricDetails", "Student", new { classCode = 401 })" class="btn btn-primary">View Rubrics for Class 401</a>
-
     </div>
 
     <script>
