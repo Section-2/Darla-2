@@ -1,6 +1,6 @@
 ﻿using Darla.Models;
 using Microsoft.AspNetCore.Mvc;
-using Darla.Models;
+
 using Microsoft.EntityFrameworkCore;
 
 
