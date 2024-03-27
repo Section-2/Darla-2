@@ -4,29 +4,38 @@
 @{
 }
 
-<div class="container">
+<div class="container d-flex justify-content-center align-items-center vh-100">
     <div class="row">
         <!-- Form Column -->
-        <div class="col-md-3 offset-md-1 my-3 text-center">
+        <div class="col-md-4 offset-md-1 my-3">
             <form class="border rounded p-4">
                 <h1 class="text-center mb-4">Sign In</h1>
-                <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" class="form-control" id="username" name="username">
+                <div class="form-group mt-4">
+                    <label for="username" class="text-left">Username:</label>
+                    <input type="text" class="form-control mt-2" id="username" name="username">
                 </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" class="form-control" id="password" name="password">
+                <div class="form-group mt-4">
+                    <label for="password" class="text-left">Password:</label>
+                    <input type="password" class="form-control mt-2" id="password" name="password">
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <div class ="text-center mt-3">
+                    <a asp-controller="Home" asp-action="CreateAccount">Create a new account</a>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                </div>
             </form>
         </div>
         <!-- Image Column -->
-        <div class="col-md-3 offset-md-1 my-3 text-center">
+        <div class="col-md-4 offset-md-2 my-3 text-center">
             <div>
                 <img src="../../assets/img/BYU_medallion.png" alt="BYU Medallion" class="img-fluid rounded">
             </div>
         </div>
+
     </div>
 </div>
+
+                
+
 
