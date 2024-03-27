@@ -26,9 +26,18 @@ public class StudentController : Controller
 
         // ... your additional logic to get the appointment information
 
-        // Pass the data to the view if necessary.
-        // Pass the team number to the view using ViewBag
-        ViewBag.TeamNumber = teamNumber;
+        // Now retrieve the RoomSchedule based on the teamNumber.
+      
+        RoomSchedule roomSchedule = _intexRepo.RoomSchedules
+                .FirstOrDefault(rs => rs.TeamNumber == teamNumber.Value);
+        
+
+
+
+        // Pass the team number and room schedule to the view.
+       
+        ViewBag.RoomSchedule = roomSchedule; // You can pass the whole RoomSchedule object
+
 
 
         return View();
