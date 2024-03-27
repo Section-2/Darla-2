@@ -21,15 +21,17 @@ public class HomeController : Controller
     {
         return View();
     }
+
     public IActionResult ClassRubric()
     {
         return View();
     }
+
     public IActionResult TaGradingProgress()
     {
         return View();
     }
-    
+
     public IActionResult JudgePage()
     {
         return View();
@@ -46,7 +48,7 @@ public class HomeController : Controller
         return View("Judge/ScheduleView");
     }
 
-    
+
 
     public IActionResult OpeningPage()
     {
@@ -70,4 +72,5 @@ public class HomeController : Controller
         ViewData["GradingProgress"] = 70;
         return View();
     }
+}
     

@@ -1,24 +1,14 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Darla.Models;
+using System.Security.Claims;
 
-namespace Darla.Controllers;
-
-public class StudentController : Controller
+namespace Darla.Controllers
 {
-    private readonly IntexGraderContext _context;
-    private readonly IHttpContextAccessor _httpContextAccessor;
-
-    public StudentController(IntexGraderContext context, IHttpContextAccessor httpContextAccessor)
-    {
-        _context = context;
-        _httpContextAccessor = httpContextAccessor;
-    }
-
     public class DashboardViewModel
     {
         public TimeSpan Countdown { get; set; }
@@ -27,116 +17,136 @@ public class StudentController : Controller
         public int TeamNumber { get; set; }
         public List<string> TeamMembers { get; set; }
     }
-
-    private DashboardViewModel GetDashboardData(int userId)
+    public class StudentController : Controller
     {
-        var teamNumber = _context.StudentTeams
-            .FirstOrDefault(st => st.UserId == userId)?.TeamNumber ?? throw new Exception("User is not part of a team.");
+        private readonly IntexGraderContext _context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        
+       
 
-        var roomSchedule = _context.RoomSchedules
-            .Include(rs => rs.Room)
-            .FirstOrDefault(rs => rs.TeamNumber == teamNumber) ?? throw new Exception("No room schedule found for the team.");
-
-        var teamMembers = _context.StudentTeams
-            .Where(st => st.TeamNumber == teamNumber)
-            .Select(st => st.User.FirstName + " " + st.User.LastName)
-            .ToList();
-
-        var presentationTime = DateTime.Parse(roomSchedule.Timeslot);
-        var countdown = presentationTime - DateTime.Now;
-
-        return new DashboardViewModel
+        public StudentController(IntexGraderContext context, IHttpContextAccessor httpContextAccessor)
         {
-            Countdown = countdown,
-            RoomNumber = roomSchedule.Room.RoomId.ToString(),
-            PresentationTime = roomSchedule.Timeslot,
-            TeamNumber = teamNumber,
-            TeamMembers = teamMembers
-        };
-    }
+            _context = context;
+            _httpContextAccessor = httpContextAccessor;
+        }
 
-    public IActionResult StudentDashboard()
-    {
-        var userId = _httpContextAccessor.HttpContext.User.Identity.GetUserId();
-        var dashboardData = GetDashboardData(userId);
-        return View(dashboardData);
+        public IActionResult StudentDashboard()
+        {
+            var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var dashboardData = GetDashboardData(Convert.ToInt32(userId)); // Make sure the userId is converted to int if your database expects an integer.
+            return View(dashboardData);
+        }
+
+        public IActionResult StudentProgress()
+        {
+            var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var classes = _context.Rooms.Include(c => c.RoomId).ToList(); // Ensure your context has a Classes DbSet property
+            var submissions = GetSubmissions(Convert.ToInt32(userId)); // This method's implementation is not shown in your code. Also, ensure userId is converted to the correct type.
+            ViewBag.Submissions = submissions;
+            return View(classes);
+        }
+
+        public IActionResult RubericDetails(int rubricId)
+        {
+            var rubricDetails = _context.Rubrics // Ensure your context has a Rubrics DbSet property
+                .Where(r => r.AssignmentId == rubricId)
+                .Include(r => r.AssignmentId) // Make sure to include assignments.
+                .FirstOrDefault();
+
+            return View(rubricDetails);
+        }
+
+        [HttpPost]
+        public IActionResult UpdateCompleteStatus(int assignmentId, bool completed)
+        {
+            var rubric = _context.Rubrics
+                .FirstOrDefault(r => r.AssignmentId == assignmentId);
+
+            if (rubric != null)
+            {
+                // Assuming Rubric has a property named IsCompleted to hold the completion status
+                rubric.IsCompleted = completed;
+                _context.SaveChanges();
+            }
+
+            // Redirect back with the correct rubricId.
+            return RedirectToAction("RubericDetails", new { rubricId = rubric?.AssignmentId });
+        }
+
+        private DashboardViewModel GetDashboardData(int userId)
+        {
+            var teamNumber = _context.StudentTeams
+                .FirstOrDefault(st => st.UserId == userId)?.TeamNumber ?? throw new Exception("User is not part of a team.");
+
+            var roomSchedule = _context.RoomSchedules
+                .Include(rs => rs.Room)
+                .FirstOrDefault(rs => rs.TeamNumber == teamNumber) ?? throw new Exception("No room schedule found for the team.");
+
+            var teamMembers = _context.StudentTeams
+                .Where(st => st.TeamNumber == teamNumber)
+                .Select(st => st.User.FirstName + " " + st.User.LastName)
+                .ToList();
+
+            var presentationTime = DateTime.Parse(roomSchedule.Timeslot);
+            var countdown = presentationTime - DateTime.Now;
+
+            return new DashboardViewModel
+            {
+                Countdown = countdown,
+                RoomNumber = roomSchedule.Room.RoomId.ToString(),
+                PresentationTime = roomSchedule.Timeslot,
+                TeamNumber = teamNumber,
+                TeamMembers = teamMembers
+            };
+        }
+
+        private List<TeamSubmission> GetSubmissions(int userId)
+        {
+            var teamNumber = _context.StudentTeams
+                .FirstOrDefault(st => st.UserId == userId)?.TeamNumber;
+
+            if (!teamNumber.HasValue)
+            {
+                throw new Exception("User is not part of a team.");
+            }
+
+            var submissions = _context.TeamSubmissions
+                .Where(ts => ts.TeamNumber == teamNumber.Value 
+                             && !string.IsNullOrEmpty(ts.GithubLink) 
+                             && !string.IsNullOrEmpty(ts.VideoLink))
+                .ToList();
+
+            return submissions;
+        }
+
+
+
+        [HttpPost]
+        public IActionResult Submit(int teamNumber, int assignmentId, IFormFile file)
+        {
+            // Handle file upload logic here.
+
+            // Assuming TeamSubmission has a property to link with an assignment, e.g., AssignmentId
+            var submission = _context.TeamSubmissions
+                .FirstOrDefault(s => s.TeamNumber == teamNumber && s.AssignmentId == assignmentId);
+
+            if (submission != null)
+            {
+                // Mark the submission as complete if there's a property for that
+                // submission.IsCompleted = true;
+                _context.SaveChanges();
+            }
+
+            // Redirect to an appropriate page after the submission.
+            return RedirectToAction("StudentProgress");
+        }
+
     }
 }
 
- public IActionResult StudentProgress()
-    {
-        var userId = User.Identity.GetUserId(); // Replace with actual user identification logic.
-        var classes = _context.Classes
-            .Include(c => c.Rubrics) // Assuming each Class entity has a navigation property to its Rubrics.
-            .ToList();
-        
-        var submissions = GetSubmissions(userId);
-        ViewBag.Submissions = submissions;
-
-        return View(classes);
-    }
-
-    public IActionResult RubericDetails(int rubricId)
-    {
-        var rubricDetails = _context.Rubrics
-            .Where(r => r.RubricId == rubricId)
-            .Include(r => r.Assignments)
-            .FirstOrDefault();
-
-        return View(rubricDetails);
-    }
-
-    [HttpPost]
-    public IActionResult UpdateCompleteStatus(int assignmentId, bool completed)
-    {
-        var assignment = _context.Assignments
-            .FirstOrDefault(a => a.AssignmentId == assignmentId);
-        
-        if (assignment != null)
-        {
-            assignment.Completed = completed;
-            _context.SaveChanges();
-        }
-
-        // Redirect back to the RubericDetails or another appropriate page.
-        return RedirectToAction("RubericDetails", new { rubricId = assignment?.RubricId });
-    }
-
-    private List<TeamSubmission> GetSubmissions(int userId)
-    {
-        var groupId = _context.Groups
-            .Where(g => g.Students.Any(s => s.UserId == userId))
-            .Select(g => g.GroupId)
-            .FirstOrDefault();
-
-        var submissions = _context.Submissions
-            .Where(s => s.GroupId == groupId && s.Assignment.IsDeliverable)
-            .ToList();
-
-        return submissions;
-    }
-
-    [HttpPost]
-    public IActionResult Submit(int groupId, int assignmentId, IFormFile file)
-    {
-        // Handle file upload logic here.
-        
-        var submission = _context.Submissions
-            .FirstOrDefault(s => s.GroupId == groupId && s.AssignmentId == assignmentId);
-
-        if (submission != null)
-        {
-            submission.Complete = true;
-            // Handle versioning logic if necessary.
-            _context.SaveChanges();
-        }
-        
-        // Redirect to an appropriate page after the submission.
-        return RedirectToAction("StudentProgress");
-    }
 
 
-    // public IActionResult StudentDashboard()
+// public IActionResult StudentDashboard()
     // {
     //
     //     //this has to load a count down timer based the present time and the appointment time

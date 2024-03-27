@@ -19,6 +19,7 @@ public partial class IntexGraderContext : DbContext
 
     public virtual DbSet<JudgeRoom> JudgeRooms { get; set; }
 
+
     public virtual DbSet<PeerEvaluation> PeerEvaluations { get; set; }
 
     public virtual DbSet<PeerEvaluationQuestion> PeerEvaluationQuestions { get; set; }
