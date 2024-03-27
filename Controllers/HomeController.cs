@@ -55,19 +55,19 @@ public class HomeController : Controller
             _repo.AddPresentationScore(p);
         }
 
-        return RedirectToAction("ScheduleView", new Presentation());
+        return RedirectToAction("JudgeDashboard", new Presentation());
     }
 
     // Action to open judge schedule
-    public IActionResult ScheduleView()
+    public IActionResult JudgeDashboard()
     {
         var roomSchedules = _repo.RoomSchedulesWithRooms;
-        return View("Judge/ScheduleView", roomSchedules);
+        return View("Judge/JudgeDashboard", roomSchedules);
     }
 
     public IActionResult OpeningPage()
     {
-        return View("Judge/ScheduleView");
+        return View("Judge/JudgeDashboard");
     }
 
     //Allowing access to StudentSubmission
