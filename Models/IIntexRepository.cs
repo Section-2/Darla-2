@@ -8,6 +8,7 @@
         IEnumerable<Permission> Permissions { get; }
         IEnumerable<Presentation> Presentations { get; }
         IEnumerable<RoomSchedule> RoomSchedules { get; }
+        IQueryable<RoomSchedule> RoomSchedulesWithRooms { get; }
         IEnumerable<StudentTeam> StudentTeams { get; }
         IEnumerable<UserPassword> UserPasswords { get; }
         IEnumerable<User> Users { get; }
@@ -17,7 +18,6 @@
         IEnumerable<Room> Rooms { get; }
         IEnumerable<TeamSubmission> TeamSubmissions { get; }
 
-
-
+    
     }
 }
