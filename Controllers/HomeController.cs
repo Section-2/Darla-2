@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Darla.Models;
 using Microsoft.AspNetCore.Mvc;
 using Darla.Models;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -6,15 +7,16 @@ using SQLitePCL;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
+// test 2
 namespace Darla.Controllers;
 
 public class HomeController : Controller
 {
-    public IntexGraderContext _context;
-
-    public HomeController(IntexGraderContext context)
+    private readonly IIntexRepository _intexRepo;
+    
+    public HomeController(IIntexRepository intexRepo)
     {
-        _context = context;
+        _intexRepo = intexRepo;
     }
 
     public IActionResult Index()
@@ -53,9 +55,16 @@ public class HomeController : Controller
     // Action to open judge schedule
     public IActionResult ScheduleView()
     {
+        var roomSchedules = _intexRepo.RoomSchedulesWithRooms;
+        return View("Judge/ScheduleView", roomSchedules);
+    }
+
+    public IActionResult OpeningPage()
+    {
         return View("Judge/ScheduleView");
     }
-    public IActionResult OpeningPage()
+
+    public IActionResult RubricDetails()
     {
         return View();
     }
