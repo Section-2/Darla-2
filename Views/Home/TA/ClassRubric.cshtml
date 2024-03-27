@@ -28,6 +28,11 @@
         cursor: pointer;
         margin-right: 10px;
     }
+    
+    .no-hover {
+                text-decoration: none !important;
+                color: inherit !important;
+    }
 
     .table th, .table td {
         vertical-align: middle;
@@ -49,7 +54,7 @@
 
 <div class="container mt-4 main-content">
     <div class="header">
-        <div class="back-arrow">&#x2190;</div>
+        <a asp-controller="Home" asp-action="Index" class="back-arrow no-hover">&#x2190;</a>
         <h2>Group 1-1 - IS 401</h2>
     </div>
 

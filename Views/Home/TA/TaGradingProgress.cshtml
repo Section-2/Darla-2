@@ -5,6 +5,23 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
 
 <style>
+    .header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    
+    .back-arrow {
+        font-size: 24px;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+    
+    .no-hover {
+            text-decoration: none !important;
+            color: inherit !important;
+    }
+    
     .collapse-row .btn-link {
         width: 100%;
         text-align: left;
@@ -31,6 +48,9 @@
 </style>
 
 <div class="main-content">
+    <div class="header">
+        <a asp-controller="Home" asp-action="Index" class="back-arrow no-hover">&#x2190;</a>
+    </div>
     <div class="container mt-4">
         <div class="text-center mb-4">
             <h2>Total Grading Progress</h2>
@@ -57,23 +77,23 @@
                         </div>
                         <table class="table mt-3 nested-table">
                             <thead>
-                                <tr>
-                                    <th>Group Number</th>
-                                    <th>TA Assignment</th>
-                                    <th>Graded</th>
-                                    <th>Stats</th>
-                                </tr>
+                            <tr>
+                                <th>Group Number</th>
+                                <th>TA Assignment</th>
+                                <th>Graded</th>
+                                <th>Stats</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                @for (int i = 1; i <= 10; i++)
-                                {
-                                    <tr>
-                                        <td>Group 1-@i</td>
-                                        <td></td> <!-- TA Assignment -->
-                                        <td>X</td> <!-- Graded -->
-                                        <td>0%</td> <!-- Stats -->
-                                    </tr>
-                                }
+                            @for (int i = 1; i <= 10; i++)
+                            {
+                                <tr>
+                                    <td>Group 1-@i</td>
+                                    <td></td> <!-- TA Assignment -->
+                                    <td>X</td> <!-- Graded -->
+                                    <td>0%</td> <!-- Stats -->
+                                </tr>
+                            }
                             </tbody>
                         </table>
                     </div>
