@@ -2,6 +2,10 @@ using System.Diagnostics;
 using Darla.Models;
 using Microsoft.AspNetCore.Mvc;
 using Darla.Models;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using SQLitePCL;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 // test 2
 namespace Darla.Controllers;
@@ -14,6 +18,7 @@ public class HomeController : Controller
     {
         _intexRepo = intexRepo;
     }
+
     public IActionResult Index()
     {
         return View();
@@ -36,7 +41,7 @@ public class HomeController : Controller
     {
         return View();
     }
-    
+
     public IActionResult JudgePage()
     {
         return View();
@@ -64,16 +69,24 @@ public class HomeController : Controller
         return View();
     }
 
-//Allowing access to StudentSubmission
-    public IActionResult StudentProgress()
-    {
-        return View();
-    }
-
     public IActionResult ProfIndex()
     {
         ViewData["GradingProgress"] = 70;
         return View();
     }
 
+    public IActionResult ProfAddJudge()
+    {
+        return View();
+    }
+    public IActionResult ProfFullRubric()
+    {
+        ViewData["GradingProgress"] = 70;
+        return View();
+    }
+    public IActionResult ProfEditRubric()
+    {
+    var query = _context.Users.Where(x => x.PermissionType == 4);
+    return View();
+    }
 }
