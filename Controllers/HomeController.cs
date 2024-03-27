@@ -2,11 +2,20 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Darla.Models;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using SQLitePCL;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Darla.Controllers;
 
 public class HomeController : Controller
 {
+    public IntexGraderContext _context;
+
+    public HomeController(IntexGraderContext context)
+    {
+        _context = context;
+    }
 
     public IActionResult Index()
     {
@@ -30,7 +39,7 @@ public class HomeController : Controller
     {
         return View();
     }
-    
+
     public IActionResult JudgePage()
     {
         return View();
@@ -41,19 +50,12 @@ public class HomeController : Controller
         return View("Judge/judge_survey");
     }
 
-    // Action to open judge schedule
+    Action to open judge schedule
     public IActionResult ScheduleView()
     {
         return View("Judge/ScheduleView");
     }
-
-    }
     public IActionResult OpeningPage()
-    {
-        return View();
-    }
-
-    public IActionResult Privacy()
     {
         return View();
     }
@@ -64,8 +66,18 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult AddJudge()
+    public IActionResult ProfAddJudge()
     {
         return View();
+    }
+    public IActionResult ProfFullRubric()
+    {
+        ViewData["GradingProgress"] = 70;
+        return View();
+    }
+    public IActionResult ProfEditRubric()
+    {
+    var query = _context.Users.Where(x => x.PermissionType == 4);
+    return View();
     }
 }
