@@ -68,4 +68,24 @@ public class HomeController : Controller
         return View();
     }
 
+    public IActionResult MasterJudgeSchedule()
+    {
+        var judgeRooms = _context.judge_room.ToList();
+        var roomSchedules = _context.room_schedule.ToList();
+        var user = _context.user.ToList();
+        var permission = _context.permission.ToList();
+        var room = _context.room.ToList();
+
+        var judgeSchedule= new MasterJudgeScheduleViewModel
+        {
+            judge_room = judgeRooms,
+            room_schedule = roomSchedules,
+            user = user,
+            permission = permission,
+            room = room
+        };
+        return View(judgeSchedule);
+    }
+
+
 }

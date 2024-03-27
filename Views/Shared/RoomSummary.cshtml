@@ -1,0 +1,24 @@
+﻿@model Darla.Models.ViewModels.MasterJudgeViewModel
+
+<h1>Room Summary</h1>
+<div>
+    <h2>@Model.room.RoomName</h2>
+
+    @foreach(var user in Model.user)
+    {
+        // Check if the user is a judge
+        if (user.PermissionType == "4")
+        {
+            // Check if the user is scheduled in the room
+            foreach (var judgeRoom in Model.judge_room)
+            {
+                if (judgeRoom.UserID == user.UserID)
+                {
+                    // Display judge's first name and last name
+                    <h3>@user.FirstName @user.LastName</h3>
+                }
+            }
+        }
+    }
+</div>
+

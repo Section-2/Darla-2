@@ -1,0 +1,10 @@
+﻿@{
+    ViewData["Title"] = "Judge Schedule";
+}
+
+<h1>Judge Schedule</h1>
+
+@foreach (Room r in Model.Rooms)
+{
+    <partial name= "RoomSummary" model="r" />
+}
