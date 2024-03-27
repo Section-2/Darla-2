@@ -9,11 +9,9 @@ public class HomeController : Controller
 {
     private IIntexRepository _repo;
     
-    private readonly IIntexRepository _intexRepo;
-    
-    public HomeController(IIntexRepository intexRepo)
+    public HomeController(IIntexRepository Repo)
     {
-        _repo = intexRepo;
+        _repo = Repo;
     }
     public IActionResult Index()
     {
@@ -42,21 +40,15 @@ public class HomeController : Controller
     {
         return View();
     }
-    
-    public IActionResult judge_survey()
-    {
-        return View("Judge/judge_survey");
-    }
 
     [HttpGet]
-    public IActionResult AddPresentationScore()
+    public IActionResult judge_survey()
     {
-
-        return View(new Presentation());
+        return View("Judge/judge_survey",new Presentation());
     }
 
     [HttpPost]
-    public IActionResult AddPresentationScore(Presentation p)
+    public IActionResult judge_survey(Presentation p)
     {
         if (ModelState.IsValid)
         {
@@ -69,8 +61,6 @@ public class HomeController : Controller
     // Action to open judge schedule
     public IActionResult ScheduleView()
     {
-        return View("Judge/ScheduleView");
-        var roomSchedules = _intexRepo.RoomSchedulesWithRooms;
         var roomSchedules = _repo.RoomSchedulesWithRooms;
         return View("Judge/ScheduleView", roomSchedules);
     }
