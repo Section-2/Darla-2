@@ -66,7 +66,7 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult AddJudge()
+    public IActionResult ProfAddJudge()
     {
         return View();
     }
