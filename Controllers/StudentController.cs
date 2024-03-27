@@ -57,6 +57,7 @@ namespace Darla.Controllers
 
             return View();
         }
+
         // [HttpGet]
         // public IActionResult StudentProgress()
         // {
@@ -106,9 +107,9 @@ namespace Darla.Controllers
         [HttpGet]
         public IActionResult StudentProgress()
         {
-            var userId = 1; 
+            var userId = 1;
 
-            var teamNumber = _context.StudentTeams
+            var teamNumber = _intexRepo.StudentTeams
                 .FirstOrDefault(st => st.UserId == userId)?.TeamNumber;
 
             if (!teamNumber.HasValue)
@@ -116,7 +117,7 @@ namespace Darla.Controllers
                 return View("Error", "User is not part of a team.");
             }
 
-            List<int> classes = _context.Rubrics
+            List<int> classes = _intexRepo.Rubrics
                 .Select(r => r.ClassCode)
                 .Distinct()
                 .ToList();
@@ -126,7 +127,47 @@ namespace Darla.Controllers
             ViewBag.Classes = classes;
             return View();
         }
+
+        [HttpGet]
+        public IActionResult StudentPeerReview()
+        {
+            var userId = 1; 
+            // Get the team number for the current user
+            var teamNumber = _intexRepo.StudentTeams
+                .FirstOrDefault(st => st.UserId == userId)?.TeamNumber;
+
+            if (!teamNumber.HasValue)
+            {
+                return View("Error", "User is not part of a team.");
+            }
+
+            // Get the peer evaluation questions
+            List<PeerEvaluationQuestion> questions = _intexRepo.PeerEvaluationQuestions
+                .ToList(); 
+
+            // Get the team members for the user's team
+            var teamMembers = _intexRepo.StudentTeams
+                .Where(st => st.TeamNumber == teamNumber.Value)
+                .Select(st => st.User) // Assuming there is a navigation property 'User' in 'StudentTeam'
+                .ToList();
+
+            return View(viewModel);
+        }
+
     }
+
+    // public IActionResult PeerEvaluation()
+    // {
+    //     //generate the peer eval quiz
+    //     return View();
+    // }
+    //
+    // public IActionResult SubmitPeerEval()
+    // {
+    //     //submit the eval, update the data base
+    //     //retrun to the StudentPeerReview view
+    //     return View();
+    // }
 
 
         // public IActionResult RubericDetails()
@@ -172,25 +213,6 @@ namespace Darla.Controllers
         //     return View();
         // }
         //
-        // public IActionResult StudentPeerReview()
-        // {
-        //
-        //     //This view needs to pull the group info and so that each team memer can be seen and selected to be peer reviewd by the user.
-        //     // so just return a variable to the view that holds the student info where group ID matches the group ID of the user
-        //     return View();
-        // }
-        //
-        // public IActionResult PeerEvaluation()
-        // {
-        //     //generate the peer eval quiz
-        //     return View();
-        // }
-        //
-        // public IActionResult SubmitPeerEval()
-        // {
-        //     //submit the eval, update the data base
-        //     //retrun to the StudentPeerReview view
-        //     return View();
-        // }
+        
     }
 
