@@ -26,7 +26,7 @@ namespace Darla.Controllers
 
         public IActionResult TaGradingProgress()
         {
-            return View("~/Views/Home/TA/TaGradingProgress.cshtml");
+            return View();
         }
 
         public IActionResult ClassRubric()
