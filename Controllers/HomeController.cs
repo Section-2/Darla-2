@@ -77,7 +77,7 @@ public class HomeController : Controller
     }
     public IActionResult ProfEditRubric()
     {
-        ViewData["GradingProgress"] = 70;
-        return View();
+    var query = _context.Users.Where(x => x.PermissionType == 4);
+    return View();
     }
 }
