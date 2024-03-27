@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-//using Darla.Models;
+using Darla.Models;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace Darla.Controllers;
 
@@ -14,16 +16,19 @@ public class StudentController : Controller
 
     public IActionResult StudentDashboard()
     {
+        var userId = 1; // Assuming you will get the user's ID from somewhere.
 
-        //this has to load a count down timer based the present time and the appointment time
+        // Retrieve the team number associated with the user.
+        var teamNumber = _intexRepo.StudentTeams
+            .Where(st => st.UserId == userId)
+            .Select(st => (int?)st.TeamNumber)
+            .FirstOrDefault(); // Synchronous version of FirstOrDefaultAsync
 
-        //It has to pull the appointment information assosiated with the student's group.
-        //       this includes group number, locaiton/roomnumber, time of appointment, 
-        
-        //list the group number and the group members
-        //
+        // ... your additional logic to get the appointment information
 
-
+        // Pass the data to the view if necessary.
+        // Pass the team number to the view using ViewBag
+        ViewBag.TeamNumber = teamNumber;
 
 
         return View();
@@ -81,7 +86,7 @@ public class StudentController : Controller
 
     //    // reference the draw.io for what the submission table looks like
     //    //it should then return a list of submission. this function will be called on the Student progress page
-    //    //var submissions = [];
+    //    var submissions = [];
 
     //    return submissions;
     //}
