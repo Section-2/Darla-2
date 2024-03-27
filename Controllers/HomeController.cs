@@ -8,12 +8,15 @@ namespace Darla.Controllers;
 public class HomeController : Controller
 {
     private IIntexRepository _repo;
+<<<<<<< HEAD
     
     private readonly IIntexRepository _intexRepo;
+=======
+>>>>>>> 23b18754b08ecc48104e7f7f992947954ecbcf84
     
     public HomeController(IIntexRepository intexRepo)
     {
-        _intexRepo = intexRepo;
+        _repo = intexRepo;
     }
     public IActionResult Index()
     {
@@ -70,8 +73,12 @@ public class HomeController : Controller
     // Action to open judge schedule
     public IActionResult ScheduleView()
     {
+<<<<<<< HEAD
         return View("Judge/ScheduleView");
         var roomSchedules = _intexRepo.RoomSchedulesWithRooms;
+=======
+        var roomSchedules = _repo.RoomSchedulesWithRooms;
+>>>>>>> 23b18754b08ecc48104e7f7f992947954ecbcf84
         return View("Judge/ScheduleView", roomSchedules);
     }
 
