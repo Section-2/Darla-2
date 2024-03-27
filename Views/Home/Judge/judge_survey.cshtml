@@ -1,0 +1,187 @@
+@{
+    ViewData["Title"] = "Judge Survey";
+}
+
+<style>
+    /* Custom styles for making sliders bigger and handles round */
+    .custom-range {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 25px; /* Slider thickness */
+        background: #ddd;
+        outline: none;
+        opacity: 0.7;
+        -webkit-transition: .2s;
+        transition: opacity .2s;
+        cursor: pointer;
+    }
+
+    .custom-range::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 35px; /* Handle size */
+        height: 35px; /* Handle size */
+        border-radius: 50%; /* Makes the handle round */
+        background: #007bff;
+        cursor: pointer;
+    }
+
+    .custom-range::-moz-range-thumb {
+        width: 35px; /* Handle size */
+        height: 35px; /* Handle size */
+        border-radius: 50%; /* Makes the handle round */
+        background: #007bff;
+        cursor: pointer;
+    }
+
+    .custom-range::-ms-thumb {
+        width: 35px; /* Handle size */
+        height: 35px; /* Handle size */
+        border-radius: 50%; /* Makes the handle round */
+        background: #007bff;
+        cursor: pointer;
+    }
+    .note-taking-box {
+            width: 100%; /* Full width of the screen */
+            padding: 15px; /* Padding inside the box */
+            margin: 10px 0; /* Margin around the box */
+            box-sizing: border-box; /* Ensures padding does not affect the total width */
+            border: 2px solid #ccc; /* Border color */
+            border-radius: 8px; /* Rounded corners */
+            resize: vertical; /* Allows the box to be resized vertically */
+            outline: none; /* Removes the default focus outline */
+            height: 50px;
+        }
+        /* Style adjustments for when the text box is in focus */
+    .note-taking-box:focus {
+        border-color: #4A90E2; /* Changes border color on focus */
+    }
+</style>
+
+<div class="container mt-5">
+    <h1 style="text-align: center">Judge Survey</h1>
+    <br/><br/>
+    <div>
+        <h3>How effective was the team in COMMUNICATING?</h3>
+        <label>Items that may factor into your scoring of this item:</label>
+        <ul>
+            <li>Dress, Appearance, Confidence</li>
+            <li>Engaging with the Audience</li>
+            <li>Organization and Timing</li>
+            <li>Professionalism</li>
+            <li>Transitions</li>
+            <li>Question Handling</li>
+        </ul>
+
+    </div>
+    
+    
+   
+    <form asp-controller="Home" asp-action="judge_survey" method="post">
+        <div class="form-group">
+            <label for="Satisfaction">Rate (1-10)</label>
+            <input type="range" class="custom-range" id="Satisfaction" name="Satisfaction" min="1" max="10" value="5">
+            <small class="form-text text-muted">Score: <span id="satisfactionValue">5</span></small>
+        </div>
+        <br/>
+        <div>
+            <label >Do you have any complements or critiques for the group about their communication and delivery?</label>
+            <textarea class="note-taking-box" rows="10" placeholder="Enter notes here..."></textarea>
+        </div>
+        
+        <br/><br/>
+        
+        <div>
+            <h3>How effective was the team in DEMONSTRATING THEIR SOLUTION?</h3>
+            <br/>
+            <label>Items that may factor into your scoring of this item:</label>
+            <ul>
+                <li>Website Implementation and Functionality</li>
+                <li>System Usability and Enjoyable User Experience</li>
+                <li>A Coherent Narrative/Story When Describing System</li>
+                <li>Presence or Lack of Errors/Bugs</li>
+            </ul>
+        </div>
+        
+        <div class="form-group">
+            <label for="Knowledge">Rate (1-10)</label>
+            <input type="range" class="custom-range" id="Knowledge" name="Knowledge" min="1" max="10" value="5">
+            <small class="form-text text-muted">Score: <span id="knowledgeValue">5</span></small>
+        </div>
+        <br/>
+        
+        <div>
+            <label >Do you have any complements or critiques for the group about their technology demo?</label>
+            <textarea class="note-taking-box" rows="10" placeholder="Enter notes here..."></textarea>
+        </div>
+        
+        <br/><br/>
+        
+        
+        
+        
+        <div><h3>How effective was the team in BUILDING A SOLUTION THAT MEETS CLIENT NEEDS?</h3>
+            <br/>
+        <label>Items that may factor into your scoring of this item:</label>
+            <ul>
+                <li>The Team Understands the Requirements and Challenges Facing the Client</li>
+                <li>System Meets Client’s Needs</li>
+                <li>The Solution is Realistic and Viable</li>
+                <li>You are Confident in the Solution and Team</li>
+                <li>Client Should Engage the Team for Continued Implementation of the Solution</li>
+            </ul>
+        </div>
+
+        <div class="form-group">
+            <label for="ServiceSpeed">Rate (1-10)</label>
+            <input type="range" class="custom-range" id="ServiceSpeed" name="ServiceSpeed" min="1" max="10" value="5">
+            <small class="form-text text-muted">Score: <span id="serviceSpeedValue">5</span></small>
+        </div>
+        <br/>
+        <div>
+            <label >Do you have any complements or critiques for the group about the OVERALL SYSTEM QUALITY AND CLIENT SATISFACTION?</label>
+            <textarea class="note-taking-box" rows="10" placeholder="Enter notes here..."></textarea>
+        </div>
+        
+        <br/><br/><br/>
+        <div>
+            <h3>We like to give some of the teams fun awards independent of the overall scores. Please consider one or more creative and fun/funny awards for this team.</h3>
+            <br/>
+            <label >(e.g., “The Extra Mile Award”, “Threw in the Kitchen Sink Award”, “Best Analytics Award”, “Funniest Domain Name Award”, “Most Colorful Slides Award”, “It’s Not What You Know, But Who You Know Award”, etc. )</label>
+            <textarea class="note-taking-box" rows="10" placeholder="Enter notes here..."></textarea>
+        </div>
+        
+        <br/>
+        <div style="text-align: center">
+            <p>Thank you for completing our survey! You may submit and exit now. We hope you enjoyed the presentation!</p>
+        </div>
+        <br/>
+
+        <div style="text-align: center;">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                // Update function to directly reference each slider and value display
+                document.getElementById("Satisfaction").oninput = function() {
+                    document.getElementById("satisfactionValue").innerText = this.value;
+                };
+                
+                document.getElementById("Knowledge").oninput = function() {
+                    document.getElementById("knowledgeValue").innerText = this.value;
+                };
+    
+                document.getElementById("ServiceSpeed").oninput = function() {
+                    document.getElementById("serviceSpeedValue").innerText = this.value;
+                };
+    
+                document.getElementById("OverallExperience").oninput = function() {
+                    document.getElementById("overallExperienceValue").innerText = this.value;
+                };
+            });
+        </script>
+}
