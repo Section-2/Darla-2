@@ -176,3 +176,5 @@ obj/project.assets.json
 obj/project.nuget.cache
 obj/Debug/net8.0/Darla.AssemblyInfo.cs
 obj/Debug/net8.0/Darla.AssemblyInfoInputs.cache
+
+.idea/

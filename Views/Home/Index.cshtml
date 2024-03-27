@@ -1,15 +1,51 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-<h1>Index</h1>
-<p>this view is just to have a home page when running the project. nav links show each page</p>
-<a asp-controller="TA" asp-action="AllGrades">all grades</a>
-<a asp-controller="TA" asp-action="ClassRubric">class rubric</a>
-<a asp-controller="TA" asp-action="TaGradingProgress">ta grade progress</a>
 
-
-<div class="text-center">
-    <h1 class="display-4">Intex Grading</h1>
-    <p>Schedule View <a href="@Url.Action("ScheduleView", "Home")">CLICK HERE FOR SCHEDULE VIEW</a></p>
-    <p>Schedule View <a href="@Url.Action("judge_survey", "Home")">CLICK HERE FOR SURVEY VIEW</a></p>
+<div style="margin-top: 27px; text-align: center;">
+    <h1 style="font-size: 4em;">Welcome to Intex Grading!</h1>
 </div>
+
+<div class="navigation-links text-center">
+    @* <a asp-controller="TA" asp-action="AllGrades" class="nav-link">All Grades</a> *@
+    @* <a asp-controller="TA" asp-action="ClassRubric" class="nav-link">Class Rubric</a> *@
+    <a asp-controller="TA" asp-action="TaGradingProgress" class="nav-link">Start Grading</a>
+    @* <form id="logoutForm" asp-controller="Home" asp-action="BYULogin" method="post" class="d-inline"> *@
+    @*     <button type="submit" class="btn btn-link">Sign Out</button> *@
+    @* </form> *@
+</div>
+
+<style>
+    .description {
+        font-style: italic;
+        color: #555;
+    }
+
+    .navigation-links {
+        margin-top: 20px;
+    }
+
+    .nav-link {
+        display: inline-block;
+        margin-right: 20px;
+        font-size: 1.2em;
+        color: #333;
+        text-decoration: none;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 8px 16px;
+        margin-top: 10px;
+        text-decoration: none;
+        color: #fff;
+        background-color: #007bff;
+        border: 1px solid #007bff;
+        border-radius: 4px;
+    }
+
+    .btn:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+</style>
