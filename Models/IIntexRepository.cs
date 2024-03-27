@@ -17,6 +17,6 @@
         IEnumerable<Room> Rooms { get; }
         IEnumerable<TeamSubmission> TeamSubmissions { get; }
 
-        IEnumerable<object> GetTeamMembersByTeamNumber(int? teamNumber);
+    
     }
 }

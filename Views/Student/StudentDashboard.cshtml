@@ -4,13 +4,13 @@
 @{
     // This line will retrieve the value from the ViewBag and assign it to a local variable.
     var RoomSchedule = ViewBag.RoomSchedule;
-    // var teamMemberNames = ViewBag.TeamMemberNames as List<string>;
+    var teamMemberNames = ViewBag.TeamMemberNames as List<string>;
 }
 
 <h1>Team Number: @RoomSchedule.TeamNumber</h1>
 <h1>Time Slot: @RoomSchedule.Timeslot</h1>
 
-@* @if (teamMemberNames != null && teamMemberNames.Any())
+@if (teamMemberNames != null && teamMemberNames.Any())
 {
     <h2>Team Members:</h2>
     <ul>
@@ -23,7 +23,7 @@
 else
 {
     <p>No team members found for this team.</p>
-} *@
+}
 
 <h1>This is A Test</h1>
 <a href="@Url.Action("StudentProgress", "Student")" class="btn btn-primary">View Student Progress</a>
