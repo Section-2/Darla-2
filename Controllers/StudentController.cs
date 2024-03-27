@@ -1,5 +1,4 @@
-﻿//using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Darla.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -50,7 +49,7 @@ public class StudentController : Controller
 
         return View();
     }
-
+    [HttpGet]
     public IActionResult StudentProgress()
     {
         //get all unique class codes from the rubric table and add them to a list classed classcodes that is passed to the view
@@ -63,7 +62,7 @@ public class StudentController : Controller
         //send submission in a viewbag to the page to dynamically appear on the submissions part of the studetn progress page
         //      var submissions = getSubmissions();
 
-        var userId = 1; // Replace with actual user identification logic.
+        // var userId = 1; // Replace with actual user identification logic.
         var classes = _intexRepo.Rubrics
        .Select(r => r.ClassCode) // Project each Rubric to its ClassCode.
        .Distinct() // Ensure each class code is unique.
@@ -72,16 +71,16 @@ public class StudentController : Controller
                   //ViewBag.Submissions = submissions;
 
         return View(classes);
-        
+
     }
-
-    public IActionResult RubericDetails()
+    [HttpGet]
+    public IActionResult RubricDetails(int classCode)
     {
-        //when you click on a class ruberic
-        // then it needs to dynamically pull all assignments asssosiated with the ruberic id
-        //          each assignment has the attributes assignmentID:int, rubericID:int, completed: bool, pintsOnGrade: int, isDeliverable:bool, description:string
-        //          the description, points, and complete need to be displayed for each assignment with the complete states bring determind by a chekc box. this may be another action called updateCompletedStatus
+        // Retrieve all rubrics with the given classId from the repository
+        List<Rubric> rubrics = _intexRepo.Rubrics.Where(r => r.ClassCode == classCode).ToList();
 
+        // Assign the rubrics to the ViewBag
+        ViewBag.Rubrics = rubrics;
 
         return View();
     }
