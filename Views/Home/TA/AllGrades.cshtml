@@ -14,11 +14,13 @@
         new { Name = "Group C", Score = 75 }
     };
 }
+@model List<Darla.Models.Team>
+
 <h1>all grades</h1>
 <p>this view will display a table with the list of all the groups, their scores, and the ability to sort from highest to lowest, etc.</p>
 <a asp-controller="Home" asp-action="Index">index</a>
-<a asp-controller="Home" asp-action="ClassRubric">class rubric</a>
-<a asp-controller="Home" asp-action="TaGradingProgress">ta grade progress</a>
+<a asp-controller="TA" asp-action="ClassRubric">class rubric</a>
+<a asp-controller="TA" asp-action="TaGradingProgress">ta grade progress</a>
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
 
@@ -62,11 +64,10 @@
                 </tr>
             </thead>
             <tbody id="scoresTable">
-                @foreach (var group in groups)
+                @foreach (Team s in Model)
                 {
                     <tr>
-                        <td>@group.Name</td>
-                        <td>@group.Score</td>
+                        <td>@s.TeamNumber</td>
                     </tr>
                 }
             </tbody>
