@@ -15,24 +15,24 @@ public class StudentController : Controller
         _intexRepo = temp;
     }
 
-    public async Task<IActionResult> StudentDashboard()
+    public IActionResult StudentDashboard()
     {
         var userId = 1; // Assuming you will get the user's ID from somewhere.
 
         // Retrieve the team number associated with the user.
-        var teamNumber = await _intexRepo.StudentTeams
+        var teamNumber = _intexRepo.StudentTeams
             .Where(st => st.UserId == userId)
             .Select(st => (int?)st.TeamNumber)
-            .FirstOrDefaultAsync(); // Corrected the typo here
-
-        // You would probably use 'teamNumber' to get more details about the appointment.
+            .FirstOrDefault(); // Synchronous version of FirstOrDefaultAsync
 
         // ... your additional logic to get the appointment information
 
-        // Pass the data to the view if necessary. For example, you could use a ViewModel or dynamic ViewBag/ViewData.
-        // ViewBag.TeamNumber = teamNumber;
+        // Pass the data to the view if necessary.
+        // Pass the team number to the view using ViewBag
+        ViewBag.TeamNumber = teamNumber;
 
-        return View(); // Make sure to pass the necessary data to the view if needed.
+
+        return View();
     }
 
     public IActionResult StudentProgress()
@@ -79,20 +79,20 @@ public class StudentController : Controller
         return View();
     }
 
-    public IActionResult getSubmissions()
-    {
+    //public IActionResult getSubmissions()
+    //{
 
-        //this action will check all assignmetns across all ruberics to and get the addignmetns id of those that have a isDeliverable peramiter of True
-        // so it should take the Group ID as a peramiter so that it can add submisssions to the submissison table the are assosiated with that group
+    //    //this action will check all assignmetns across all ruberics to and get the addignmetns id of those that have a isDeliverable peramiter of True
+    //    // so it should take the Group ID as a peramiter so that it can add submisssions to the submissison table the are assosiated with that group
 
-        // reference the draw.io for what the submission table looks like
-        //it should then return a list of submission. this function will be called on the Student progress page
-        var submissions = [];
+    //    // reference the draw.io for what the submission table looks like
+    //    //it should then return a list of submission. this function will be called on the Student progress page
+    //    var submissions = [];
 
-        return submissions;
-    }
+    //    return submissions;
+    //}
      
-    public IActionResult submit(groupID, assignmentID ,file)
+    public IActionResult submit()
     {
         //this function needs to be able to receive the group ID, the assignmentID, and the file and add those to the submission that matches the groupID and assignmetnID
         //then it updates the compelete status of the submission to true, 
