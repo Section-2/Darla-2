@@ -11,7 +11,7 @@ public partial class Rubric
 
     public string? Subcategory { get; set; }
 
-    public string? Decsription { get; set; }
+    public string? Description { get; set; }
 
     public int? MaxPoints { get; set; }
 
