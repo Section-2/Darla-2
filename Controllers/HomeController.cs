@@ -75,7 +75,7 @@ public class HomeController : Controller
     
     public IActionResult ProfJudgeListView()
     {
-    var query = _context.User.Where(x => x.permission_type == 4);
+    var query = _context.Users.Where(x => x.PermissionType == 4);
     return View();
     }
 }
