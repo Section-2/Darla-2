@@ -1,71 +1,97 @@
+@using Darla.Models
+@using System.Collections.Generic
+@model IEnumerable<RoomSchedule> 
+
 @{
-    // Define the judge name and group schedule in C#
     var judgeName = "Jenna Fox";
-    var groupSchedule = new Dictionary<string, string>
-    {
-        {"9:00-9:30 am", "Group 02-13"},
-        {"10:45-10:15 am", "Group 04-09"},
-        {"12:15-1:45 pm", "Group 01-01"},
-        {"2:00-2:30pm", "Group 03-15"},
-        {"2:45-3:15pm", "Group 02-11"}
-    };
+    var roomId = 123; // Example RoomId, replace with the actual ID.
 }
 
-
 <!DOCTYPE html>
-<html>
+<html>  
 <head>
     <title>Judge Schedule and Ranking</title>
     <style>
-       /* Add your CSS styles here */
-       .schedule-container {
-           display: flex;
-           justify-content: space-between;
-       }
-       .schedule, .ranking {
-           border: 1px solid #000;
-           margin: 10px;
-           padding: 10px;
-       }
-       .ranking-list {
-           display: flex;
-           align-items: center;
-       }
-       .ranking-list input {
-           margin-right: 10px;
-       }
-       /* Further styling */
-   </style>
+        .schedule-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .schedule, .ranking {
+            border: 1px solid #000;
+            margin: 10px;
+            padding: 10px;
+        }
+        .ranking-list {
+            display: flex;
+            align-items: center;
+        }
+        .ranking-list input {
+            margin-right: 10px;
+        }
+    </style>
 </head>
 <body>
-
 
 <div class="schedule-container">
     <div class="schedule">
         <h1>JUDGE: @judgeName</h1>
         <h2>Schedule & Surveys</h2>
         <h3>ROOM W310</h3>
-        @foreach (var entry in groupSchedule)
-        {
-            <div>@entry.Key @entry.Value</div>
+        @{
+            var roomSchedules = Model.Where(rs => rs.RoomId == roomId).OrderBy(rs => rs.Timeslot).ToList();
+            int count = 0;
+            foreach (var schedule in roomSchedules)
+            {
+                <div>@schedule.Timeslot Team @schedule.TeamNumber</div>
+                if (++count == 2) // After the second schedule entry
+                {
+                    <div>Lunch Break</div> // Insert a lunch break
+                }
+            }
         }
-        <div>Lunch</div> <!-- Lunch break is static -->
     </div>
   
     <div class="ranking">
         <h2>Group Ranking</h2>
-        @foreach (var entry in groupSchedule)
-        {
-            <div class="ranking-list">
-                <input type="number" name="@entry.Value" min="1" max="5" />
-                @entry.Value
-            </div>
+        @{
+            int rankCount = 0;
+            foreach (var schedule in roomSchedules) // Reuse the filtered and sorted list
+            {
+                <div class="ranking-list">
+                    <input type="number" name="teamRank_@schedule.TeamNumber" min="1" max="5" />
+                    Team @schedule.TeamNumber
+                </div>
+                if (++rankCount == 2)
+                {
+                    // Optionally place a visual separator for the lunch break if needed
+                    <div style="margin: 10px 0; font-weight: bold;">Lunch Break</div>
+                }
+            }
         }
     </div>
 </div>
 
+<!-- JavaScript here -->
 
-<!-- You might want to add some JavaScript here to validate input or handle form submission -->
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+          const inputs = document.querySelectorAll('.ranking-list input[type="number"]');
+          inputs.forEach(input => {
+            input.addEventListener('change', (event) => {
+              let currentInput = event.target;
+              let currentValue = currentInput.value;
+              inputs.forEach(otherInput => {
+                if (otherInput !== currentInput && otherInput.value === currentValue) {
+                  alert('Each team must have a unique ranking. Please change one of the values.');
+                  currentInput.value = ''; // Reset the value
+                }
+              });
+            });
+          });
+        });
+</script>
+}
 
 
 </body>
