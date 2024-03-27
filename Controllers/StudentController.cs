@@ -62,7 +62,7 @@ public class StudentController : Controller
         //send submission in a viewbag to the page to dynamically appear on the submissions part of the studetn progress page
         //      var submissions = getSubmissions();
 
-       // var userId = 1; // Replace with actual user identification logic.
+        // var userId = 1; // Replace with actual user identification logic.
         var classes = _intexRepo.Rubrics
        .Select(r => r.ClassCode) // Project each Rubric to its ClassCode.
        .Distinct() // Ensure each class code is unique.
@@ -71,10 +71,10 @@ public class StudentController : Controller
                   //ViewBag.Submissions = submissions;
 
         return View(classes);
-        
-    }
 
-    public IActionResult RubericDetails(int classCode)
+    }
+    [HttpGet]
+    public IActionResult RubricDetails(int classCode)
     {
         // Retrieve all rubrics with the given classId from the repository
         List<Rubric> rubrics = _intexRepo.Rubrics.Where(r => r.ClassCode == classCode).ToList();
