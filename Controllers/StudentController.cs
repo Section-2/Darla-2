@@ -2,7 +2,6 @@
 using Darla.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Darla.Controllers;
 
 public class StudentController : Controller
 {
@@ -132,4 +131,12 @@ public class StudentController : Controller
         return View();
     }
 
+
+    public IActionResult PeerEvaluation()
+    {
+        //generate the peer eval quiz
+        return View();
+    }
+
+    
 }

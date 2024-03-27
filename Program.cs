@@ -12,9 +12,10 @@ builder.Services.AddDbContext<IntexGraderContext>(options =>
 });
 
 builder.Services.AddScoped<IIntexRepository, EFIntexRepository>();
+builder.Services.AddHttpContextAccessor();
+
 
 var app = builder.Build();
-
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -30,12 +31,12 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+//app.MapControllerRoute(
+//    name: "default",
+//    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
-    name: "student",
+    name: "default",
     pattern: "{controller=Student}/{action=StudentDashboard}/{id?}");
 
 app.Run();
