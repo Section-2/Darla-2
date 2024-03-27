@@ -8,7 +8,7 @@
 }
 
 <!DOCTYPE html>
-<html>
+<html>  
 <head>
     <title>Judge Schedule and Ranking</title>
     <style>
@@ -72,6 +72,27 @@
 </div>
 
 <!-- JavaScript here -->
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+          const inputs = document.querySelectorAll('.ranking-list input[type="number"]');
+          inputs.forEach(input => {
+            input.addEventListener('change', (event) => {
+              let currentInput = event.target;
+              let currentValue = currentInput.value;
+              inputs.forEach(otherInput => {
+                if (otherInput !== currentInput && otherInput.value === currentValue) {
+                  alert('Each team must have a unique ranking. Please change one of the values.');
+                  currentInput.value = ''; // Reset the value
+                }
+              });
+            });
+          });
+        });
+</script>
+}
+
 
 </body>
 </html>
