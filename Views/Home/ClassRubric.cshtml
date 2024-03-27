@@ -1,0 +1,83 @@
+@{
+    ViewData["Title"] = "Class Rubric";
+    var requirements = new List<string> {
+        "Outline the main superstructure framework",
+        "Design the power core and energy distribution systems",
+        "Develop advanced targeting systems for the superlaser",
+        "Implement hyperdrive and navigation systems",
+        "Plan the defense mechanisms and shield generators",
+        "Engineer the thermal exhaust systems to prevent vulnerabilities",
+        "Design the detention block security protocols to prevent escapes",
+        "Integrate the command center with real-time battle analytics",
+        "Establish secure communication channels for Imperial fleet coordination",
+        "Develop redundant life support systems for critical areas"
+    };
+}
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+
+<style>
+    .header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .back-arrow {
+        font-size: 24px;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+
+    .table th, .table td {
+        vertical-align: middle;
+    }
+
+    .comments-input, .points-input {
+        width: 100%;
+    }
+
+    .submit-btn {
+        margin-top: 20px;
+        float: right;
+    }
+
+    .main-content {
+        padding-bottom: 120px;
+    }
+</style>
+
+<div class="container mt-4 main-content">
+    <div class="header">
+        <div class="back-arrow">&#x2190;</div>
+        <h2>Group 1-1 - IS 401</h2>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="col-8">Requirements</th>
+                <th class="col-1">Points</th>
+                <th class="col-1">Total</th>
+                <th class="col-4">Comments</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var requirement in requirements)
+            {
+                <tr>
+                    <td>@requirement</td>
+                    <td><input type="text" class="form-control points-input" /></td>
+                    <td>100</td> <!-- Example total value -->
+                    <td><input type="text" class="form-control comments-input" /></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <button class="btn btn-primary submit-btn">Submit</button>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
