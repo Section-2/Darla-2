@@ -30,7 +30,7 @@ public class HomeController : Controller
     {
         return View();
     }
-    
+
     public IActionResult JudgePage()
     {
         return View();
@@ -41,12 +41,10 @@ public class HomeController : Controller
         return View("Judge/judge_survey");
     }
 
-    // Action to open judge schedule
+    Action to open judge schedule
     public IActionResult ScheduleView()
     {
         return View("Judge/ScheduleView");
-    }
-
     }
     public IActionResult OpeningPage()
     {
@@ -63,5 +61,14 @@ public class HomeController : Controller
         ViewData["GradingProgress"] = 70;
         return View();
     }
-
+    public IActionResult ProfFullRubric()
+    {
+        ViewData["GradingProgress"] = 70;
+        return View();
+    }
+    public IActionResult ProfEditRubric()
+    {
+        ViewData["GradingProgress"] = 70;
+        return View();
+    }
 }

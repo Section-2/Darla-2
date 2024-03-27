@@ -1,0 +1,36 @@
+﻿
+
+@model List<Rubric>
+
+<h2>Task Information</h2>
+
+@foreach (var rubric in @Model)
+{
+    <table>
+        <tr>
+            <th colspan="4">
+                <span style="float: left">@Model.subcategory</span>
+                <span style="float: right"><button>Edit</button></span>
+            </th>
+        </tr>
+        <tr>
+            <th>Task Name</th>
+            <th>Student Description</th>
+            <th>TA Description</th>
+            <th>Max Total Points</th>
+        </tr>
+        @foreach (var task in table.Value)
+        {
+            <tr>
+                <td>@task.Item1</td>
+                <td>@task.Item2</td>
+                <td>@task.Item3</td>
+                <td>@task.Item4</td>
+            </tr>
+        }
+        <tr>
+            <td colspan="3">Total Max Total Points:</td>
+            <td>@table.Value.Sum(t => t.Item4)</td>
+        </tr>
+    </table>
+}
