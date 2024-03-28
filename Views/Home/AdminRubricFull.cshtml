@@ -1,0 +1,135 @@
+﻿@using Darla.Models
+
+@model IEnumerable<Rubric>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        margin: 0;
+        padding: 20px;
+    }
+
+    h2 {
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid #ddd;
+        margin-bottom: 20px;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    button {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+        button:hover {
+            background-color: #45a049;
+        }
+</style>
+
+<h2>Task Information</h2>
+@foreach (var classCode in new[] { 401, 413, 414, 455 })
+{
+    var rubrics = Model.Where(r => r.ClassCode == classCode);
+    var totalMaxPoints = rubrics.Sum(r => r.MaxPoints);
+    var alertClass = totalMaxPoints != 100 ? "alert-danger" : "";
+    var alertMessage = totalMaxPoints > 100 ? "Total must not exceed 100 points." : "Total must add up to 100 points.";
+
+    <table style="border-collapse: collapse; border: 1px solid black; margin-bottom: 20px; color: black; background-color: lightgray">
+        <tr>
+            <th colspan="4" style="border: 1px solid black;;">
+                <span style="float: left">IS @classCode</span>
+                <span style="float: right">
+                    <a asp-action="AdminRubricEdit" asp-route-classCode="@classCode"><button>Edit</button></a>
+                </span>
+            </th>
+        </tr>
+        <tr>
+            <th style="border: 1px solid black;">Task Name</th>
+            <th style="border: 1px solid black;">Student Description</th>
+            <th style="border: 1px solid black;">TA Description</th>
+            <th style="border: 1px solid black;">Max Total Points</th>
+        </tr>
+        @foreach (var rubric in Model.Where(r => r.ClassCode == classCode))
+        {
+            <tr>
+                <td style="border: 1px solid black;">@rubric.Subcategory</td>
+                <td style="border: 1px solid black;">@rubric.Description</td>
+                <td style="border: 1px solid black;">@rubric.InstructorNotes</td>
+                <td style="border: 1px solid black;">@rubric.MaxPoints</td>
+            </tr>
+        }
+        <tr>
+            <td colspan="3" style="border: 1px solid black;">Total Max Total Points:</td>
+            <td style="border: 1px solid black;">@Model.Where(r => r.ClassCode == classCode).Sum(r => r.MaxPoints)</td>
+        </tr>
+    </table>
+    @if (!string.IsNullOrEmpty(alertClass))
+    {
+        <div class="alert @alertClass" role="alert">
+            @alertMessage
+        </div>
+    }
+    <br />
+}
+
+
+
+@* @using Darla.Models
+
+@model IEnumerable<Rubric>
+
+    <h2>Task Information</h2>
+    @foreach (var classCode in new[] { 402, 413, 414, 455 })
+{
+    <table>
+        <tr>
+            <th colspan="4">
+                <span style="float: left">IS @classCode</span>
+                <span style="float: right"><button>Edit</button></span>
+            </th>
+        </tr>
+        <tr>
+            <th>Task Name</th>
+            <th>Student Description</th>
+            <th>TA Description</th>
+            <th>Max Total Points</th>
+        </tr>
+        @foreach(var rubric in Model.Where(r => r.ClassCode == classCode))
+        {
+        <tr>
+            <td style="color:white">@rubric.Subcategory</td>
+            <td>@rubric.Description</td>
+            <td>@rubric.InstructorNotes</td>
+            <td>@rubric.MaxPoints</td>
+        </tr>
+        }
+        <tr>
+            <td colspan="3">Total Max Total Points:</td>
+            <td>@Model.Where(r => r.ClassCode == classCode).Sum(r => r.MaxPoints)</td>
+        </tr>
+    </table>
+} *@

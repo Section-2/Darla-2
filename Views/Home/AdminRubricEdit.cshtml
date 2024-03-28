@@ -1,0 +1,53 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@using Darla.Models
+
+@model IEnumerable<Rubric>
+
+<form method="post">
+    <h2>Admin Rubric Edit</h2>
+    <table style="border-collapse: collapse; border: 1px solid black; margin-bottom: 20px; color: white;">
+        <tr>
+            <th style="border: 1px solid black;">Task Name</th>
+            <th style="border: 1px solid black;">Student Description</th>
+            <th style="border: 1px solid black;">TA Description</th>
+            <th style="border: 1px solid black;">Max Total Points</th>
+        </tr>
+        @foreach (var rubric in Model)
+        {
+            <tr>
+                <td style="border: 1px solid black;">
+                    <input type="text" name="Rubrics[@rubric.AssignmentId].Subcategory" value="@rubric.Subcategory" />
+                </td>
+                <td style="border: 1px solid black;">
+                    <input type="text" name="Rubrics[@rubric.AssignmentId].Description" value="@rubric.Description" />
+                </td>
+                <td style="border: 1px solid black;">
+                    <input type="text" name="Rubrics[@rubric.AssignmentId].InstructorNotes" value="@rubric.InstructorNotes" />
+                </td>
+                <td style="border: 1px solid black;">
+                    <input type="number" name="Rubrics[@rubric.AssignmentId].MaxPoints" value="@rubric.MaxPoints" />
+                </td>
+            </tr>
+        }
+        <tr>
+            <td colspan="4" style="border: 1px solid black;">
+                <h3>Add new item</h3>
+                <input type="text" name="NewRubric.Subcategory" placeholder="Task Name" />
+                <input type="text" name="NewRubric.Description" placeholder="Student Description" />
+                <input type="text" name="NewRubric.InstructorNotes" placeholder="TA Description" />
+                <input type="number" name="NewRubric.MaxPoints" placeholder="Max Total Points" />
+                <button type="submit" name="action" value="Add">Add</button>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" style="border: 1px solid black; text-align: right;">Total Max Total Points:</td>
+            <td style="border: 1px solid black;">
+                @Model.Sum(r => r.MaxPoints)
+            </td>
+        </tr>
+    </table>
+</form>
