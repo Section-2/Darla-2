@@ -1,72 +1,124 @@
 using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 using Darla.Models;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using SQLitePCL;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 
+// test 2
 namespace Darla.Controllers;
 
 public class HomeController : Controller
 {
-
-    public IActionResult Index()
-    {
-        return View();
-    }
-
-    public IActionResult BYULogin()
-    {
-        return View();
-    }
-
-    public IActionResult AllGrades()
-    {
-        return View();
-    }
-    public IActionResult ClassRubric()
-    {
-        return View();
-    }
-    public IActionResult TaGradingProgress()
-    {
-        return View();
-    }
+    private IIntexRepository _repo;
     
-    public IActionResult JudgePage()
+    public HomeController(IIntexRepository Repo)
     {
-        return View();
+        _repo = Repo;
     }
 
-    public IActionResult judge_survey()
-    {
-        return View("Judge/judge_survey");
-    }
-
-    // Action to open judge schedule
-    public IActionResult ScheduleView()
-    {
-        return View("Judge/ScheduleView");
-    }
-
-
+    // START HERE!
     public IActionResult OpeningPage()
     {
         return View();
     }
 
-    //Allowing access to StudentSubmission
-        public IActionResult StudentProgress()
+    // Initial Login page: links to Judge Page! Should redirect to Student OR Admin OR TA views after login... how? 
+    public IActionResult BYULogin()
     {
         return View();
     }
 
-//    public IActionResult ProfIndex()
-//    {
-//        ViewData["GradingProgress"] = 70;
-//        return View();
-//    }
-
-        public IActionResult CreateAccount()
+    // Who should have access to this page?
+    public IActionResult CreateAccount()
     {
         return View();
     }
 
+
+
+    // JUDGES SECTION
+    public IActionResult JudgePage()
+    {
+        return View();
+    }
+
+    public IActionResult JudgeSignedIn()
+    {
+        return View("Judge/JudgeSignedIn");
+    }
+
+    [HttpGet]
+    public IActionResult judge_survey()
+    {
+        return View("Judge/judge_survey",new Presentation());
+    }
+
+    [HttpPost]
+    public IActionResult judge_survey(Presentation p)
+    {
+        if (ModelState.IsValid)
+        {
+            _repo.AddPresentationScore(p);
+        }
+
+        return RedirectToAction("JudgeDashboard", new Presentation());
+    }
+
+    // Action to open judge schedule
+    public IActionResult JudgeDashboard()
+    {
+        var roomSchedules = _repo.RoomSchedulesWithRooms;
+        return View("Judge/JudgeDashboard", roomSchedules);
+    }
+
+    // END JUDGES SECTION
+
+
+
+    // Grading Summary Page for TAs
+    public IActionResult Index()
+    {
+        return View();
+    }
+    
+
+    // ADMINS SECTION
+    // Landing page for Admins
+    public IActionResult AdminIndex()
+    {
+        ViewData["GradingProgress"] = 70;
+        return View("AdminIndexDashboard");
+    }
+
+    public IActionResult ProfAddJudge()
+    {
+        return View("AdminAddJudge");
+    }
+
+    public IActionResult ProfFullRubric()
+    {
+        return View();
+    }
+    
+    public IActionResult ProfEditRubric()
+    {
+    var query = _repo.Users.Where(x => x.PermissionType == 4);
+    return View();
+    }
+    
+    public IActionResult StudentProgress()
+    {
+        return View();
+    }
+
+    public IActionResult RubricDetails()
+    {
+        return View();
+    }
+
+    /* Potential missing actions for views: TeacherViewPeerEvalSingle, ListTA, adminPeerEvalDashboard, 
+     * AdminJudgeListView, AdminDeleteJudge
+     */
 }
