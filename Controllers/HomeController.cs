@@ -1,11 +1,21 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Darla.Models;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using SQLitePCL;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Darla.Controllers;
 
 public class HomeController : Controller
 {
+    public IntexGraderContext _context;
+
+    public HomeController(IntexGraderContext context)
+    {
+        _context = context;
+    }
 
     public IActionResult Index()
     {
@@ -29,7 +39,7 @@ public class HomeController : Controller
     {
         return View();
     }
-    
+
     public IActionResult JudgePage()
     {
         return View();
@@ -37,11 +47,7 @@ public class HomeController : Controller
 
     public IActionResult judge_survey()
     {
-<<<<<<< Updated upstream
         return View("Judge/judge_survey");
-=======
-        return View();
->>>>>>> Stashed changes
     }
 
     // Action to open judge schedule
@@ -49,15 +55,7 @@ public class HomeController : Controller
     {
         return View("Judge/ScheduleView");
     }
-
-    }
     public IActionResult OpeningPage()
-    {
-        return View();
-    }
-
-    //Allowing access to StudentSubmission
-    public IActionResult StudentProgress()
     {
         return View();
     }
@@ -68,21 +66,31 @@ public class HomeController : Controller
         return View();
     }
 
+    public IActionResult ProfAddJudge()
+    {
+        return View();
+    }
+    public IActionResult ProfFullRubric()
+    {
+        ViewData["GradingProgress"] = 70;
+        return View();
+    }
+
     public IActionResult MasterJudgeSchedule()
     {
-        var judgeRooms = _context.judge_room.ToList();
-        var roomSchedules = _context.room_schedule.ToList();
-        var user = _context.user.ToList();
-        var permission = _context.permission.ToList();
-        var room = _context.room.ToList();
+        var judgeRooms = _context.JudgeRooms.ToList();
+        var roomSchedules = _context.RoomSchedules.ToList();
+        var user = _context.Users.ToList();
+        var permission = _context.Permissions.ToList();
+        var room = _context.Rooms.ToList();
 
         var judgeSchedule= new MasterJudgeScheduleViewModel
         {
-            judge_room = judgeRooms,
-            room_schedule = roomSchedules,
-            user = user,
-            permission = permission,
-            room = room
+            JudgeRoom = judgeRooms,
+            RoomSchedule = roomSchedules,
+            User = user,
+            Permission = permission,
+            Room = room
         };
         return View(judgeSchedule);
     }
