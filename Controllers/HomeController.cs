@@ -111,7 +111,32 @@ public class HomeController : Controller
             })
             .ToList();
 
+
         return View(evaluationData);
+    }
+    public IActionResult ProfFullRubric()
+    {
+        ViewData["GradingProgress"] = 70;
+        return View();
+    }
+
+    public IActionResult MasterJudgeSchedule()
+    {
+        var judgeRooms = _repo.JudgeRooms.ToList();
+        var roomSchedules = _repo.RoomSchedules.ToList();
+        var user = _repo.Users.ToList();
+        var permission = _repo.Permissions.ToList();
+        var room = _repo.Rooms.ToList();
+
+        var judgeSchedule= new MasterJudgeScheduleViewModel
+        {
+            JudgeRoom = judgeRooms,
+            RoomSchedule = roomSchedules,
+            User = user,
+            Permission = permission,
+            Room = room
+        };
+        return View(judgeSchedule);
     }
 
 
