@@ -2,6 +2,7 @@
 @using System.Collections.Generic
 @model IQueryable<RoomSchedule> 
 
+
 <!DOCTYPE html>
 <html>  
 <head>
@@ -70,6 +71,18 @@
         <button id="saveOrderButton">Save Order</button>
     </div>
 </div>
+<form asp-controller="Home" asp-action="UpdateRanks" method="post">
+    @{
+        var counter = 0;
+    }
+    @foreach (RoomSchedule schedule in Model)
+    {
+        <input type="hidden" name="teamRanks[@counter].Key" value="@schedule.TeamNumber"/>
+        <input type="hidden" name="teamRanks[@counter].Value" value=""/>
+        counter++;
+    }
+    <button type="submit">Save Rankings</button>
+</form>
 <script src="~/js/site.js"></script>
 </body>
 </html>
