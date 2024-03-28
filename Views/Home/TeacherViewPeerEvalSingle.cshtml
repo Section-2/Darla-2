@@ -3,6 +3,9 @@
 *@
 @{
 }
+
+@model List<EvaluationViewModel>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,6 +22,41 @@
 </head>
 <body>
 
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>EvaluatorId</th>
+                <th>SubjectId</th>
+                <th>UserId</th>
+                <th>NetId</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Subject First Name</th>
+                <th>Subject Last Name</th>
+                <th>Question</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var result in Model)
+            {
+                <tr>
+                    <td>@result.EvaluatorId</td>
+                    <td>@result.SubjectId</td>
+                    <td>@result.UserId</td>
+                    <td>@result.NetId</td>
+                    <td>@result.FirstName</td>
+                    <td>@result.LastName</td>
+                    <td>@result.SubjFName</td>
+                    <td>@result.SubjLName</td>
+                    <td>@result.QuestionId</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+
 <div class="container">
   <!-- Centered Heading -->
   <div class="row justify-content-center">
@@ -33,7 +71,7 @@
     <div class="col-md-3">
       <div class="peer-info text-center">
         @* <img src="student_photo1.jpg" alt="Student's Photo"> *@
-        <div>{model.first_name} {model.last_name}</div>
+        <div>{Model.FirstName} {model.last_name}</div>
         <div>Overall Score: <!-- Overall Score Input Field --></div>
       </div>
     </div>
