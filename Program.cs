@@ -36,4 +36,6 @@ app.MapControllerRoute(
     name: "student",
     pattern: "{controller=Student}/{action=StudentDashboard}/{id?}");
 
+app.MapDefaultControllerRoute();
+
 app.Run();

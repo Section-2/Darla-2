@@ -107,7 +107,16 @@ public class HomeController : Controller
     var query = _repo.Users.Where(x => x.PermissionType == 4);
     return View();
     }
+    
+    public IActionResult StudentProgress()
+    {
+        return View();
+    }
 
+    public IActionResult RubricDetails()
+    {
+        return View();
+    }
 
     /* Potential missing actions for views: TeacherViewPeerEvalSingle, ListTA, adminPeerEvalDashboard, 
      * AdminJudgeListView, AdminDeleteJudge
