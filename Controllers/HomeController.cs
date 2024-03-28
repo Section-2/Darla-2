@@ -79,14 +79,20 @@ public class HomeController : Controller
     {
         return View();
     }
-    public IActionResult ProfFullRubric()
+
+    public IActionResult AdminRubricFull()
     {
-        ViewData["GradingProgress"] = 70;
-        return View();
+        var rubrics = _intexRepo.Rubrics.ToList();
+
+        return View(rubrics);
     }
-    public IActionResult ProfEditRubric()
+
+    public IActionResult AdminRubricEdit(int classCode)
     {
-    var query = _context.Users.Where(x => x.PermissionType == 4);
-    return View();
+        var rubric = _intexRepo.Rubrics
+            .Where(x => x.ClassCode == classCode)
+            .ToList();
+
+        return View(rubric);
     }
 }
