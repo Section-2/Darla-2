@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using SQLitePCL;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 
 // test 2
 namespace Darla.Controllers;
@@ -27,7 +28,7 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult AllGrades()
+    /*public IActionResult AllGrades()
     {
         return View();
     }
@@ -38,7 +39,7 @@ public class HomeController : Controller
     public IActionResult TaGradingProgress()
     {
         return View();
-    }
+    }*/
 
     public IActionResult JudgePage()
     {
@@ -69,10 +70,10 @@ public class HomeController : Controller
         return View("Judge/JudgeDashboard", roomSchedules);
     }
 
-    public IActionResult OpeningPage()
+    /*public IActionResult OpeningPage()
     {
         return View("Judge/JudgeDashboard");
-    }
+    }*/
 
     public IActionResult RubricDetails()
     {
@@ -97,23 +98,22 @@ public class HomeController : Controller
 
     public IActionResult ProfAddJudge()
     {
-        return View();
-    }
-    public IActionResult ProfFullRubric()
-    //Allowing access to StudentSubmission
-    public IActionResult StudentProgress()
-    {
-        return View();
+        return View("AdminAddJudge");
     }
 
-    public IActionResult ProfIndex()
+    public IActionResult ProfFullRubric()
+    {
+        return View();
+    }
+    
+    public IActionResult AdminIndex()
     {
         ViewData["GradingProgress"] = 70;
-        return View();
+        return View("AdminIndexDashboard");
     }
     public IActionResult ProfEditRubric()
     {
-    var query = _context.Users.Where(x => x.PermissionType == 4);
+    var query = _repo.Users.Where(x => x.PermissionType == 4);
     return View();
     }
 }

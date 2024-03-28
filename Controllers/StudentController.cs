@@ -68,7 +68,7 @@ class StudentController : Controller
                 TeamNumber = ts.TeamNumber,
                 GithubLink = ts.GithubLink,
                 VideoLink = ts.VideoLink,
-                Timestamp = ts.Timestamp
+                GoogleDocLink = ts.GoogleDocLink,
             })
             .ToList();
 
@@ -129,7 +129,7 @@ class StudentController : Controller
         //then change it to checked and True and vis versa
         //possibly if this is a stylized radio button have this action happen every time the button is clicked uing an event listener of some sort
         //using the assignmentID update the value of the complete attibute of that assignment
-        return View();
+        return View("StudentProgress");
     }
 
     //public IActionResult getSubmissions()
@@ -152,7 +152,7 @@ class StudentController : Controller
 
         //optional:
         //if the complete status is true then make a copy of that submission and incremetn the submissionVersion value by so that multiple same submissions can be differentiated by submissionVersion 
-        return View();
+        return View("StudentProgress");
     }
 
     public IActionResult StudentPeerReview()
@@ -166,14 +166,14 @@ class StudentController : Controller
     public IActionResult PeerEvaluation()
     {
         //generate the peer eval quiz
-        return View();
+        return View("StudentPeerReview");
     }
 
     public IActionResult SubmitPeerEval()
     {
         //submit the eval, update the data base
         //retrun to the StudentPeerReview view
-        return View();
+        return View("StudentPeerReview");
     }
 
 }

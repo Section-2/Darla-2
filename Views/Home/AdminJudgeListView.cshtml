@@ -17,7 +17,7 @@
         </tr>
     </thead>
 
-    @foreach (var x in Model)
+    @foreach (var x in @Model)
     {
         <tbody>
             <tr>
@@ -27,8 +27,8 @@
                 <td>@x.LastName</td>
                 <td>@x.PermissionType</td>
 
-                <td><a class="btn btn-info" asp-controller="Home" asp-action="Edit" asp-route-id="@x.UserId">Edit</a></td>
-                <td><a class="btn btn-danger" asp-controller="Home" asp-action="Delete" asp-route-id="@x.UserId">Delete</a></td>
+                <td><a class="btn btn-info" asp-controller="Home" asp-action="" asp-route-id="@x.UserId">Edit</a></td>
+                <td><a class="btn btn-danger" asp-controller="Home" asp-action="" asp-route-id="@x.UserId">Delete</a></td>
             </tr>
         </tbody>
     }

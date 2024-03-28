@@ -3,13 +3,14 @@
 *@
 @{
 }
+
 @model User
-<button type="button" asp-controller="Home" asp-action="AdminJudgeListView">Go Back</button>
+<button type="button" asp-controller="Home" asp-action="">Go Back</button>
 
 <h2>Confirm Deletion</h2>
 <h3>@Model.FirstName @Model.LastName</h3>
-<form asp-controller="Home" asp-action="AdminDeletionConfirmation" method="post">
+<form asp-controller="Home" asp-action="" method="post">
     <input type="hidden" asp-for="UserId" />
     <button type="submit">Delete</button>
-    <a class="btn btn-info" asp-controller="Home" asp-action="AdminJudgeListView">Cancel</a>
+    <a class="btn btn-info" asp-controller="Home" asp-action="">Cancel</a>
 </form>
