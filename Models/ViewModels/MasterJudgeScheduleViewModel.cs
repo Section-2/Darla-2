@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Darla.Models;
+namespace Darla.Models.ViewModels;
 
 public class MasterJudgeScheduleViewModel   
 {

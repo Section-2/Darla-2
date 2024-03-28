@@ -1,20 +1,18 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Darla.Models;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using SQLitePCL;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
+using Darla.Models.ViewModels;
 
 namespace Darla.Controllers;
 
 public class HomeController : Controller
 {
-    public IntexGraderContext _context;
 
-    public HomeController(IntexGraderContext context)
+    private IIntexRepository _repo;
+
+    public HomeController(IIntexRepository temp)
     {
-        _context = context;
+        _repo = temp;
     }
 
     public IActionResult Index()
@@ -39,7 +37,7 @@ public class HomeController : Controller
     {
         return View();
     }
-
+    
     public IActionResult JudgePage()
     {
         return View();
@@ -47,7 +45,8 @@ public class HomeController : Controller
 
     public IActionResult judge_survey()
     {
-        return View("Judge/judge_survey");
+
+        return View();
     }
 
     // Action to open judge schedule
@@ -55,7 +54,15 @@ public class HomeController : Controller
     {
         return View("Judge/ScheduleView");
     }
+
+
     public IActionResult OpeningPage()
+    {
+        return View();
+    }
+
+    //Allowing access to StudentSubmission
+    public IActionResult StudentProgress()
     {
         return View();
     }
@@ -66,9 +73,46 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult ProfAddJudge()
+    public IActionResult TeacherViewPeerEvalSingle(int evaluatorId)
     {
-        return View();
+        var evaluationData = _repo.PeerEvaluations
+            .Join(_repo.StudentTeams, pe => pe.EvaluatorId, st => st.UserId, (pe, st) => new { pe, st })
+            .Join(_repo.Users, temp1 => temp1.st.UserId, u => u.UserId, (temp1, u) => new { temp1.pe, temp1.st, u })
+            .Join(_repo.PeerEvaluationQuestions, temp2 => temp2.pe.QuestionId, pq => pq.QuestionId, (temp2, pq) => new { temp2.pe, temp2.st, temp2.u, pq })
+            .Join(
+                (from peInner in _repo.PeerEvaluations
+                 join stInner in _repo.StudentTeams on peInner.SubjectId equals stInner.UserId
+                 join uInner in _repo.Users on stInner.UserId equals uInner.UserId
+                 select new
+                 {
+                     SubjFName = uInner.FirstName,
+                     SubjLName = uInner.LastName,
+                     peInner.SubjectId,
+                     uInner.UserId
+                 }),
+                temp3 => temp3.pe.SubjectId,
+                subj => subj.UserId,
+                (temp3, subj) => new { temp3.pe, temp3.st, temp3.u, temp3.pq, subj }
+            )
+            .GroupBy(x => x.pe.PeerEvaluationId)
+            .Select(group => group.First()) // Selecting the first element from each group
+            .Select(result => new EvaluationViewModel
+            {
+                EvaluatorId = result.pe.EvaluatorId,
+                SubjectId = result.pe.SubjectId,
+                UserId = result.st.UserId,
+                NetId = result.u.NetId,
+                FirstName = result.u.FirstName,
+                LastName = result.u.LastName,
+                SubjFName = result.subj.SubjFName,
+                SubjLName = result.subj.SubjLName,
+                Question = result.pq.Question,
+                QuestionId = result.pq.QuestionId,
+            })
+            .ToList();
+
+
+        return View(evaluationData);
     }
     public IActionResult ProfFullRubric()
     {
@@ -78,11 +122,11 @@ public class HomeController : Controller
 
     public IActionResult MasterJudgeSchedule()
     {
-        var judgeRooms = _context.JudgeRooms.ToList();
-        var roomSchedules = _context.RoomSchedules.ToList();
-        var user = _context.Users.ToList();
-        var permission = _context.Permissions.ToList();
-        var room = _context.Rooms.ToList();
+        var judgeRooms = _repo.JudgeRooms.ToList();
+        var roomSchedules = _repo.RoomSchedules.ToList();
+        var user = _repo.Users.ToList();
+        var permission = _repo.Permissions.ToList();
+        var room = _repo.Rooms.ToList();
 
         var judgeSchedule= new MasterJudgeScheduleViewModel
         {
