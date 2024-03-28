@@ -8,7 +8,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<IntexGraderContext>(options =>
 {
-    options.UseSqlite(builder.Configuration["ConnectionStrings:IntexConnection"]);
+    options.UseSqlServer(builder.Configuration["ConnectionStrings:IntexConnection"]);
 });
 
 builder.Services.AddScoped<IIntexRepository, EFIntexRepository>();
