@@ -18,32 +18,35 @@ public class HomeController : Controller
         _repo = Repo;
     }
 
-    public IActionResult Index()
+    // START HERE!
+    public IActionResult OpeningPage()
     {
         return View();
     }
 
+    // Initial Login page: links to Judge Page! Should redirect to Student OR Admin OR TA views after login... how? 
     public IActionResult BYULogin()
     {
         return View();
     }
 
-    /*public IActionResult AllGrades()
+    // Who should have access to this page?
+    public IActionResult CreateAccount()
     {
         return View();
     }
-    public IActionResult ClassRubric()
-    {
-        return View();
-    }
-    public IActionResult TaGradingProgress()
-    {
-        return View();
-    }*/
 
+
+
+    // JUDGES SECTION
     public IActionResult JudgePage()
     {
         return View();
+    }
+
+    public IActionResult JudgeSignedIn()
+    {
+        return View("Judge/JudgeSignedIn");
     }
 
     [HttpGet]
@@ -70,30 +73,23 @@ public class HomeController : Controller
         return View("Judge/JudgeDashboard", roomSchedules);
     }
 
-    /*public IActionResult OpeningPage()
-    {
-        return View("Judge/JudgeDashboard");
-    }*/
+    // END JUDGES SECTION
 
-    public IActionResult RubricDetails()
+
+
+    // Grading Summary Page for TAs
+    public IActionResult Index()
     {
         return View();
     }
-    //Allowing access to StudentSubmission
-        public IActionResult StudentProgress()
-    {
-        return View();
-    }
+    
 
-//    public IActionResult ProfIndex()
-//    {
-//        ViewData["GradingProgress"] = 70;
-//        return View();
-//    }
-
-        public IActionResult CreateAccount()
+    // ADMINS SECTION
+    // Landing page for Admins
+    public IActionResult AdminIndex()
     {
-        return View();
+        ViewData["GradingProgress"] = 70;
+        return View("AdminIndexDashboard");
     }
 
     public IActionResult ProfAddJudge()
@@ -106,14 +102,14 @@ public class HomeController : Controller
         return View();
     }
     
-    public IActionResult AdminIndex()
-    {
-        ViewData["GradingProgress"] = 70;
-        return View("AdminIndexDashboard");
-    }
     public IActionResult ProfEditRubric()
     {
     var query = _repo.Users.Where(x => x.PermissionType == 4);
     return View();
     }
+
+
+    /* Potential missing actions for views: TeacherViewPeerEvalSingle, ListTA, adminPeerEvalDashboard, 
+     * AdminJudgeListView, AdminDeleteJudge
+     */
 }

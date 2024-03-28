@@ -1,179 +1,183 @@
 ﻿using Darla.Models;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-
 using Microsoft.EntityFrameworkCore;
-namespace Darla.Controllers;
 
+// StudentSubmission view
 
-class StudentController : Controller
+namespace Darla.Controllers
 {
-    private IIntexRepository _intexRepo;
-
-    public StudentController(IIntexRepository temp)
+    public class StudentController : Controller
     {
-        _intexRepo = temp;
-    }
+        private IIntexRepository _intexRepo;
 
-    public IActionResult StudentDashboard()
-    {
-        var userId = 1; // Assuming you will get the user's ID from somewhere.
-        var teamNumber = _intexRepo.StudentTeams
-            .Where(st => st.UserId == userId)
-            .Select(st => (int?)st.TeamNumber)
-            .FirstOrDefault();
-
-
-        List<string> teamMemberNames = new List<string>();
-
-
-        RoomSchedule roomSchedule = _intexRepo.RoomSchedules
-            .FirstOrDefault(rs => rs.TeamNumber == teamNumber.Value);
-
-        // Get the list of UserIds for the team
-        var userIds = _intexRepo.StudentTeams
-            .Where(st => st.TeamNumber == teamNumber.Value)
-            .Select(st => st.UserId)
-            .ToList();
-
-        // Retrieve the names of the Users with those Ids
-        teamMemberNames = _intexRepo.Users
-            .Where(u => userIds.Contains(u.UserId))
-            .Select(u => u.FirstName + " " + u.LastName)
-            .ToList();
-
-
-        // Pass the data to the view using ViewBag
-        ViewBag.TeamNumber = teamNumber;
-        ViewBag.RoomSchedule = roomSchedule;
-        ViewBag.TeamMemberNames = teamMemberNames;
-
-        return View();
-    }
-   
-    private List<TeamSubmission> GetSubmissions(int userId)
-    {
-        var teamNumber = _intexRepo.StudentTeams
-            .FirstOrDefault(st => st.UserId == userId)?.TeamNumber;
-
-        if (!teamNumber.HasValue)
+        public StudentController(IIntexRepository temp)
         {
-            throw new Exception("User is not part of a team.");
+            _intexRepo = temp;
         }
 
-        List<TeamSubmission> submissions = _intexRepo.TeamSubmissions
-            .Where(ts => ts.TeamNumber == teamNumber.Value)
-            .Select(ts => new TeamSubmission
+        public IActionResult StudentDashboard()
+        {
+            var userId = 1; // Assuming you will get the user's ID from somewhere.
+            var teamNumber = _intexRepo.StudentTeams
+                .Where(st => st.UserId == userId)
+                .Select(st => (int?)st.TeamNumber)
+                .FirstOrDefault();
+
+
+            List<string> teamMemberNames = new List<string>();
+
+
+            RoomSchedule roomSchedule = _intexRepo.RoomSchedules
+                .FirstOrDefault(rs => rs.TeamNumber == teamNumber.Value);
+
+            // Get the list of UserIds for the team
+            var userIds = _intexRepo.StudentTeams
+                .Where(st => st.TeamNumber == teamNumber.Value)
+                .Select(st => st.UserId)
+                .ToList();
+
+            // Retrieve the names of the Users with those Ids
+            teamMemberNames = _intexRepo.Users
+                .Where(u => userIds.Contains(u.UserId))
+                .Select(u => u.FirstName + " " + u.LastName)
+                .ToList();
+
+
+            // Pass the data to the view using ViewBag
+            ViewBag.TeamNumber = teamNumber;
+            ViewBag.RoomSchedule = roomSchedule;
+            ViewBag.TeamMemberNames = teamMemberNames;
+
+            return View();
+        }
+
+        private List<TeamSubmission> GetSubmissions(int userId)
+        {
+            var teamNumber = _intexRepo.StudentTeams
+                .FirstOrDefault(st => st.UserId == userId)?.TeamNumber;
+
+            if (!teamNumber.HasValue)
             {
-                TeamNumber = ts.TeamNumber,
-                GithubLink = ts.GithubLink,
-                VideoLink = ts.VideoLink,
-                GoogleDocLink = ts.GoogleDocLink,
-            })
-            .ToList();
+                throw new Exception("User is not part of a team.");
+            }
 
-        return submissions;
-    }
+            List<TeamSubmission> submissions = _intexRepo.TeamSubmissions
+                .Where(ts => ts.TeamNumber == teamNumber.Value)
+                .Select(ts => new TeamSubmission
+                {
+                    TeamNumber = ts.TeamNumber,
+                    GithubLink = ts.GithubLink,
+                    VideoLink = ts.VideoLink,
+                    GoogleDocLink = ts.GoogleDocLink,
+                })
+                .ToList();
 
-    [HttpGet]
-    public IActionResult RubricDetails(int classCode)
-    {
-        // Retrieve all rubrics with the given classId from the repository
-        List<Rubric> rubrics = _intexRepo.Rubrics.Where(r => r.ClassCode == classCode).ToList();
-
-        // Assign the rubrics to the ViewBag
-        ViewBag.Rubrics = rubrics;
-
-        return View();
-    }
-
-
-
-    [HttpGet]
-    public IActionResult StudentProgress()
-    {
-        var userId = 1;
-        var teamNumber = _intexRepo.StudentTeams
-            .FirstOrDefault(st => st.UserId == userId)?.TeamNumber;
-
-        if (!teamNumber.HasValue)
-        {
-            return View("Error", "User is not part of a team.");
+            return submissions;
         }
 
-        List<int> classes = _intexRepo.Rubrics
-            .Select(r => r.ClassCode)
-            .Distinct()
-            .ToList();
+        [HttpGet]
+        public IActionResult RubricDetails(int classCode)
+        {
+            // Retrieve all rubrics with the given classId from the repository
+            List<Rubric> rubrics = _intexRepo.Rubrics.Where(r => r.ClassCode == classCode).ToList();
 
-        List<TeamSubmission> submissions = GetSubmissions(userId);
+            // Assign the rubrics to the ViewBag
+            ViewBag.Rubrics = rubrics;
 
-        // Retrieve rubrics for each class
-        Dictionary<int, List<Rubric>> rubricsByClass = classes.ToDictionary(
-            classCode => classCode,
-            classCode => _intexRepo.Rubrics.Where(r => r.ClassCode == classCode).ToList()
-        );
-
-        ViewBag.Submissions = submissions;
-        ViewBag.Classes = classes;
-        ViewBag.RubricsByClass = rubricsByClass;
-
-        return View();
-    }
+            return View();
+        }
 
 
 
-    public IActionResult updateCompleteStatus()
-    {
-        //when an assigments completed check box is click and is emplt or False 
-        //then change it to checked and True and vis versa
-        //possibly if this is a stylized radio button have this action happen every time the button is clicked uing an event listener of some sort
-        //using the assignmentID update the value of the complete attibute of that assignment
-        return View("StudentProgress");
-    }
+        [HttpGet]
+        public IActionResult StudentProgress()
+        {
+            var userId = 1;
+            var teamNumber = _intexRepo.StudentTeams
+                .FirstOrDefault(st => st.UserId == userId)?.TeamNumber;
 
-    //public IActionResult getSubmissions()
-    //{
+            if (!teamNumber.HasValue)
+            {
+                return View("Error", "User is not part of a team.");
+            }
 
-    //    //this action will check all assignmetns across all ruberics to and get the addignmetns id of those that have a isDeliverable peramiter of True
-    //    // so it should take the Group ID as a peramiter so that it can add submisssions to the submissison table the are assosiated with that group
+            // Throws error: no such column: r.decsription
+            List<int> classes = _intexRepo.Rubrics
+                .Select(r => r.ClassCode)
+                .Distinct()
+                .ToList();
 
-    //    // reference the draw.io for what the submission table looks like
-    //    //it should then return a list of submission. this function will be called on the Student progress page
-    //    var submissions = [];
+            List<TeamSubmission> submissions = GetSubmissions(userId);
 
-    //    return submissions;
-    //}
+            // Retrieve rubrics for each class
+            Dictionary<int, List<Rubric>> rubricsByClass = classes.ToDictionary(
+                classCode => classCode,
+                classCode => _intexRepo.Rubrics.Where(r => r.ClassCode == classCode).ToList()
+            );
 
-    public IActionResult submit()
-    {
-        //this function needs to be able to receive the group ID, the assignmentID, and the file and add those to the submission that matches the groupID and assignmetnID
-        //then it updates the compelete status of the submission to true, 
+            ViewBag.Submissions = submissions;
+            ViewBag.Classes = classes;
+            ViewBag.RubricsByClass = rubricsByClass;
 
-        //optional:
-        //if the complete status is true then make a copy of that submission and incremetn the submissionVersion value by so that multiple same submissions can be differentiated by submissionVersion 
-        return View("StudentProgress");
-    }
+            return View();
+        }
 
-    public IActionResult StudentPeerReview()
-    {
 
-        //This view needs to pull the group info and so that each team memer can be seen and selected to be peer reviewd by the user.
-        // so just return a variable to the view that holds the student info where group ID matches the group ID of the user
-        return View();
-    }
 
-    public IActionResult PeerEvaluation()
-    {
-        //generate the peer eval quiz
-        return View("StudentPeerReview");
-    }
+        public IActionResult updateCompleteStatus()
+        {
+            //when an assigments completed check box is click and is emplt or False 
+            //then change it to checked and True and vis versa
+            //possibly if this is a stylized radio button have this action happen every time the button is clicked uing an event listener of some sort
+            //using the assignmentID update the value of the complete attibute of that assignment
+            return View("StudentProgress");
+        }
 
-    public IActionResult SubmitPeerEval()
-    {
-        //submit the eval, update the data base
-        //retrun to the StudentPeerReview view
-        return View("StudentPeerReview");
+        //public IActionResult getSubmissions()
+        //{
+
+        //    //this action will check all assignmetns across all ruberics to and get the addignmetns id of those that have a isDeliverable peramiter of True
+        //    // so it should take the Group ID as a peramiter so that it can add submisssions to the submissison table the are assosiated with that group
+
+        //    // reference the draw.io for what the submission table looks like
+        //    //it should then return a list of submission. this function will be called on the Student progress page
+        //    var submissions = [];
+
+        //    return submissions;
+        //}
+
+        public IActionResult submit()
+        {
+            //this function needs to be able to receive the group ID, the assignmentID, and the file and add those to the submission that matches the groupID and assignmetnID
+            //then it updates the compelete status of the submission to true, 
+
+            //optional:
+            //if the complete status is true then make a copy of that submission and incremetn the submissionVersion value by so that multiple same submissions can be differentiated by submissionVersion 
+            return View("StudentProgress");
+        }
+
+        public IActionResult StudentPeerReview()
+        {
+
+            //This view needs to pull the group info and so that each team memer can be seen and selected to be peer reviewd by the user.
+            // so just return a variable to the view that holds the student info where group ID matches the group ID of the user
+            return View();
+        }
+
+        public IActionResult PeerEvaluation()
+        {
+            //generate the peer eval quiz
+            return View("StudentPeerReview");
+        }
+
+        public IActionResult SubmitPeerEval()
+        {
+            //submit the eval, update the data base
+            //return to the StudentPeerReview view
+            return View("StudentPeerReview");
+        }
+
     }
 
 }

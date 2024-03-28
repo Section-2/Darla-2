@@ -15,8 +15,9 @@ namespace Darla.Controllers
             _repo = temp;
         }
 
-        //Views 
+        /* is the Grading summary page supposed to go here? */
 
+        //Views
         public IActionResult AllGrades()
         {
             var TeamInfo = _repo.Teams.ToList();
