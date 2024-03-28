@@ -114,7 +114,7 @@ namespace Darla.Controllers
 
             if (!teamNumber.HasValue)
             {
-                return View("Error", "User is not part of a team.");
+                throw new Exception("User is not part of a team.");
             }
 
             List<int> classes = _intexRepo.Rubrics
@@ -138,7 +138,7 @@ namespace Darla.Controllers
 
             if (!teamNumber.HasValue)
             {
-                return View("Error", "User is not part of a team.");
+                throw new Exception("User is not part of a team.");
             }
 
             // Get the peer evaluation questions
@@ -151,7 +151,7 @@ namespace Darla.Controllers
                 .Select(st => st.User) // Assuming there is a navigation property 'User' in 'StudentTeam'
                 .ToList();
 
-            return View(viewModel);
+            return View();
         }
 
     }
