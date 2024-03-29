@@ -24,20 +24,6 @@ public class HomeController : Controller
         return View();
     }
 
-    // Initial Login page: links to Judge Page! Should redirect to Student OR Admin OR TA views after login... how? 
-    public IActionResult BYULogin()
-    {
-        return View();
-    }
-
-    // Who should have access to this page?
-    public IActionResult CreateAccount()
-    {
-        return View();
-    }
-
-
-
     // JUDGES SECTION
     public IActionResult JudgePage()
     {
@@ -107,7 +93,21 @@ public class HomeController : Controller
     var query = _repo.Users.Where(x => x.PermissionType == 4);
     return View();
     }
+    
+    public IActionResult StudentProgress()
+    {
+        return View();
+    }
 
+    public IActionResult StudentDashboard()
+    {
+        return View();
+    }
+
+    public IActionResult RubricDetails()
+    {
+        return View();
+    }
 
     /* Potential missing actions for views: TeacherViewPeerEvalSingle, ListTA, adminPeerEvalDashboard, 
      * AdminJudgeListView, AdminDeleteJudge
