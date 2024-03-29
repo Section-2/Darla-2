@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Darla.Models;
 
 public partial class IntexGraderContext : DbContext
+
 {
     public IntexGraderContext()
     {
