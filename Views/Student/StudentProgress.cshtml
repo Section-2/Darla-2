@@ -90,13 +90,7 @@
 
             <div class="flex justify-end mt-6">
                 <button type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 " data-bs-toggle="modal" data-bs-target="#githubModal">
-                    Submit GitHub Link
-                </button>
-                <button type="button" class="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" data-bs-toggle="modal" data-bs-target="#videoModal">
-                    Submit Video
-                </button>
-                <button type="button" class="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" data-bs-toggle="modal" data-bs-target="#projectInfoModal">
-                    Submit Project Info
+                    Submit Links
                 </button>
             </div>
         </div>
@@ -161,7 +155,37 @@
     </script>
 </body>
 
-<!-- GitHub Modal -->
+
+<div class="modal fade" id="githubModal" tabindex="-1" aria-labelledby="githubModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="githubModalLabel">Link Submission</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <EditForm>
+                <div>
+                    <label for="gitHubLink" class="fw-bold">GitHub Link</label><br />
+                    <input type="text" id="gitHubLink" />
+                </div>
+                <div>
+                    <label for="videoLink" class="fw-bold">Video Link</label><br />
+                    <input type="text" id="videoLink" />
+                </div>
+                <div>
+                    <label for="projectInfoLink" class="fw-bold">Project Info Link</label><br />
+                    <input type="text" id="projectInfoLink" />
+                </div>
+            </EditForm>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="submitGitHubLink">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Link Submission Modal -->
 <div class="modal fade" id="githubModal" tabindex="-1" aria-labelledby="githubModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -180,42 +204,3 @@
     </div>
 </div>
 
-<!-- Video Modal -->
-<div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="videoModalModalLabel">Video Submission</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="submitVideo()">Submit</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-<!-- Project Info Modal -->
-<div class="modal fade" id="projectInfoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Project Info Submission</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Submit</button>
-            </div>
-        </div>
-    </div>
-</div>
