@@ -114,11 +114,6 @@ public class HomeController : Controller
 
         return View(evaluationData);
     }
-    public IActionResult ProfFullRubric()
-    {
-        ViewData["GradingProgress"] = 70;
-        return View();
-    }
 
     public IActionResult MasterJudgeSchedule()
     {
