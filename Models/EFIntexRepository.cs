@@ -24,6 +24,26 @@ namespace Darla.Models
             _context.Update(presentation);
             _context.SaveChanges();
         }
+        public void UpdateTeamRanks(Dictionary<int,int>teamRanks)
+        {
+            foreach(var teamRank in teamRanks)
+            {
+                var teamNumber = teamRank.Key;
+                var rank=teamRank.Value;
+
+                var presToUpdate=_context.Presentations.SingleOrDefault(x=>x.TeamNumber==teamNumber);
+
+                if(presToUpdate==null)
+                {
+                    throw new Exception($"Teamnotfoundforteamnumber:{teamNumber}.");
+                }
+                //Updatetheproperty
+                presToUpdate.TeamRank=rank;
+            }
+
+            //Savechangesoutsidetheloop
+            _context.SaveChanges();
+        }
         public IEnumerable<RoomSchedule> RoomSchedules => _context.RoomSchedules;
         public IQueryable<RoomSchedule> RoomSchedulesWithRooms => _context.RoomSchedules.Include(rs => rs.Room);
         public IEnumerable<StudentTeam> StudentTeams => _context.StudentTeams;

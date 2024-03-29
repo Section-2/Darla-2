@@ -95,6 +95,12 @@ public class HomeController : Controller
         var roomSchedules = _repo.RoomSchedulesWithRooms;
         return View("Judge/JudgeDashboard", roomSchedules);
     }
+    [HttpPost]
+    public IActionResult UpdateRanks(Dictionary<int,int>teamRanks)
+    {
+        _repo.UpdateTeamRanks(teamRanks);
+        return RedirectToAction("JudgeDashboard");
+    }
 
     // END JUDGES SECTION
 
