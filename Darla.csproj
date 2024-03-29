@@ -7,7 +7,29 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="wwwroot\assets\img\" />
+      <Content Remove="Views\Home\ProfFullRubric.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.3" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.3">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.3" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.3">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <Folder Include="Models\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="Views\Home\ProfFullRubric.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.3" />
     </ItemGroup>
 
     <ItemGroup>

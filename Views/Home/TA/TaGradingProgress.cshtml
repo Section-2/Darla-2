@@ -159,7 +159,7 @@
                         const grade = graded1 && graded2 ? Math.floor(Math.random() * 41) + 60 + '%' : '-'; // Show grade if both TAs graded
 
                         $('#tableBody').append(`<tr data-section="${sect}">
-                                <td>${sect}-${group}</td>
+                                <td>Group ${sect}-${group}</td>
                                 <td>${tas.join(", ")}</td>
                                 <td>
                                     <span style="color: ${graded1 ? 'green' : 'red'};">${graded1 ? '&#x2714;' : '&#x2716;'}</span>,

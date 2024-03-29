@@ -10,7 +10,7 @@ namespace Darla.Controllers
         //Controller
         private IIntexRepository _repo;
 
-        public TAController(IIntexRepository temp) 
+        public TAController(IIntexRepository temp)
         {
             _repo = temp;
         }
