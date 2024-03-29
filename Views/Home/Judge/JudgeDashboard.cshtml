@@ -24,7 +24,10 @@
                     int count = 0;
                     foreach (RoomSchedule schedule in Model)
                     {
-                        <div>@schedule.Timeslot Team @schedule.TeamNumber</div>
+                        <div>
+                            @schedule.Timeslot 
+                            <a asp-action="judge_survey" asp-route-teamNumber="@schedule.TeamNumber">Team @schedule.TeamNumber</a>
+                        </div>                        
                         if (++count == 2) // After the second schedule entry
                         {
                             <div>Lunch Break</div> // Insert a lunch break

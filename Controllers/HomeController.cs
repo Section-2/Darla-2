@@ -50,9 +50,18 @@ public class HomeController : Controller
     }
 
     [HttpGet]
-    public IActionResult judge_survey()
+    public IActionResult judge_survey(int? teamNumber)
     {
-        return View("Judge/judge_survey",new Presentation());
+        var presentation = new Presentation();
+
+        if (teamNumber.HasValue)
+        {
+            presentation.TeamNumber = teamNumber.Value;
+            // If JudgeId is needed from the logged-in user, assign it similarly
+            // presentation.JudgeId = ...;
+        }
+
+        return View("Judge/judge_survey", presentation);
     }
 
     [HttpPost]
