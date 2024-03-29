@@ -119,11 +119,11 @@
     }
 
     // Event listener for the "Save" button
-    const saveButton = document.getElementById('saveOrderButton');
-    saveButton.addEventListener('click', () => {
-        resetOpacity();
-        // Here you can also implement any other save logic if needed
-    })
+    // const saveButton = document.getElementById('saveOrderButton');
+    // saveButton.addEventListener('click', () => {
+    //     resetOpacity();
+    //     // Here you can also implement any other save logic if needed
+    // })
 
     // Initial setup
     let dragSrcEl = null;
