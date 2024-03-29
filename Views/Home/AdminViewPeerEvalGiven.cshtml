@@ -1,0 +1,42 @@
+﻿@model List<Darla.Models.ViewModels.EvaluationViewModel>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peer Evaluation Form</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .peer-info img {
+            max-width: 100px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Centered Heading -->
+        <div class="row justify-content-center">
+            <div class="col-auto">
+                <!-- Display "Reviews by [EvaluatorFirstName] [EvaluatorLastName]" -->
+                <h1>Evaluations given by @Model.FirstOrDefault()?.FirstName @Model.FirstOrDefault()?.LastName</h1>
+            </div>
+        </div>
+
+        <!-- Evaluator Information -->
+        <div class="row">
+            <div class="col-md-6">
+                <!-- Change heading to reflect dynamic display -->
+                <h2>Evaluations</h2>
+                <!-- Filter evaluations by EvaluatorId -->
+                @foreach (var subjectId in Model.Where(x => x.EvaluatorId == Model.FirstOrDefault()?.EvaluatorId).Select(x => x.SubjectId).Distinct())
+                {
+                    <h3>Subject ID: @subjectId</h3>
+                    <!-- You can add more information about the subject here if needed -->
+                }
+            </div>
+        </div>
+    </div>
+</body>
+</html>

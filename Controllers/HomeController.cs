@@ -73,7 +73,7 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult TeacherViewPeerEvalSingle(int evaluatorId)
+    public IActionResult AdminViewPeerEvalGiven(int evaluatorId)
     {
         var evaluationData = _repo.PeerEvaluations
             .Join(_repo.StudentTeams, pe => pe.EvaluatorId, st => st.UserId, (pe, st) => new { pe, st })
@@ -134,7 +134,7 @@ public class HomeController : Controller
         return View(judgeSchedule);
     }
 
-    [HttpGet]
+    /*[HttpGet]
     public IActionResult Edit(int id)
     {
         var recordToEdit = _context.Users
@@ -166,6 +166,6 @@ public class HomeController : Controller
         _context.SaveChanges();
 
         return RedirectToAction("AdminJudgeListView");
-    }
+    }*/
 
 }
