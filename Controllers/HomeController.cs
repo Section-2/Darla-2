@@ -58,10 +58,24 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult judge_survey(Presentation p)
     {
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
-            _repo.AddPresentationScore(p);
+            // Log each model error
+            foreach (var modelState in ModelState.Values)
+            {
+                foreach (var error in modelState.Errors)
+                {
+                    // Log the error to your logging framework; for example:
+                    Console.WriteLine(error.ErrorMessage); // Replace with your actual logging mechanism
+                }
+            }
+
+            // Return to the view with the current Presentation model to display errors
+            return View("Judge/judge_survey", p);
         }
+
+        // If the model is valid, proceed with adding the presentation score
+        _repo.AddPresentationScore(p);
 
         return RedirectToAction("JudgeDashboard", new Presentation());
     }
