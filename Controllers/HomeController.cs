@@ -67,7 +67,7 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult ProfIndex()
+    public IActionResult AdminProfIndex()
     {
         ViewData["GradingProgress"] = 70;
         return View();
