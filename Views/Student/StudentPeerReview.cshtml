@@ -1,5 +1,46 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    ViewData["Title"] = "Home Page";
 }
+@model PeerEvaluation
+@model StudentTeam
+<h1 class="text-center">Student Peer Evaluation</h1>
+
+@* a basic layout of what i am looking for. Make sure to link student id for each name, calculate total points for each id,
+and make sure that each student has a corresponding team id so that each student's group memeber's name shows up
+*@
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@model Darla.Models.PeerEvaluation
+
+<h1 class="text-center">Student Peer Evaluation</h1>
+<h3 class="text-center">Welcome @Model.Evaluator</h3>
+
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Team Member Name</th>
+        <th>Total Points</th>
+        <th>Submission Status</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var teamMember in Model.SubjectId) 
+    { 
+        <tr>
+            <td>@teamMember.Name</td>=
+            <td>@(teamMember.Rating.HasValue ? teamMember.Rating.Value + " out of 100" : "- out of 100")</td>
+            <td>@(teamMember.SubmissionStatus ? "Complete" : "Not Complete")</td>
+            <td>
+                @* Put action links or buttons here *@
+                @* Example: <a href="/Evaluate/@teamMember.StudentId">Evaluate</a> *@
+                @<a href=""></a>
+            </td>
+            
+        </tr>
+    }
+    </tbody>
+</table> ,m

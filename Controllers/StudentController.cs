@@ -121,7 +121,7 @@ namespace Darla.Controllers
                 .Select(r => r.ClassCode)
                 .Distinct()
                 .ToList();
-
+               
             List<TeamSubmission> submissions = GetSubmissions(userId);
             ViewBag.Submissions = submissions;
             ViewBag.Classes = classes;
