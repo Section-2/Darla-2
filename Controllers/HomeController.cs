@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using SQLitePCL;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 
 // test 2
 namespace Darla.Controllers;
@@ -17,32 +18,21 @@ public class HomeController : Controller
         _repo = Repo;
     }
 
-    public IActionResult Index()
+    // START HERE!
+    public IActionResult OpeningPage()
     {
         return View();
     }
 
-    public IActionResult BYULogin()
-    {
-        return View();
-    }
-
-    public IActionResult AllGrades()
-    {
-        return View();
-    }
-    public IActionResult ClassRubric()
-    {
-        return View();
-    }
-    public IActionResult TaGradingProgress()
-    {
-        return View();
-    }
-
+    // JUDGES SECTION
     public IActionResult JudgePage()
     {
         return View();
+    }
+
+    public IActionResult JudgeSignedIn()
+    {
+        return View("Judge/JudgeSignedIn");
     }
 
     [HttpGet]
@@ -69,51 +59,57 @@ public class HomeController : Controller
         return View("Judge/JudgeDashboard", roomSchedules);
     }
 
-    public IActionResult OpeningPage()
+    // END JUDGES SECTION
+
+
+
+    // Grading Summary Page for TAs
+    public IActionResult Index()
     {
-        return View("Judge/JudgeDashboard");
+        return View();
+    }
+    
+
+    // ADMINS SECTION
+    // Landing page for Admins
+    public IActionResult AdminIndex()
+    {
+        ViewData["GradingProgress"] = 70;
+        return View("AdminIndexDashboard");
+    }
+
+    public IActionResult ProfAddJudge()
+    {
+        return View("AdminAddJudge");
+    }
+
+    public IActionResult ProfFullRubric()
+    {
+        return View();
+    }
+    
+    public IActionResult ProfEditRubric()
+    {
+    var query = _repo.Users.Where(x => x.PermissionType == 4);
+    return View();
+    }
+    
+    public IActionResult StudentProgress()
+    {
+        return View();
+    }
+
+    public IActionResult StudentDashboard()
+    {
+        return View();
     }
 
     public IActionResult RubricDetails()
     {
         return View();
     }
-    //Allowing access to StudentSubmission
-        public IActionResult StudentProgress()
-    {
-        return View();
-    }
 
-//    public IActionResult ProfIndex()
-//    {
-//        ViewData["GradingProgress"] = 70;
-//        return View();
-//    }
-
-        public IActionResult CreateAccount()
-    {
-        return View();
-    }
-
-    public IActionResult ProfAddJudge()
-    {
-        return View();
-    }
-    public IActionResult ProfFullRubric()
-    //Allowing access to StudentSubmission
-    public IActionResult StudentProgress()
-    {
-        return View();
-    }
-
-    public IActionResult ProfIndex()
-    {
-        ViewData["GradingProgress"] = 70;
-        return View();
-    }
-    public IActionResult ProfEditRubric()
-    {
-    var query = _context.Users.Where(x => x.PermissionType == 4);
-    return View();
-    }
+    /* Potential missing actions for views: TeacherViewPeerEvalSingle, ListTA, adminPeerEvalDashboard, 
+     * AdminJudgeListView, AdminDeleteJudge
+     */
 }

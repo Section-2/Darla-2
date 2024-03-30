@@ -35,6 +35,9 @@ namespace Darla.Controllers
                 }*/
 
         // This action retrieves the data and returns it to the AllGrades view
+        
+        /* is the Grading summary page supposed to go here? */
+
         public IActionResult AllGrades()
         {
             var viewModel = new IntexViewModel
