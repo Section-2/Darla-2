@@ -76,6 +76,30 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
 
 <style>
+    .header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    } 
+    
+    .back-arrow {
+        font-size: 24px;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+    
+    .no-hover {
+            text-decoration: none !important;
+            color: inherit !important;
+    }
+    
+    .collapse-row .btn-link {
+        width: 100%;
+        text-align: left;
+        padding: 10px;
+        font-weight: bold;
+    }
+    
     .collapse-row .btn-link {
         width: 100%;
         text-align: left;
@@ -102,6 +126,9 @@
 </style>
 
 <div class="main-content">
+    <div class="header">
+        <a asp-controller="Home" asp-action="Index" class="back-arrow no-hover">&#x2190;</a>
+    </div>
     <div class="container mt-4">
         <div class="text-center mb-4">
             <h2>Group Scores</h2>
@@ -109,18 +136,18 @@
         </div>
         <table class="table">
             <thead>
-                <tr>
-                    <th>Group Name</th>
-                    <th>Score</th>
-                </tr>
+            <tr>
+                <th>Group Name</th>
+                <th>Score</th>
+            </tr>
             </thead>
             <tbody id="scoresTable">
-                @foreach (Team s in Model)
-                {
-                    <tr>
-                        <td>@s.TeamNumber</td>
-                    </tr>
-                }
+            @foreach (Team s in Model)
+            {
+                <tr>
+                    <td>@s.TeamNumber</td>
+                </tr>
+            }
             </tbody>
         </table>
     </div>

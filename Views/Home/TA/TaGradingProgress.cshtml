@@ -5,6 +5,24 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
 
 <style>
+    .header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-top: 20px;
+    }
+
+    .back-arrow {
+        font-size: 24px;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+    
+    .no-hover {
+                text-decoration: none !important;
+                color: inherit !important;
+    }
+    
     .collapse-row .btn-link {
         width: 100%;
         text-align: left;
@@ -31,58 +49,133 @@
 </style>
 
 <div class="main-content">
+        <div class="header">
+            <a asp-controller="Home" asp-action="Index" class="back-arrow no-hover">&#x2190;</a>
+        </div>
     <div class="container mt-4">
         <div class="text-center mb-4">
             <h2>Total Grading Progress</h2>
         </div>
 
-        @foreach (var course in new[] { "IS 401", "IS 413", "IS 414", "IS 455" })
-        {
-            <div id="@course.Replace(" ", "")-row" class="collapse-row">
-                <button class="btn btn-light btn-link" type="button" data-toggle="collapse" data-target="#@course.Replace(" ", "")-content" aria-expanded="false">
-                    @course
+        <div class="d-flex justify-content-start mb-3">
+            <div class="dropdown mr-2">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="sectionDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    All Sections
                 </button>
-                <div class="collapse" id="@course.Replace(" ", "")-content">
-                    <div class="card card-body">
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Select Section
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                @foreach (var section in new[] { "Section 1", "Section 2", "Section 3", "Section 4" })
-                                {
-                                    <a class="dropdown-item" href="#">Section #</a>
-                                }
-                            </div>
-                        </div>
-                        <table class="table mt-3 nested-table">
-                            <thead>
-                                <tr>
-                                    <th>Group Number</th>
-                                    <th>TA Assignment</th>
-                                    <th>Graded</th>
-                                    <th>Stats</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @for (int i = 1; i <= 10; i++)
-                                {
-                                    <tr>
-                                        <td>Group 1-@i</td>
-                                        <td></td> <!-- TA Assignment -->
-                                        <td>X</td> <!-- Graded -->
-                                        <td>0%</td> <!-- Stats -->
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="dropdown-menu" aria-labelledby="sectionDropdown">
+                    <a class="dropdown-item section-selector active" href="#" data-section="all">All Sections</a>
+                    @foreach (var sect in new[] { "Section 1", "Section 2", "Section 3", "Section 4" })
+                    {
+                        <a class="dropdown-item section-selector" href="#" data-section="@sect">@sect</a>
+                    }
                 </div>
             </div>
-        }
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="classDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    All Classes
+                </button>
+                <div class="dropdown-menu" aria-labelledby="classDropdown">
+                    <a class="dropdown-item class-selector active" href="#" data-class="all">All Classes</a>
+                    @foreach (var course in new[] { "IS 401", "IS 413", "IS 414", "IS 455" })
+                    {
+                        <a class="dropdown-item class-selector" href="#" data-class="@course">@course</a>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <table class="table mt-3" id="gradingTable">
+            <thead id="tableHead">
+            <!-- Headers will be added dynamically -->
+            </thead>
+            <tbody id="tableBody">
+            <!-- Content will be added dynamically -->
+            </tbody>
+        </table>
     </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.section-selector').click(function (e) {
+            e.preventDefault();
+            var selectedSection = $(this).data('section'); // Use the data-section value directly
+            var selectedText = $(this).text(); // Get the text of the selected item
+            $('#sectionDropdown').text(selectedText); // Update the section dropdown button text
+
+            // Section filtering logic
+            $('#tableBody tr').each(function () {
+                var groupSection = $(this).data('section'); // Get the section data attribute from the row
+                if (selectedSection === "all" || selectedSection === `Section ${groupSection}`) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+
+            $('.section-selector').removeClass('active'); // Remove active class from all section dropdown items
+            $(this).addClass('active'); // Add active class to the selected item
+        });
+
+        $('.class-selector').click(function (e) {
+            e.preventDefault();
+            var selectedClass = $(this).data('class'); // Use the data-class value directly
+            var selectedText = $(this).text(); // Get the text of the selected item
+            $('#classDropdown').text(selectedText); // Update the class dropdown button text
+
+            // Clear existing table headers and body
+            $('#tableHead').empty();
+            $('#tableBody').empty();
+
+            if (selectedClass === "all") {
+                // Logic for "All Classes" selection
+                $('#tableHead').append('<tr><th>Group</th><th>Classes Graded</th><th>Final Grade</th></tr>');
+                // Populate tableBody based on all classes
+                for (let sect = 1; sect <= 4; sect++) {
+                    for (let group = 1; group <= 10; group++) {
+                        const graded = Math.floor(Math.random() * 5); // Random number of classes graded
+                        const finalGrade = graded === 4 ? Math.floor(Math.random() * 41) + 60 + '%' : '-';
+                        $('#tableBody').append(`<tr data-section="${sect}"><td>Group ${sect}-${group}</td><td>${graded}/4</td><td>${finalGrade}</td></tr>`);
+                    }
+                }
+            } else {
+                $('#tableHead').append('<tr><th>Group</th><th>TA Assignment</th><th>Graded</th><th>Grade</th></tr>');
+
+                const characters = {
+                    "IS 401": ["R2-D2", "C-3PO"],
+                    "IS 413": ["Boba Fett", "Dengar"],
+                    "IS 414": ["Yoda", "Mace Windu"],
+                    "IS 455": ["Darth Vader", "Darth Maul"]
+                };
+
+                for (let sect = 1; sect <= 4; sect++) {
+                    for (let group = 1; group <= 10; group++) {
+                        const tas = characters[selectedClass];
+                        const graded1 = Math.random() < 0.5; // Randomly graded or not for TA1
+                        const graded2 = Math.random() < 0.5; // Randomly graded or not for TA2
+                        const grade = graded1 && graded2 ? Math.floor(Math.random() * 41) + 60 + '%' : '-'; // Show grade if both TAs graded
+
+                        $('#tableBody').append(`<tr data-section="${sect}">
+                                <td>Group ${sect}-${group}</td>
+                                <td>${tas.join(", ")}</td>
+                                <td>
+                                    <span style="color: ${graded1 ? 'green' : 'red'};">${graded1 ? '&#x2714;' : '&#x2716;'}</span>,
+                                    <span style="color: ${graded2 ? 'green' : 'red'};">${graded2 ? '&#x2714;' : '&#x2716;'}</span>
+                                </td>
+                                <td>${grade}</td>
+                            </tr>`);
+                    }
+                }
+            }
+
+            $('.class-selector').removeClass('active');
+            $(this).addClass('active');
+        });
+
+        $('.section-selector[data-section="all"]').click();
+        $('.class-selector[data-class="all"]').click();
+    });
+</script>
