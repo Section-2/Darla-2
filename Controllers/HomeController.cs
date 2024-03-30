@@ -119,20 +119,25 @@ public class HomeController : Controller
     {
         var judgeRooms = _repo.JudgeRooms.ToList();
         var roomSchedules = _repo.RoomSchedules.ToList();
-        var user = _repo.Users.ToList();
-        var permission = _repo.Permissions.ToList();
-        var room = _repo.Rooms.ToList();
+        var permissions = _repo.Permissions.ToList();
+        var rooms = _repo.Rooms.ToList();
 
-        var judgeSchedule= new MasterJudgeScheduleViewModel
+        var users = _repo.Users
+            .Where(u => u.PermissionType == 4 && judgeRooms.Any(jr => jr.UserId == u.UserId))
+            .ToList();
+
+        var judgeSchedule = new MasterJudgeScheduleViewModel
         {
             JudgeRoom = judgeRooms,
             RoomSchedule = roomSchedules,
-            User = user,
-            Permission = permission,
-            Room = room
+            User = users,
+            Permission = permissions,
+            Room = rooms
         };
+
         return View(judgeSchedule);
     }
+
 
     /*[HttpGet]
     public IActionResult Edit(int id)
