@@ -1,0 +1,354 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model Darla.Models.IntexViewModel
+
+<h1>Every Table in our Database</h1>
+
+<h2>Grades</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>AssignmentId</th>
+            <th>UserId</th>
+            <th>TeamNumber</th>
+            <th>PointsEarned</th>
+            <th>Comments</th>
+            <th>GradeId</th>
+            <!-- Add more columns as needed -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var grade in Model.Grades)
+        {
+            <tr>
+                <td>@grade.AssignmentId</td>
+                <td>@grade.UserId</td>
+                <td>@grade.TeamNumber</td>
+                <td>@grade.PointsEarned</td>
+                <td>@grade.Comments</td>
+                <td>@grade.GradeId</td>
+                <!-- Add more columns as needed -->
+            </tr>
+        }
+    </tbody>
+</table>
+<h2>Rubrics</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>AssignmentId</th>
+            <th>ClassCode</th>
+            <th>Subcategory</th>
+            <th>Description</th>
+            <th>MaxPoints</th>
+            <th>InstructorNotes</th>
+            <!-- Add more columns as needed -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var rubric in Model.Rubrics)
+        {
+            <tr>
+                <td>@rubric.AssignmentId</td>
+                <td>@rubric.ClassCode</td>
+                <td>@rubric.Subcategory</td>
+                <td>@rubric.Decsription</td>
+                <td>@rubric.MaxPoints</td>
+                <td>@rubric.InstructorNotes</td>
+                <!-- Add more columns as needed -->
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h2>Judge Rooms</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>User Id</th>
+            <th>Room Id</th>
+            <!-- Add more columns as needed -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var judgeRoom in Model.JudgeRooms)
+        {
+            <tr>
+                <td>@judgeRoom.UserId</td>
+                <td>@judgeRoom.RoomId</td>
+                <!-- Add more columns as needed -->
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h2>Peer Evaluations</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Peer Evaluation Id</th>
+            <th>Evaluator Id</th>
+            <th>Subject Id</th>
+            <th>Question Id</th>
+            <th>Rating</th>
+            <!-- Add more columns as needed -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var peerEvaluation in Model.PeerEvaluations)
+        {
+            <tr>
+                <td>@peerEvaluation.PeerEvaluationId</td>
+                <td>@peerEvaluation.EvaluatorId</td>
+                <td>@peerEvaluation.SubjectId</td>
+                <td>@peerEvaluation.QuestionId</td>
+                <td>@peerEvaluation.Rating</td>
+                <!-- Add more columns as needed -->
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h2>Peer Evaluation Questions</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Question Id</th>
+            <th>Question</th>
+            <!-- Add more columns as needed -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var peerEvaluationQuestion in Model.PeerEvaluationsQuestions)
+        {
+            <tr>
+                <td>@peerEvaluationQuestion.QuestionId</td>
+                <td>@peerEvaluationQuestion.Question</td>
+                <!-- Add more columns as needed -->
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<h2>Permissions</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Permission Type</th>
+            <th>Permission Description</th>
+            <!-- Add more columns as needed -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var permission in Model.Permissions)
+        {
+            <tr>
+                <td>@permission.PermissionType</td>
+                <td>@permission.PermissionDescription</td>
+                <!-- Add more columns as needed -->
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h2>Presentations</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Presentation Id</th>
+            <th>Judge Id</th>
+            <th>Team Number</th>
+            <th>Communication Score</th>
+            <th>Communication Notes</th>
+            <th>Demonstration Score</th>
+            <th>Demonstration Notes</th>
+            <th>Client Needs Score</th>
+            <th>Client Needs Notes</th>
+            <th>Awards</th>
+            <th>Team Rank</th>
+            <!-- Add more columns as needed -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var presentation in Model.Presentations)
+        {
+            <tr>
+                <td>@presentation.PresentationId</td>
+                <td>@presentation.JudgeId</td>
+                <td>@presentation.TeamNumber</td>
+                <td>@presentation.CommunicationScore</td>
+                <td>@presentation.CommunicationNotes</td>
+                <td>@presentation.DemonstrationScore</td>
+                <td>@presentation.DemonstrationNotes</td>
+                <td>@presentation.ClientNeedsScore</td>
+                <td>@presentation.ClientNeedsNotes</td>
+                <td>@presentation.Awards</td>
+                <td>@presentation.TeamRank</td>
+                <!-- Add more columns as needed -->
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h2>Rooms</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Room Id</th>
+            <th>Room Name</th>
+            <!-- Add more columns as needed -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var room in Model.Rooms)
+        {
+            <tr>
+                <td>@room.RoomId</td>
+                <td>@room.RoomName</td>
+                <!-- Add more columns as needed -->
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h2>Room Schedules</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Room Id</th>
+            <th>Timeslot</th>
+            <th>Team Number</th>
+            <!-- Add more columns as needed -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var roomSchedule in Model.RoomSchedules)
+        {
+            <tr>
+                <td>@roomSchedule.RoomId</td>
+                <td>@roomSchedule.Timeslot</td>
+                <td>@roomSchedule.TeamNumber</td>
+                <!-- Add more columns as needed -->
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h2>Student Teams</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>User Id</th>
+            <th>Team Number</th>
+            <!-- Add more columns as needed -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var studentTeam in Model.StudentTeams)
+        {
+            <tr>
+                <td>@studentTeam.UserId</td>
+                <td>@studentTeam.TeamNumber</td>
+                <!-- Add more columns as needed -->
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h2>Teams</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Team Number</th>
+            <!-- Add more columns as needed -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var team in Model.Teams)
+        {
+            <tr>
+                <td>@team.TeamNumber</td>
+                <!-- Add more columns as needed -->
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h2>Team Submissions</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Team Number</th>
+            <th>Github Link</th>
+            <th>Video Link</th>
+            <th>Timestamp</th>
+            <!-- Add more columns as needed -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var submission in Model.TeamSubmissions)
+        {
+            <tr>
+                <td>@submission.TeamNumber</td>
+                <td>@submission.GithubLink</td>
+                <td>@submission.VideoLink</td>
+                <td>@submission.Timestamp</td>
+                <!-- Add more columns as needed -->
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h2>Users</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>User Id</th>
+            <th>NetId</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Permission Type</th>
+            <!-- Add more columns as needed -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model.Users)
+        {
+            <tr>
+                <td>@user.UserId</td>
+                <td>@user.NetId</td>
+                <td>@user.FirstName</td>
+                <td>@user.LastName</td>
+                <td>@user.PermissionType</td>
+                <!-- Add more columns as needed -->
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h2>User Passwords</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>User Id</th>
+            <th>User Password</th>
+            <!-- Add more columns as needed -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var userPassword in Model.UserPasswords)
+        {
+            <tr>
+                <td>@userPassword.UserId</td>
+                <td>@userPassword.UserPassword1</td>
+                <!-- Add more columns as needed -->
+            </tr>
+        }
+    </tbody>
+</table>
+
