@@ -154,12 +154,44 @@ public class StudentController : Controller
         return View();
     }
 
+    public IActionResult GroupPeerEvals()
+    {
+        int userId = 7; // Hardcoded userId
+
+        // Find the team number associated with this user
+        var teamNumber = _intexRepo.StudentTeams
+            .Where(st => st.UserId == userId)
+            .Select(st => st.TeamNumber)
+            .FirstOrDefault();
+
+        if (teamNumber == 0)
+        {
+            return View("Error", new { message = "User is not part of a team." });
+        }
+
+        // Get all user IDs that are part of the team, excluding the current user
+        var teamMemberIds = _intexRepo.StudentTeams
+            .Where(st => st.TeamNumber == teamNumber && st.UserId != userId)
+            .Select(st => st.UserId)
+            .ToList();
+
+        // Retrieve User objects that match the team member IDs
+        var teamMemberUsers = _intexRepo.Users
+            .Where(u => teamMemberIds.Contains(u.UserId))
+            .ToList();
+
+        // Assign the list of User objects to the ViewBag
+        ViewBag.TeamMembers = teamMemberUsers;
+
+        return View();
+    }
+
+
+
     public IActionResult StudentPeerReview()
     {
 
-        //This view needs to pull the group info and so that each team memer can be seen and selected to be peer reviewd by the user.
-        // so just return a variable to the view that holds the student info where group ID matches the group ID of the user
-        return View();
+         return View();
     }
 
     public IActionResult PeerEvaluation()
