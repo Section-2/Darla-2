@@ -27,44 +27,45 @@
         </div>
         <h1 class="text-3xl font-bold text-center mb-6">Student Submissions</h1>
 
-@*Logic to write out all of the classes, their dropdown rubirc information, checkboxes, etc*@
-
-        @foreach (var classCode in Classes)
+        @if (ViewBag.Classes != null)
         {
-            <div onclick="toggleRubricDetails('@classCode')" class="bg-white p-4 rounded shadow cursor-pointer mb-2 flex justify-between items-start">
-                <h2 class="text-xl font-bold">@classCode Rubric Details</h2>
-                <div class="flex items-center">
-                    <div class="w-64 bg-gray-200 rounded-full h-2.5">
-                        <div id="progressBar-@classCode" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+            @foreach (var classCode in ViewBag.Classes)
+            {
+                <div onclick="toggleRubricDetails('@classCode')" class="bg-white p-4 rounded shadow cursor-pointer mb-2 flex justify-between items-start">
+                    <h2 class="text-xl font-bold">@classCode Rubric Details</h2>
+                    <div class="flex items-center">
+                        <div class="w-64 bg-gray-200 rounded-full h-2.5">
+                            <div id="progressBar-@classCode" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+                        </div>
+                        <div id="progressText-@classCode" class="ml-2">0%</div>
                     </div>
-                    <div id="progressText-@classCode" class="ml-2">0%</div>
                 </div>
-            </div>
-            <div id="rubricDetails-@classCode" class="bg-gray-100 p-4 rounded shadow mb-4 hidden">
-                <div class="grid grid-cols-1 gap-4">
-                    <h3 class="text-lg font-semibold">Requirements</h3>
-                    @if (RubricsByClass.ContainsKey(classCode))
-                    {
-                        var rubrics = RubricsByClass[classCode];
-                        foreach (var rubric in rubrics)
+                <div id="rubricDetails-@classCode" class="bg-gray-100 p-4 rounded shadow mb-4 hidden">
+                    <div class="grid grid-cols-1 gap-4">
+                        <h3 class="text-lg font-semibold">Requirements</h3>
+                        @if (ViewBag.RubricsByClass.ContainsKey(classCode))
                         {
-                            <div class="flex justify-between items-start mt-4">
-                                <div class="text-md flex-grow">@rubric.Decsription</div>
-                                <div class="flex-shrink-0 flex items-center ml-4">
-                                    <input type="checkbox" class="transform scale-125" onchange="updateProgress('@classCode')">
-                                    <label class="ml-2 text-md font-bold">Completed</label>
+                            var rubrics = ViewBag.RubricsByClass[classCode];
+                            foreach (var rubric in rubrics)
+                            {
+                                <div class="flex justify-between items-start mt-4">
+                                    <div class="text-md flex-grow">@rubric.Decsription</div>
+                                    <div class="flex-shrink-0 flex items-center ml-4">
+                                        <input type="checkbox" class="transform scale-125" onchange="updateProgress('@classCode')">
+                                        <label class="ml-2 text-md font-bold">Completed</label>
+                                    </div>
                                 </div>
-                            </div>
+                            }
                         }
-                    }
-                    else
-                    {
-                        <p>No rubrics found for the class code.</p>
-                    }
+                        else
+                        {
+                            <p>No rubrics found for the class code.</p>
+                        }
+                    </div>
                 </div>
-            </div>
+            }
         }
- 
+
 
         <div class="bg-white p-4 rounded shadow mt-6">
      
