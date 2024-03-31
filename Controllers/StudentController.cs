@@ -145,8 +145,12 @@ public class StudentController : Controller
     //}
 
     [HttpPost]
-    public async Task<IActionResult> Submit(int teamNumber, string githubLink, string videoLink)
+    public async Task<IActionResult> Submit(string githubLink, string videoLink)
     {
+        var userId = 7;
+        var teamNumber = _intexRepo.StudentTeams
+            .FirstOrDefault(st => st.UserId == userId)?.TeamNumber ?? 0; // Provide a default value of 0 if TeamNumber is null
+
         var submission = _intexRepo.TeamSubmissions
             .FirstOrDefault(s => s.TeamNumber == teamNumber);
 
@@ -159,7 +163,7 @@ public class StudentController : Controller
                 VideoLink = videoLink,
                 Timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
             };
-            _intexRepo.TeamSubmissions.Add(submission);
+            _intexRepo.AddTeamSubmission(submission);
         }
         else
         {
@@ -171,8 +175,10 @@ public class StudentController : Controller
         await _intexRepo.SaveChangesAsync();
 
         TempData["SuccessMessage"] = "Submission updated successfully!";
-        return RedirectToAction("StudentProgress");
+        return View("StudentProgress");
     }
+
+
 
 
 

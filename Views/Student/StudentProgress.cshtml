@@ -146,7 +146,7 @@
 
         function submitVideo() {
             var githubLink = document.getElementById('submitVideo').value;
-            // Perform any necessary validation or processing
+            // Perform any necessary validation or processing 
             alert('Video submitted: ' + submitVideo);
             $('#exampleModal').modal('hide');
         }
@@ -168,27 +168,27 @@
                 <h1 class="modal-title fs-5" id="githubModalLabel">Link Submission</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <EditForm>
-                <div>
-                    <label for="gitHubLink" class="fw-bold">GitHub Link</label><br />
-                    <input type="text" id="gitHubLink" />
+            <form method="post" action="@Url.Action("Submit", "Student")">
+                <div class="modal-body">
+                    <div>
+                        <label for="githubLink" class="fw-bold">GitHub Link</label><br />
+                        <input type="text" id="githubLink" name="githubLink" class="form-control" />
+                    </div>
+                    <div>
+                        <label for="videoLink" class="fw-bold">Video Link</label><br />
+                        <input type="text" id="videoLink" name="videoLink" class="form-control" />
+                    </div>
                 </div>
-                <div>
-                    <label for="videoLink" class="fw-bold">Video Link</label><br />
-                    <input type="text" id="videoLink" />
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
-                <div>
-                    <label for="projectInfoLink" class="fw-bold">Project Info Link</label><br />
-                    <input type="text" id="projectInfoLink" />
-                </div>
-            </EditForm>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="submitGitHubLink">Submit</button>
-            </div>
+            </form>
+
         </div>
     </div>
 </div>
+
 
 <!-- Link Submission Modal -->
 <div class="modal fade" id="githubModal" tabindex="-1" aria-labelledby="githubModalLabel" aria-hidden="true">
