@@ -18,6 +18,6 @@ namespace Darla.Models
         IEnumerable<Room> Rooms { get; }
         IEnumerable<TeamSubmission> TeamSubmissions { get; }
 
-        Task SaveChangesAsync();
+     
     }
 }
