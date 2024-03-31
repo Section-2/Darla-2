@@ -9,9 +9,45 @@
 @model Darla.Models.User
 
 <style>
+
     .container {
-        text-align: center;
+        max-width: 400px;
+        margin: 0 auto;
+        text-align: left;
+        padding: 10px;
+        border-radius: 5px; 
     }
+
+    h2 {
+        text-align: center;
+        color: #DEB841;
+    }
+
+    label {
+        color: white;
+        display: block;
+        margin: 10px 10 5px;
+    }
+
+    input[type="text"], select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border-radius: 3px;
+    }
+
+    button {
+        display: block;
+        margin: 0 auto;
+        padding: 10px 20px;
+        width: 50%;
+        padding: 10px;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 1em;
+    }
+
 </style>
 
 <div class="container">
@@ -40,9 +76,9 @@
         </select>
         <br />
 
-        <label asp-for="user_password">Password</label>
+@*         <label asp-for="user_password">Password</label>
         <input asp-for="user_password">
-        <br />
+        <br /> *@
        
         <button type="submit">Create Account</button>
     </form>
