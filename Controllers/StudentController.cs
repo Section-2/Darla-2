@@ -16,7 +16,7 @@ public class StudentController : Controller
 
     public IActionResult StudentDashboard()
     {
-        var userId = 1; // Assuming you will get the user's ID from somewhere.
+        var userId = 7; // Assuming you will get the user's ID from somewhere.
         var teamNumber = _intexRepo.StudentTeams
             .Where(st => st.UserId == userId)
             .Select(st => (int?)st.TeamNumber)
@@ -91,7 +91,7 @@ public class StudentController : Controller
     [HttpGet]
     public IActionResult StudentProgress()
     {
-        var userId = 1;
+        var userId = 7;
         var teamNumber = _intexRepo.StudentTeams
             .FirstOrDefault(st => st.UserId == userId)?.TeamNumber;
 
@@ -144,15 +144,37 @@ public class StudentController : Controller
     //    return submissions;
     //}
 
-    public IActionResult submit()
+    [HttpPost]
+    public async Task<IActionResult> Submit(int teamNumber, string githubLink, string videoLink)
     {
-        //this function needs to be able to receive the group ID, the assignmentID, and the file and add those to the submission that matches the groupID and assignmetnID
-        //then it updates the compelete status of the submission to true, 
+        var submission = _intexRepo.TeamSubmissions
+            .FirstOrDefault(s => s.TeamNumber == teamNumber);
 
-        //optional:
-        //if the complete status is true then make a copy of that submission and incremetn the submissionVersion value by so that multiple same submissions can be differentiated by submissionVersion 
-        return View();
+        if (submission == null)
+        {
+            submission = new TeamSubmission
+            {
+                TeamNumber = teamNumber,
+                GithubLink = githubLink,
+                VideoLink = videoLink,
+                Timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+            };
+            _intexRepo.TeamSubmissions.Add(submission);
+        }
+        else
+        {
+            submission.GithubLink = githubLink;
+            submission.VideoLink = videoLink;
+            submission.Timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+        }
+
+        await _intexRepo.SaveChangesAsync();
+
+        TempData["SuccessMessage"] = "Submission updated successfully!";
+        return RedirectToAction("StudentProgress");
     }
+
+
 
     public IActionResult GroupPeerEvals()
     {
@@ -218,7 +240,7 @@ public class StudentController : Controller
     public async Task<IActionResult> SubmitPeerEvaluation(List<PeerEvaluation> peerEvaluations)
     {
         //if (ModelState.IsValid)
-        //{
+        //{ 
         //    foreach (var evaluation in peerEvaluations)
         //    {
         //        _intexRepo.AddPeerEvaluation(evaluation);
