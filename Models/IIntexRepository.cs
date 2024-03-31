@@ -1,4 +1,5 @@
-﻿namespace Darla.Models
+﻿
+namespace Darla.Models
 {
     public interface IIntexRepository
     {
@@ -17,6 +18,6 @@
         IEnumerable<Room> Rooms { get; }
         IEnumerable<TeamSubmission> TeamSubmissions { get; }
 
-    
+        Task SaveChangesAsync();
     }
 }

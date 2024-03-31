@@ -4,10 +4,8 @@
 @{
     var teamMembers = ViewBag.TeamMembers as List<User>;
 }
-<h1>This is the Group Peer Eval page that will show the list of all the group members other than the user and when the user clicks on that members name it will take them to that members StudentPeerReview</h1>
 
-
-
+<h1>This is the Group Peer Eval page that will show the list of all the group members other than the user and when the user clicks on that member's name it will take them to that member's StudentPeerReview</h1>
 
 @if (teamMembers != null && teamMembers.Any())
 {
@@ -15,7 +13,9 @@
     <ul>
         @foreach (var member in teamMembers)
         {
-            <li>@member.FirstName @member.LastName</li>
+            <li>
+                <a asp-controller="Student" asp-action="StudentPeerReview" asp-route-subjectId="@member.UserId" class="btn btn-primary">@member.FirstName @member.LastName</a>
+            </li>
         }
     </ul>
 }

@@ -187,12 +187,26 @@ public class StudentController : Controller
     }
 
 
-
-    public IActionResult StudentPeerReview()
+    [HttpGet]
+    public IActionResult StudentPeerReview(int subjectId)
     {
+        var userId = 7;
+        // Retrieve the User object (subject) with the given ID
+        var subject = _intexRepo.Users.FirstOrDefault(u => u.UserId == subjectId);
+       
 
-         return View();
+        // Retrieve a list of all PeerEvaluationQuestions from the repository or context
+        var questions = _intexRepo.PeerEvaluationQuestions.ToList();
+
+        // Pass the subject User object and the list of questions to the view using ViewBag
+        ViewBag.Subject = subject;
+        ViewBag.PeerEvaluationQuestions = questions;
+        ViewBag.evaluatorId = userId;
+        return View();
     }
+
+
+
 
     public IActionResult PeerEvaluation()
     {
@@ -200,11 +214,30 @@ public class StudentController : Controller
         return View();
     }
 
-    public IActionResult SubmitPeerEval()
+    public async Task<IActionResult> SubmitPeerEvaluation(List<PeerEvaluation> peerEvaluations)
     {
-        //submit the eval, update the data base
-        //retrun to the StudentPeerReview view
-        return View();
+        if (ModelState.IsValid)
+        {
+            foreach (var evaluation in peerEvaluations)
+            {
+                _intexRepo.PeerEvaluations.Add(new PeerEvaluation
+                {
+                    EvaluatorId = evaluation.EvaluatorId,
+                    SubjectId = evaluation.SubjectId,
+                    QuestionId = evaluation.QuestionId,
+                    Rating = evaluation.Rating
+                });
+            }
+
+            await _intexRepo.SaveChangesAsync();
+
+            return RedirectToAction("EvaluationSubmitted"); // Replace with your actual confirmation action
+        }
+
+        return View("GroupPeerEvals", peerEvaluations); // Adjust as needed if model state is invalid
     }
+
+
+
 
 }
