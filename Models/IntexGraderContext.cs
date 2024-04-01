@@ -103,17 +103,17 @@ public partial class IntexGraderContext : DbContext
             entity.Property(e => e.Rating).HasColumnName("rating");
             entity.Property(e => e.SubjectId).HasColumnName("subject_id");
 
-            //entity.HasOne(d => d.Evaluator).WithMany(p => p.PeerEvaluationEvaluators)
-            //    .HasForeignKey(d => d.EvaluatorId)
-            //    .OnDelete(DeleteBehavior.ClientSetNull);
+            entity.HasOne(d => d.Evaluator).WithMany(p => p.PeerEvaluationEvaluators)
+                .HasForeignKey(d => d.EvaluatorId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
 
-            //entity.HasOne(d => d.PeerEvaluationNavigation).WithOne(p => p.PeerEvaluation)
-            //    .HasForeignKey<PeerEvaluation>(d => d.PeerEvaluationId)
-            //    .OnDelete(DeleteBehavior.ClientSetNull);
+            entity.HasOne(d => d.PeerEvaluationNavigation).WithOne(p => p.PeerEvaluation)
+                .HasForeignKey<PeerEvaluation>(d => d.PeerEvaluationId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
 
-            //entity.HasOne(d => d.Subject).WithMany(p => p.PeerEvaluationSubjects)
-            //    .HasForeignKey(d => d.SubjectId)
-            //    .OnDelete(DeleteBehavior.ClientSetNull);
+            entity.HasOne(d => d.Subject).WithMany(p => p.PeerEvaluationSubjects)
+                .HasForeignKey(d => d.SubjectId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         modelBuilder.Entity<PeerEvaluationQuestion>(entity =>

@@ -15,9 +15,9 @@ public partial class PeerEvaluation
 
     public int Rating { get; set; }
 
-    //public virtual StudentTeam Evaluator { get; set; } = null!;
+    public virtual StudentTeam Evaluator { get; set; } = null!;
 
-    //public virtual PeerEvaluationQuestion PeerEvaluationNavigation { get; set; } = null!;
+    public virtual PeerEvaluationQuestion PeerEvaluationNavigation { get; set; } = null!;
 
-    //public virtual StudentTeam Subject { get; set; } = null!;
+    public virtual StudentTeam Subject { get; set; } = null!;
 }
