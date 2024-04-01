@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Darla.Models;
 using Microsoft.AspNetCore.Mvc;
 using Darla.Models;
 
@@ -6,26 +7,67 @@ namespace Darla.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
+    private readonly IIntexRepository _intexRepo;
+    
+    public HomeController(IIntexRepository intexRepo)
     {
-        _logger = logger;
+        _intexRepo = intexRepo;
     }
-
     public IActionResult Index()
     {
         return View();
     }
 
-    public IActionResult Privacy()
+    public IActionResult BYULogin()
     {
         return View();
     }
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
+    public IActionResult AllGrades()
     {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        return View();
     }
+    public IActionResult ClassRubric()
+    {
+        return View();
+    }
+    public IActionResult TaGradingProgress()
+    {
+        return View();
+    }
+    
+    public IActionResult JudgePage()
+    {
+        return View();
+    }
+
+    public IActionResult judge_survey()
+    {
+        return View("Judge/judge_survey");
+    }
+
+    // Action to open judge schedule
+    public IActionResult ScheduleView()
+    {
+        var roomSchedules = _intexRepo.RoomSchedulesWithRooms;
+        return View("Judge/ScheduleView", roomSchedules);
+    }
+
+    public IActionResult OpeningPage()
+    {
+        return View("Judge/ScheduleView");
+    }
+
+    //Allowing access to StudentSubmission
+    public IActionResult StudentProgress()
+    {
+        return View();
+    }
+
+    public IActionResult ProfIndex()
+    {
+        ViewData["GradingProgress"] = 70;
+        return View();
+    }
+
 }
