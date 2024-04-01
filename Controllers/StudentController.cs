@@ -15,7 +15,7 @@ public class StudentController : Controller
 
     public IActionResult StudentDashboard()
     {
-        var userId = 1; // Assuming you will get the user's ID from somewhere.
+        var userId = 7; // Assuming you will get the user's ID from somewhere.
         var teamNumber = _intexRepo.StudentTeams
             .Where(st => st.UserId == userId)
             .Select(st => (int?)st.TeamNumber)
@@ -48,7 +48,7 @@ public class StudentController : Controller
 
         return View();
     }
-   
+
     private List<TeamSubmission> GetSubmissions(int userId)
     {
         var teamNumber = _intexRepo.StudentTeams
@@ -74,7 +74,7 @@ public class StudentController : Controller
     }
 
     [HttpGet]
-    public IActionResult RubricDetails(int classCode)
+    public IActionResult StudentRubricDetails(int classCode)
     {
         // Retrieve all rubrics with the given classId from the repository
         List<Rubric> rubrics = _intexRepo.Rubrics.Where(r => r.ClassCode == classCode).ToList();
@@ -90,7 +90,7 @@ public class StudentController : Controller
     [HttpGet]
     public IActionResult StudentProgress()
     {
-        var userId = 1;
+        var userId = 7;
         var teamNumber = _intexRepo.StudentTeams
             .FirstOrDefault(st => st.UserId == userId)?.TeamNumber;
 
@@ -143,23 +143,98 @@ public class StudentController : Controller
     //    return submissions;
     //}
 
-    public IActionResult submit()
+    [HttpPost]
+    public async Task<IActionResult> Submit(string githubLink, string videoLink)
     {
-        //this function needs to be able to receive the group ID, the assignmentID, and the file and add those to the submission that matches the groupID and assignmetnID
-        //then it updates the compelete status of the submission to true, 
+        var userId = 7;
+        var teamNumber = _intexRepo.StudentTeams
+                             .FirstOrDefault(st => st.UserId == userId)?.TeamNumber ??
+                         0; // Provide a default value of 0 if TeamNumber is null
 
-        //optional:
-        //if the complete status is true then make a copy of that submission and incremetn the submissionVersion value by so that multiple same submissions can be differentiated by submissionVersion 
+        var submission = _intexRepo.TeamSubmissions
+            .FirstOrDefault(s => s.TeamNumber == teamNumber);
+
+        if (submission == null)
+        {
+            submission = new TeamSubmission
+            {
+                TeamNumber = teamNumber,
+                GithubLink = githubLink,
+                VideoLink = videoLink,
+                Timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+            };
+            _intexRepo.AddTeamSubmission(submission);
+        }
+        else
+        {
+            submission.GithubLink = githubLink;
+            submission.VideoLink = videoLink;
+            submission.Timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+        }
+
+        await _intexRepo.SaveChangesAsync();
+
+        TempData["SuccessMessage"] = "Submission updated successfully!";
+        return View("StudentProgress");
+    }
+
+
+
+
+
+    public IActionResult StudentGroupPeerEvals()
+    {
+        int userId = 7; // Hardcoded userId
+
+        // Find the team number associated with this user
+        var teamNumber = _intexRepo.StudentTeams
+            .Where(st => st.UserId == userId)
+            .Select(st => st.TeamNumber)
+            .FirstOrDefault();
+
+        if (teamNumber == 0)
+        {
+            return View("Error", new { message = "User is not part of a team." });
+        }
+
+        // Get all user IDs that are part of the team, excluding the current user
+        var teamMemberIds = _intexRepo.StudentTeams
+            .Where(st => st.TeamNumber == teamNumber && st.UserId != userId)
+            .Select(st => st.UserId)
+            .ToList();
+
+        // Retrieve User objects that match the team member IDs
+        var teamMemberUsers = _intexRepo.Users
+            .Where(u => teamMemberIds.Contains(u.UserId))
+            .ToList();
+
+        // Assign the list of User objects to the ViewBag
+        ViewBag.TeamMembers = teamMemberUsers;
+
         return View();
     }
 
-    public IActionResult StudentPeerReview()
-    {
 
-        //This view needs to pull the group info and so that each team memer can be seen and selected to be peer reviewd by the user.
-        // so just return a variable to the view that holds the student info where group ID matches the group ID of the user
+    [HttpGet]
+    public IActionResult StudentPeerReview(int subjectId)
+    {
+        var userId = 7;
+        // Retrieve the User object (subject) with the given ID
+        var subject = _intexRepo.Users.FirstOrDefault(u => u.UserId == subjectId);
+
+
+        // Retrieve a list of all PeerEvaluationQuestions from the repository or context
+        var questions = _intexRepo.PeerEvaluationQuestions.ToList();
+
+        // Pass the subject User object and the list of questions to the view using ViewBag
+        ViewBag.Subject = subject;
+        ViewBag.PeerEvaluationQuestions = questions;
+        ViewBag.evaluatorId = userId;
         return View();
     }
+
+
+
 
     public IActionResult PeerEvaluation()
     {
@@ -167,11 +242,56 @@ public class StudentController : Controller
         return View();
     }
 
-    public IActionResult SubmitPeerEval()
-    {
-        //submit the eval, update the data base
-        //retrun to the StudentPeerReview view
-        return View();
-    }
+        //if (ModelState.IsValid)
+        //{ 
+        //    foreach (var evaluation in peerEvaluations)
+        //    {
+        //        _intexRepo.AddPeerEvaluation(evaluation);
+        //    }
+
+        //    await _intexRepo.SaveChangesAsync();
+
+        //    // Redirect to a confirmation page or back to the form
+        //    return RedirectToAction("GroupPeerEvals"); // Adjust your redirection as necessary
+        //}
+        //Console.WriteLine("status invalid");
+        
+        [HttpPost]
+        public async Task<IActionResult> SubmitPeerEvaluation(List<PeerEvaluation> peerEvaluations, int subjectId)
+        {
+            int evaluatorId = 7; // Hardcoded evaluatorId for testing
+
+            if (peerEvaluations != null && peerEvaluations.Any())
+            {
+                foreach (var evaluation in peerEvaluations)
+                {
+                    var newEvaluation = new PeerEvaluation
+                    {
+                        EvaluatorId = evaluatorId, // Use the hardcoded evaluatorId
+                        SubjectId = evaluation.SubjectId,
+                        QuestionId = evaluation.QuestionId,
+                        Rating = evaluation.Rating
+                    };
+                    _intexRepo.AddPeerEvaluation(newEvaluation);
+                }
+
+                await _intexRepo.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Peer evaluations submitted successfully!";
+                return RedirectToAction("StudentDashboard");
+            }
+            else
+            {
+                ModelState.AddModelError("", "No evaluations provided.");
+            }
+
+            // Redirect to StudentPeerReview action to repopulate ViewBag if there are validation errors
+            return RedirectToAction("StudentPeerReview", new { subjectId = subjectId });
+        }
+
+
+
+
+
+
 
 }
