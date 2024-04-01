@@ -19,9 +19,6 @@ lerna-debug.log*
 
 obj/
 bin/
-.idea/
-
-.idea/
 
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
@@ -159,6 +156,9 @@ dist
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
+# Tyler wanted this added to the .gitignore
+.idea/
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
@@ -182,3 +182,5 @@ obj/Debug/net8.0/Darla.AssemblyInfoInputs.cache
 /.vs/Darla-2/v17/.wsuo
 /.vs/Darla/config/applicationhost.config
 /.vs/Darla-2/v17/.wsuo
+
+.idea/

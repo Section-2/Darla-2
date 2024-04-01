@@ -62,23 +62,22 @@
   }
 </style>
 </head>
-    <body>
-        <div class="container">
-            <div class="title">INTEX JUDGING</div>
-            <div class="subtitle">This guy should not have any BYU authentication</div>
-            <input type="text" id="room-code" placeholder="Enter Room Code">
-            <button class="continue-button" onclick="continueJudging()">Continue</button>
-        </div>
+<body>
+    <div class="container">
+        <div class="title">INTEX JUDGING</div>
+        <div class="subtitle">Please enter your room ID</div>
+        <input type="number" id="room-id" placeholder="Enter Room ID">
+        <button class="continue-button" onclick="continueJudging()">Continue</button>
+    </div>
 
-        <script>
-            function continueJudging() {
-                // Retrieve the room code entered by the judge
-                var roomCode = document.getElementById("room-code").value;
-
-                // Perform further actions with the room code, such as validation or redirection
-                // For now, let's just display it
-                alert("Room Code: " + roomCode);
-            }
-        </script>
-    </body>
+    <script>
+        function continueJudging() {
+            var roomId = document.getElementById("room-id").value;
+            // Update the redirection URL to point to your controller and action method
+            // Replace `YourControllerName` with the actual name of your controller
+            // and ensure `ScheduleByRoomId` is the correct action method for handling the request
+            window.location.href = "/Home/ScheduleByRoomId?roomId=" + encodeURIComponent(roomId);
+        }
+    </script>
+</body>
 </html>

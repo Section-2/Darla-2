@@ -1,0 +1,101 @@
+﻿@model LoginViewModel
+
+@*
+    TO DO : Fix CSS
+    - I'm scared to ask... but functionality update? Does the form submit at all / do we need a Post version?
+    - Links to judgePage and CreateAccount page work great!! See CreateAccount page notes about CSS
+    - Y'all are doing so great, I'm so proud!! Team 3-6 for the W
+*@
+
+@{
+    ViewBag.Title = "User Login";
+}
+
+<style>
+/*     .row-vh-20 {
+        height: 20vh;
+    }
+
+    .row-vh-half {
+        height: 50vh;
+    }
+
+    .row-vh-30 {
+        height: 30vh;
+    } */
+</style>
+
+<div class="container">
+    <div class="row row-vh-20">
+        <!-- First Row -->
+    </div>
+
+    <div class="row row-vh-half">
+        <!-- Second Row Content -->
+        <div class="col-md-4 darla-content offset-md-1 my-3">
+            <form method="post" class="border border-2 rounded p-4 h-100">
+                <input type="hidden" name="ReturnUrl" value="@ViewData["ReturnUrl"]" />
+
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                <h1 class="text-center mb-4">Sign In</h1>
+
+                <div class="form-group mt-4">
+                    <label asp-for="Username" class="text-left">Net ID:</label>
+                    <input asp-for="Username" class="form-control mt-2">
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mt-4">
+                    <label asp-for="Password" class="text-left">Password:</label>
+                    <input asp-for="Password" class="form-control mt-2">
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label asp-for="RememberMe">
+                            <input asp-for="RememberMe" />
+                                @Html.DisplayNameFor(m => m.RememberMe)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="text-center mt-3">
+                    <a asp-controller="Account" asp-action="Register">Create a new account</a>
+                </div>
+
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-primary mt-3">Sign In</button>
+                </div>
+
+                <div class="text-center mt-3">
+                    <a asp-controller="Account" asp-action="ForgotPassword">Forgot Password?</a>
+                </div>
+            </form>
+
+            <!-- Third Row -->
+            <div class="col d-flex align-items-center justify-content-center">
+                <a asp-controller="Home" asp-action="JudgePage" class="btn btn-secondary">
+                    Judge Sign In
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M10.854 7.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L9.293 7H1.5a.5.5 0 0 0 0 1h7.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708z" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-4 offset-md-2 my-3 text-center">
+            <div>
+                <img src="../../assets/img/BYU_medallion.png" alt="BYU Medallion" class="img-fluid rounded">
+            </div>
+        </div>
+    </div>
+
+    <div class="row row-vh-30">
+    </div>
+</div>
+
+
+
+
