@@ -9,5 +9,5 @@ public partial class PeerEvaluationQuestion
 
     public string Question { get; set; } = null!;
 
-    public virtual PeerEvaluation? PeerEvaluation { get; set; }
+    //public virtual PeerEvaluation? PeerEvaluation { get; set; }
 }
