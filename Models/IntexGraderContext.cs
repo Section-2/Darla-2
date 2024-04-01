@@ -182,13 +182,16 @@ public partial class IntexGraderContext : DbContext
 
         modelBuilder.Entity<RoomSchedule>(entity =>
         {
-            entity.HasKey(e => e.RoomId);
+            entity.HasKey(e => e.EntryId);
 
             entity.ToTable("room_schedule");
 
-            entity.Property(e => e.RoomId)
-                .ValueGeneratedNever()
-                .HasColumnName("room_id");
+            entity.Property(e => e.EntryId)
+                .IsRequired()
+                .UseIdentityColumn()
+                .HasColumnName("entry_id");
+
+            entity.Property(e => e.RoomId).HasColumnName("room_id");
             entity.Property(e => e.TeamNumber).HasColumnName("team_number");
             entity.Property(e => e.Timeslot).HasColumnName("timeslot");
 
