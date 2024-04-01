@@ -91,6 +91,7 @@ span {
     border-radius: 15px;
     transition: .2s;
 }
+
 .darla-content button:hover {
     background-color: var(--color-yellow);
     color: var(--color-dark-gray);
@@ -112,6 +113,7 @@ button {
     border-radius: 15px;
     transition: .2s;
 }
+
 button:hover {
     background-color: var(--color-gray);
     color: var(--color-white);
