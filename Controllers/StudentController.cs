@@ -214,7 +214,7 @@ namespace Darla.Controllers
 
 
         [HttpGet]
-        public IActionResult StudentPeerReview(int subjectId)
+        public IActionResult StudentPeerReview(string subjectId)
         {
             var userId = 7;
             // Retrieve the User object (subject) with the given ID

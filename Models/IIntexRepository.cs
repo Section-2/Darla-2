@@ -1,6 +1,4 @@
-﻿
-
-namespace Darla.Models
+﻿namespace Darla.Models
 {
     public interface IIntexRepository
     {
@@ -29,7 +27,8 @@ namespace Darla.Models
         public void EditRubric(Rubric rubric);
         public void DeleteRubric(Rubric rubric);
 
-
+        public void EditJudge(User updatedInfo);
+        public void DeleteJudge(User removedUser);
         IQueryable<RoomSchedule> GetRoomSchedulesByRoomId(int roomId);
 
 

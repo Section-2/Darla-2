@@ -5,7 +5,7 @@ namespace Darla.Models;
 
 public partial class User
 {
-    public int UserId { get; set; }
+    public string UserId { get; set; }
 
     public string NetId { get; set; } = null!;
 
