@@ -36,28 +36,64 @@ public class HomeController : Controller
     }
 
     [HttpGet]
-    public IActionResult judge_survey()
+    public IActionResult judge_survey(int? teamNumber)
     {
-        return View("Judge/judge_survey",new Presentation());
+        var presentation = new Presentation();
+
+        if (teamNumber.HasValue)
+        {
+            presentation.TeamNumber = teamNumber.Value;
+            // If JudgeId is needed from the logged-in user, assign it similarly
+            // presentation.JudgeId = ...;
+        }
+
+        return View("Judge/judge_survey", presentation);
     }
 
     [HttpPost]
     public IActionResult judge_survey(Presentation p)
     {
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
-            _repo.AddPresentationScore(p);
+            // Log each model error
+            foreach (var modelState in ModelState.Values)
+            {
+                foreach (var error in modelState.Errors)
+                {
+                    // Log the error to your logging framework; for example:
+                    Console.WriteLine(error.ErrorMessage); // Replace with your actual logging mechanism
+                }
+            }
+
+            // Return to the view with the current Presentation model to display errors
+            return View("Judge/judge_survey", p);
         }
+
+        // If the model is valid, proceed with adding the presentation score
+        _repo.AddPresentationScore(p);
 
         return RedirectToAction("JudgeDashboard", new Presentation());
     }
 
     // Action to open judge schedule
-    public IActionResult JudgeDashboard()
+    // public IActionResult JudgeDashboard()
+    // {
+    //     var roomSchedules = _repo.RoomSchedulesWithRooms;
+    //     return View("Judge/JudgeDashboard", roomSchedules);
+    // }
+    
+    public IActionResult ScheduleByRoomId(int roomId)
     {
-        var roomSchedules = _repo.RoomSchedulesWithRooms;
+        var roomSchedules = _repo.GetRoomSchedulesByRoomId(roomId);
         return View("Judge/JudgeDashboard", roomSchedules);
     }
+    [HttpPost]
+    public IActionResult UpdateRanks(Dictionary<int,int>teamRanks)
+    {
+        _repo.UpdateTeamRanks(teamRanks);
+        return RedirectToAction("JudgeDashboard");
+    }
+
 
     // END JUDGES SECTION
 

@@ -10,6 +10,7 @@ namespace Darla.Models
         IEnumerable<Permission> Permissions { get; }
         IEnumerable<Presentation> Presentations { get; }
         public void AddPresentationScore(Presentation presentation);
+        public void UpdateTeamRanks(Dictionary<int, int> teamRanks);
         IEnumerable<RoomSchedule> RoomSchedules { get; }
         IQueryable<RoomSchedule> RoomSchedulesWithRooms { get; }
         IEnumerable<StudentTeam> StudentTeams { get; }
@@ -24,6 +25,9 @@ namespace Darla.Models
         void AddPeerEvaluation(PeerEvaluation evaluation);
         Task SaveChangesAsync();
         IQueryable<StudentTeam> GetQueryableStudentTeams();
-        
+
+        IQueryable<RoomSchedule> GetRoomSchedulesByRoomId(int roomId);
+
+
     }
 }
