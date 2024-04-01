@@ -274,12 +274,6 @@ public class HomeController : Controller
 
         return View(judgeSchedule);
     
-    public IActionResult ProfEditRubric()
-    {
-    var query = _repo.Users.Where(x => x.PermissionType == 4);
-    return View();
-    }
-    
     public IActionResult StudentProgress()
         {
             return View();
@@ -331,6 +325,70 @@ public class HomeController : Controller
         }*/
 
     }
+
+    public IActionResult AdminRubricFull()
+    {
+        var rubrics = _repo.Rubrics.ToList();
+
+        return View(rubrics);
+    }
+
+    [HttpGet]
+    public IActionResult AdminRubricEdit(int classCode)
+    {
+        var rubric = _repo.Rubrics
+            .Where(x => x.ClassCode == classCode)
+            .ToList();
+
+        return View(rubric);
+    }
+
+    [HttpPost]
+    public IActionResult AdminRubricEdit(Rubric updatedRubric, int classCode)
+    {
+        var rubric = _repo.Rubrics
+                .Where(x => x.ClassCode == classCode)
+                .ToList();
+
+        if (ModelState.IsValid)
+        {
+            _repo.EditRubric(updatedRubric);
+
+            return RedirectToAction("AdminRubricFull");
+        }
+        else
+        {
+            return View(rubric);
+        }
+    }
+
+    [HttpPost]
+    public IActionResult AdminRubricAdd(int classCode, Rubric addedTask)
+    {
+        var rubric = _repo.Rubrics
+        .Where(x => x.ClassCode == classCode)
+        .ToList();
+
+        if (ModelState.IsValid)
+        {
+            _repo.AddRubric(addedTask);
+            return RedirectToAction("Index");
+        }
+        else
+        {
+            return View("AdminRubricEdit", rubric);
+        }
+    }
+
+    public IActionResult AdminRubricDelete(int classCode)
+    {
+        var rubric = _repo.Rubrics
+            .Where(x => x.ClassCode == classCode)
+            .ToList();
+
+        return View(rubric);
+    }
+
 
     /* Potential missing actions for views: TeacherViewPeerEvalSingle, ListTA, adminPeerEvalDashboard, 
      * AdminJudgeListView, AdminDeleteJudge
