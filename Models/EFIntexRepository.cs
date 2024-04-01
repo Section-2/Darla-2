@@ -12,7 +12,7 @@ namespace Darla.Models
             _context = temp;
         }
 
-        public IEnumerable<Rubric> Rubrics => _context.Rubrics;
+        public IEnumerable<Rubric> Rubrics => _context.Rubrics.ToList();
         public IEnumerable<Grade> Grades => _context.Grades;
         public IEnumerable<JudgeRoom> JudgeRooms => _context.JudgeRooms;
         public IEnumerable<Permission> Permissions => _context.Permissions;
@@ -25,6 +25,7 @@ namespace Darla.Models
             _context.SaveChanges();
         }
         public IEnumerable<RoomSchedule> RoomSchedules => _context.RoomSchedules;
+        public IQueryable<RoomSchedule> RoomSchedulesWithRooms => _context.RoomSchedules.Include(rs => rs.Room);
         public IEnumerable<StudentTeam> StudentTeams => _context.StudentTeams;
         public IEnumerable<UserPassword> UserPasswords => _context.UserPasswords;
         public IEnumerable<User> Users => _context.Users;
@@ -33,14 +34,43 @@ namespace Darla.Models
         public IEnumerable<Team> Teams => _context.Teams;
         public IEnumerable<Room> Rooms => _context.Rooms;
         public IEnumerable<TeamSubmission> TeamSubmissions => _context.TeamSubmissions;
+        public void AddTeamSubmission(TeamSubmission submission)
+        {
+            _context.TeamSubmissions.Add(submission);
+        }
+        public void AddPeerEvaluation(PeerEvaluation evaluation)
+        {
+            _context.PeerEvaluations.Add(evaluation);
+        }
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
+       
 
         public IQueryable<StudentTeam> GetQueryableStudentTeams()
         {
             return _context.StudentTeams;
         }
 
+        public void AddRubric(Rubric rubric)
+        {
+            _context.Rubrics.Add(rubric);
+            _context.SaveChanges();
+        }
 
+        public void DeleteRubric(Rubric rubric)
+        {
+            _context.Rubrics.Remove(rubric);
+            _context.SaveChanges();
 
+        }
+
+        public void EditRubric(Rubric rubric)
+        {
+            _context.Rubrics.Update(rubric);
+            _context.SaveChanges();
+        }
     }
 
 
