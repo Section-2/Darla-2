@@ -305,7 +305,7 @@ public class HomeController : Controller
         var rooms = _repo.Rooms.ToList();
 
         var users = _repo.Users
-            .Where(u => u.PermissionType == 4 && judgeRooms.Any(jr => jr.UserId == u.UserId))
+            .Where(u => u.PermissionType == 4 && judgeRooms.Any(jr => jr.UserId == u.UserId.ToString()))
             .ToList();
 
         var judgeSchedule = new MasterJudgeScheduleViewModel
@@ -330,8 +330,13 @@ public class HomeController : Controller
     {
         return View();
     }
+    
+    public IActionResult JudgeDashboard()
+    {
+        return View("Judge/JudgeDashboard");
+    }
 
-    /*[HttpGet]
+    /*[HttpGet]WS
     public IActionResult Edit(int id)
     {
         var recordToEdit = _context.Users
