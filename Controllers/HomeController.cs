@@ -168,127 +168,127 @@ public class HomeController : Controller
         return View(model);
     }
 
-    public IActionResult AdminViewPeerEvalGiven(int evaluatorId)
-    {
-        var evaluationData = _repo.PeerEvaluations
-            .Join(_repo.StudentTeams, pe => pe.EvaluatorId, st => st.UserId, (pe, st) => new { pe, st })
-            .Join(_repo.Users, temp1 => temp1.st.UserId, u => u.UserId, (temp1, u) => new { temp1.pe, temp1.st, u })
-            .Join(_repo.PeerEvaluationQuestions, temp2 => temp2.pe.QuestionId, pq => pq.QuestionId, (temp2, pq) => new { temp2.pe, temp2.st, temp2.u, pq })
-            .Join(
-                (from peInner in _repo.PeerEvaluations
-                 join stInner in _repo.StudentTeams on peInner.SubjectId equals stInner.UserId
-                 join uInner in _repo.Users on stInner.UserId equals uInner.UserId
-                 select new
-                 {
-                     SubjFName = uInner.FirstName,
-                     SubjLName = uInner.LastName,
-                     peInner.SubjectId,
-                     uInner.UserId
-                 }),
-                temp3 => temp3.pe.SubjectId,
-                subj => subj.UserId,
-                (temp3, subj) => new { temp3.pe, temp3.st, temp3.u, temp3.pq, subj }
-            )
-            .GroupBy(x => x.pe.PeerEvaluationId)
-            .Select(group => group.First()) // Selecting the first element from each group
-            .Select(result => new EvaluationViewModel
-            {
-                EvaluatorId = result.pe.EvaluatorId,
-                SubjectId = result.pe.SubjectId,
-                UserId = result.st.UserId,
-                NetId = result.u.NetId,
-                FirstName = result.u.FirstName,
-                LastName = result.u.LastName,
-                SubjFName = result.subj.SubjFName,
-                SubjLName = result.subj.SubjLName,
-                Question = result.pq.Question,
-                QuestionId = result.pq.QuestionId,
-            })
-            .ToList();
+    //public IActionResult AdminViewPeerEvalGiven(int evaluatorId)
+    //{
+    //    var evaluationData = _repo.PeerEvaluations
+    //        .Join(_repo.StudentTeams, pe => pe.EvaluatorId, st => st.UserId, (pe, st) => new { pe, st })
+    //        .Join(_repo.Users, temp1 => temp1.st.UserId, u => u.UserId, (temp1, u) => new { temp1.pe, temp1.st, u })
+    //        .Join(_repo.PeerEvaluationQuestions, temp2 => temp2.pe.QuestionId, pq => pq.QuestionId, (temp2, pq) => new { temp2.pe, temp2.st, temp2.u, pq })
+    //        .Join(
+    //            (from peInner in _repo.PeerEvaluations
+    //             join stInner in _repo.StudentTeams on peInner.SubjectId equals stInner.UserId
+    //             join uInner in _repo.Users on stInner.UserId equals uInner.UserId
+    //             select new
+    //             {
+    //                 SubjFName = uInner.FirstName,
+    //                 SubjLName = uInner.LastName,
+    //                 peInner.SubjectId,
+    //                 uInner.UserId
+    //             }),
+    //            temp3 => temp3.pe.SubjectId,
+    //            subj => subj.UserId,
+    //            (temp3, subj) => new { temp3.pe, temp3.st, temp3.u, temp3.pq, subj }
+    //        )
+    //        .GroupBy(x => x.pe.PeerEvaluationId)
+    //        .Select(group => group.First()) // Selecting the first element from each group
+    //        .Select(result => new EvaluationViewModel
+    //        {
+    //            EvaluatorId = result.pe.EvaluatorId,
+    //            SubjectId = result.pe.SubjectId,
+    //            UserId = result.st.UserId,
+    //            NetId = result.u.NetId,
+    //            FirstName = result.u.FirstName,
+    //            LastName = result.u.LastName,
+    //            SubjFName = result.subj.SubjFName,
+    //            SubjLName = result.subj.SubjLName,
+    //            Question = result.pq.Question,
+    //            QuestionId = result.pq.QuestionId,
+    //        })
+    //        .ToList();
 
 
-        return View(evaluationData);
-    }
+    //    return View(evaluationData);
+    //}
 
-    public IActionResult AdminViewPeerEvalReceived(int evaluatorId)
-    {
-        var evaluationData = _repo.PeerEvaluations
-            .Join(_repo.StudentTeams, pe => pe.EvaluatorId, st => st.UserId, (pe, st) => new { pe, st })
-            .Join(_repo.Users, temp1 => temp1.st.UserId, u => u.UserId, (temp1, u) => new { temp1.pe, temp1.st, u })
-            .Join(_repo.PeerEvaluationQuestions, temp2 => temp2.pe.QuestionId, pq => pq.QuestionId, (temp2, pq) => new { temp2.pe, temp2.st, temp2.u, pq })
-            .Join(
-                (from peInner in _repo.PeerEvaluations
-                 join stInner in _repo.StudentTeams on peInner.SubjectId equals stInner.UserId
-                 join uInner in _repo.Users on stInner.UserId equals uInner.UserId
-                 select new
-                 {
-                     SubjFName = uInner.FirstName,
-                     SubjLName = uInner.LastName,
-                     peInner.SubjectId,
-                     uInner.UserId
-                 }),
-                temp3 => temp3.pe.SubjectId,
-                subj => subj.UserId,
-                (temp3, subj) => new { temp3.pe, temp3.st, temp3.u, temp3.pq, subj }
-            )
-            .GroupBy(x => x.pe.PeerEvaluationId)
-            .Select(group => group.First()) // Selecting the first element from each group
-            .Select(result => new EvaluationViewModel
-            {
-                EvaluatorId = result.pe.EvaluatorId,
-                SubjectId = result.pe.SubjectId,
-                UserId = result.st.UserId,
-                NetId = result.u.NetId,
-                FirstName = result.u.FirstName,
-                LastName = result.u.LastName,
-                SubjFName = result.subj.SubjFName,
-                SubjLName = result.subj.SubjLName,
-                Question = result.pq.Question,
-                QuestionId = result.pq.QuestionId,
-            })
-            .ToList();
+    //public IActionResult AdminViewPeerEvalReceived(int evaluatorId)
+    //{
+    //    var evaluationData = _repo.PeerEvaluations
+    //        .Join(_repo.StudentTeams, pe => pe.EvaluatorId, st => st.UserId, (pe, st) => new { pe, st })
+    //        .Join(_repo.Users, temp1 => temp1.st.UserId, u => u.UserId, (temp1, u) => new { temp1.pe, temp1.st, u })
+    //        .Join(_repo.PeerEvaluationQuestions, temp2 => temp2.pe.QuestionId, pq => pq.QuestionId, (temp2, pq) => new { temp2.pe, temp2.st, temp2.u, pq })
+    //        .Join(
+    //            (from peInner in _repo.PeerEvaluations
+    //             join stInner in _repo.StudentTeams on peInner.SubjectId equals stInner.UserId
+    //             join uInner in _repo.Users on stInner.UserId equals uInner.UserId
+    //             select new
+    //             {
+    //                 SubjFName = uInner.FirstName,
+    //                 SubjLName = uInner.LastName,
+    //                 peInner.SubjectId,
+    //                 uInner.UserId
+    //             }),
+    //            temp3 => temp3.pe.SubjectId,
+    //            subj => subj.UserId,
+    //            (temp3, subj) => new { temp3.pe, temp3.st, temp3.u, temp3.pq, subj }
+    //        )
+    //        .GroupBy(x => x.pe.PeerEvaluationId)
+    //        .Select(group => group.First()) // Selecting the first element from each group
+    //        .Select(result => new EvaluationViewModel
+    //        {
+    //            EvaluatorId = result.pe.EvaluatorId,
+    //            SubjectId = result.pe.SubjectId,
+    //            UserId = result.st.UserId,
+    //            NetId = result.u.NetId,
+    //            FirstName = result.u.FirstName,
+    //            LastName = result.u.LastName,
+    //            SubjFName = result.subj.SubjFName,
+    //            SubjLName = result.subj.SubjLName,
+    //            Question = result.pq.Question,
+    //            QuestionId = result.pq.QuestionId,
+    //        })
+    //        .ToList();
 
 
-        return View(evaluationData);
-    }
+    //    return View(evaluationData);
+    //}
 
-    public IActionResult MasterJudgeSchedule()
-    {
-        var judgeRooms = _repo.JudgeRooms.ToList();
-        var roomSchedules = _repo.RoomSchedules.ToList();
-        var permissions = _repo.Permissions.ToList();
-        var rooms = _repo.Rooms.ToList();
+    //public IActionResult MasterJudgeSchedule()
+    //{
+    //    var judgeRooms = _repo.JudgeRooms.ToList();
+    //    var roomSchedules = _repo.RoomSchedules.ToList();
+    //    var permissions = _repo.Permissions.ToList();
+    //    var rooms = _repo.Rooms.ToList();
 
-        var users = _repo.Users
-            .Where(u => u.PermissionType == 4 && judgeRooms.Any(jr => jr.UserId == u.UserId))
-            .ToList();
+    //    var users = _repo.Users
+    //        .Where(u => u.PermissionType == 4 && judgeRooms.Any(jr => jr.UserId == u.UserId))
+    //        .ToList();
 
-        var judgeSchedule = new MasterJudgeScheduleViewModel
-        {
-            JudgeRoom = judgeRooms,
-            RoomSchedule = roomSchedules,
-            User = users,
-            Permission = permissions,
-            Room = rooms
-        };
+    //    var judgeSchedule = new MasterJudgeScheduleViewModel
+    //    {
+    //        JudgeRoom = judgeRooms,
+    //        RoomSchedule = roomSchedules,
+    //        User = users,
+    //        Permission = permissions,
+    //        Room = rooms
+    //    };
 
-        return View(judgeSchedule);
+    //    return View(judgeSchedule);
     
-    public IActionResult StudentProgress()
-        {
-            return View();
-        }
+    //public IActionResult StudentProgress()
+    //    {
+    //        return View();
+    //    }
 
 
-    public IActionResult StudentDashboard()
-    {
-        return View();
-    }
+    //public IActionResult StudentDashboard()
+    //{
+    //    return View();
+    //}
 
-    public IActionResult RubricDetails()
-    {
-        return View();
-    }
+    //public IActionResult RubricDetails()
+    //{
+    //    return View();
+    //}
 
     /*[HttpGet]
     public IActionResult Edit(int id)
@@ -324,7 +324,6 @@ public class HomeController : Controller
         return RedirectToAction("AdminJudgeListView");
     }*/
 
-    }
 
     public IActionResult AdminRubricFull()
     {
