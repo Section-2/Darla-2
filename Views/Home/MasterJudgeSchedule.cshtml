@@ -1,32 +1,32 @@
-﻿@using Darla.Models
-@{
-    ViewData["Title"] = "Judge Schedule";
+﻿@{
+    Layout = "_LayoutProf";
 }
+@model Darla.Models.ViewModels.MasterJudgeScheduleViewModel
 
 <h1>Judge Schedule</h1>
 
-@foreach (Room r in Model.Rooms)
+@foreach (var room in Model.Room.Where(r => Model.JudgeRoom.Any(jr => jr.RoomId == r.RoomId && Model.User.Any(u => u.UserId == jr.UserId && u.PermissionType == 4))))
 {
-    <h1>Room Summary</h1>
-    <div>
-        <h2>@Model.room.RoomName</h2>
+    <h2>@room.RoomName</h2>
 
-        @foreach (var user in Model.Users)
+    <table>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Room</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+
+        @foreach (var user in Model.User.Where(u => Model.JudgeRoom.Any(jr => jr.RoomId == room.RoomId && jr.UserId == u.UserId && u.PermissionType == 4)))
         {
-            // Check if the user is a judge
-            if (user.PermissionType == "4")
-            {
-                // Check if the user is scheduled in the room
-                foreach (var judgeRoom in Model.JudgeRooms)
-                {
-                    if (judgeRoom.UserID == user.UserID)
-                    {
-                        // Display judge's first name and last name
-                        <h3>@user.FirstName @user.LastName</h3>
-                    }
-                }
-            }
+            <tr>
+                <td>@user.FirstName</td>
+                <td>@user.LastName</td>
+                <td>@room.RoomName</td>
+                <td><a asp-controller="Home" asp-action="EditJudge" asp-route-id="@user.UserId">Edit</a></td>
+                <td><a asp-controller="Home" asp-action="DeleteJudge" asp-route-id="@user.UserId">Delete</a></td>
+            </tr>
         }
-    </div>
-
+    </table>
 }

@@ -1,54 +1,106 @@
-﻿@* @using Darla.Models
+﻿@{
+    ViewData["Title"] = "View Peer Evaluation";
+}
 
-@model IEnumerable<GroupEvaluation>
+@using Darla.Models;
+@model IEnumerable<PeerEvaluationDash>
 
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Peer Evaluation Form</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-        <style>
-            .peer-info img {
-                max-width: 100px;
-                height: auto;
-            }
-        </style>
-    </head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Custom styles to match the layout design */
+        .evaluation-container {
+            margin-top: 20px;
+        }
 
-    <body>
-        <h1>Peer Evaluation Dashboard</h1>
+        .group-header {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            font-size: 1.5em;
+            border-radius: 5px;
+        }
 
-        <div class="evaluation-container">
-            @foreach (var group in Model)
+        .member-info {
+            display: flex;
+            padding: 10px;
+            background-color: white;
+            border: 1px solid #dee2e6;
+            margin-bottom: -1px; /* for seamless cards */
+        }
+
+        .score-circle {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 15px; /* spacing between score and name */
+        }
+
+        .green {
+            background-color: #28a745;
+        }
+
+        .red {
+            background-color: #dc3545;
+        }
+
+        .yellow {
+            background-color: #ffc107;
+        }
+
+        .member-name, .member-link {
+            flex-grow: 1;
+            text-align: left;
+        }
+
+        .member-link {
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="container evaluation-container">
+        <h1 class="text-center mb-4">@ViewData["Title"]</h1>
+        @foreach (var group in Model)
         {
-            <div class="group">
-                <div class="group-header">
-                    <h2>@group.Name</h2>
+            <div class="row mb-3">
+                <div class="col-3">
+                    <div class="group-header">Group @group.GroupNumber</div>
                 </div>
-                <div class="group-body">
+                <div class="col-9">
                     @foreach (var member in group.Members)
                     {
-                    <div class="member">
-                        <span class="score" style="background-color:@member.GetScoreColor();">@member.Score</span>
-                        <span class="name">@member.Name</span>
-                        <span class="view-link">
-                            @if (!string.IsNullOrEmpty(member.EvaluationLink))
-                                {
-                            <a href="@member.EvaluationLink">View</a>
-                                }
-                                else
-                                {
-                            <span>None</span>
-                                }
-                        </span>
-                    </div>
+                        var scoreClass = member.Score >= 80 ? "green" : member.Score < 60 ? "red" :
+                        "yellow";
+                        <div class="member-info">
+                            <div class="score-circle @scoreClass">@member.Score</div>
+                            <div class="member-name">
+                                @member.User.FirstName
+                                @member.User.LastName
+                            </div>
+                            <div class="member-link">
+                                <!-- View Sent Button -->
+                                <a href="@Url.Action("AdminViewPeerEvalGiven", "Home", new { evaluatorId = member.User.UserId })" class="btn btn-primary btn-sm">View Sent</a>
+                                <!-- Other buttons can be added similarly -->
+                            </div>
+                        </div>
                     }
                 </div>
             </div>
         }
-        </div>
+    </div>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
     </body>
- *@
-
+</html>

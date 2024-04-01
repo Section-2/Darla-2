@@ -27,6 +27,12 @@ namespace Darla.Models
         public IEnumerable<Room> Rooms => _context.Rooms;
         public IEnumerable<TeamSubmission> TeamSubmissions => _context.TeamSubmissions;
 
+        public IQueryable<StudentTeam> GetQueryableStudentTeams()
+        {
+            return _context.StudentTeams;
+        }
+
+
 
     }
 

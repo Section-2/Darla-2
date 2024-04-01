@@ -17,7 +17,7 @@
         IEnumerable<Room> Rooms { get; }
         IEnumerable<TeamSubmission> TeamSubmissions { get; }
 
-
+        IQueryable<StudentTeam> GetQueryableStudentTeams();
 
     }
 }

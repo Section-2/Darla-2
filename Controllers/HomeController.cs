@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Darla.Models;
 using Darla.Models.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace Darla.Controllers;
 
@@ -67,10 +68,85 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult ProfIndex()
+    public IActionResult AdminPeerEvalDashboard()
     {
-        ViewData["GradingProgress"] = 70;
-        return View();
+        // Include necessary navigation properties to access related data
+        var studentTeams = _repo.GetQueryableStudentTeams()
+            .Include(st => st.User)
+            .Include(st => st.PeerEvaluationSubjects)
+            .ThenInclude(pe => pe.PeerEvaluationNavigation)
+            .ToList();
+
+        // Group by TeamNumber
+        var groupedByTeam = studentTeams.GroupBy(st => st.TeamNumber);
+
+        // Prepare a list of PeerEvaluationDash to hold the dashboard data
+        var peerEvaluationDashes = new List<PeerEvaluationDash>();
+        foreach (var group in groupedByTeam)
+        {
+            var dash = new PeerEvaluationDash
+            {
+                GroupNumber = group.Key,
+                Members = group.Select(member =>
+                {
+                    var evaluations = _repo.PeerEvaluations
+                                           .Where(pe => pe.SubjectId == member.UserId)
+                                           .ToList();
+                    return new StudentEvaluation
+                    {
+                        User = member.User,
+                        PeerEvaluations = evaluations,
+                        // No need to calculate Score here, since it's already a computed property
+                    };
+                }).ToList()
+            };
+            peerEvaluationDashes.Add(dash);
+        }
+
+        // Then, pass this data to the view (if needed)
+        return View(peerEvaluationDashes); // Make sure you have a view named "adminPeerEvalDashboard.cshtml" under Views/Home/
+    }
+
+    public IActionResult AdminProfIndex()
+    {
+        // Calculate the number of teams with at least one grade entry
+        var gradedTeamsCount = _repo.Grades
+            .Select(g => g.TeamNumber)
+            .Distinct()
+            .Count();
+
+        // Calculate the total number of teams
+        var totalTeamsCount = _repo.Teams
+            .Select(t => t.TeamNumber)
+            .Distinct()
+            .Count();
+
+        // Calculate the total number of assignments
+        var totalAssignmentsCount = _repo.Rubrics
+            .Select(r => r.AssignmentId)
+            .Distinct()
+            .Count();
+
+        // Avoid division by zero
+        if (totalTeamsCount == 0 || totalAssignmentsCount == 0)
+        {
+            ViewData["GradingProgress"] = 0;
+        }
+        else
+        {
+            // Calculate the percentage
+            var percentageOfTeamsGraded = (double)gradedTeamsCount / (totalTeamsCount * totalAssignmentsCount) * 100;
+            ViewData["GradingProgress"] = Math.Round(percentageOfTeamsGraded, 2); // Round to two decimal places
+        }
+
+        var model = new AdminGradeProgressBarComposite
+        {
+            // If there are other properties to set, set them here
+            GradingProgress = ViewData["GradingProgress"] != null ? Convert.ToDouble(ViewData["GradingProgress"]) : 0,
+        };
+
+        // Pass the model to the view
+        return View(model);
     }
 
     public IActionResult AdminViewPeerEvalGiven(int evaluatorId)
@@ -161,20 +237,25 @@ public class HomeController : Controller
     {
         var judgeRooms = _repo.JudgeRooms.ToList();
         var roomSchedules = _repo.RoomSchedules.ToList();
-        var user = _repo.Users.ToList();
-        var permission = _repo.Permissions.ToList();
-        var room = _repo.Rooms.ToList();
+        var permissions = _repo.Permissions.ToList();
+        var rooms = _repo.Rooms.ToList();
 
-        var judgeSchedule= new MasterJudgeScheduleViewModel
+        var users = _repo.Users
+            .Where(u => u.PermissionType == 4 && judgeRooms.Any(jr => jr.UserId == u.UserId))
+            .ToList();
+
+        var judgeSchedule = new MasterJudgeScheduleViewModel
         {
             JudgeRoom = judgeRooms,
             RoomSchedule = roomSchedules,
-            User = user,
-            Permission = permission,
-            Room = room
+            User = users,
+            Permission = permissions,
+            Room = rooms
         };
+
         return View(judgeSchedule);
     }
+
 
     /*[HttpGet]
     public IActionResult Edit(int id)
