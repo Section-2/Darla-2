@@ -25,7 +25,6 @@ namespace Darla.Models
             _context.SaveChanges();
         }
         public IEnumerable<RoomSchedule> RoomSchedules => _context.RoomSchedules;
-        public IQueryable<RoomSchedule> RoomSchedulesWithRooms => _context.RoomSchedules.Include(rs => rs.Room);
         public IEnumerable<StudentTeam> StudentTeams => _context.StudentTeams;
         public IEnumerable<UserPassword> UserPasswords => _context.UserPasswords;
         public IEnumerable<User> Users => _context.Users;
@@ -34,6 +33,12 @@ namespace Darla.Models
         public IEnumerable<Team> Teams => _context.Teams;
         public IEnumerable<Room> Rooms => _context.Rooms;
         public IEnumerable<TeamSubmission> TeamSubmissions => _context.TeamSubmissions;
+
+        public IQueryable<StudentTeam> GetQueryableStudentTeams()
+        {
+            return _context.StudentTeams;
+        }
+
 
 
     }
