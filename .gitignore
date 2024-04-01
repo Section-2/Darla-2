@@ -19,9 +19,6 @@ lerna-debug.log*
 
 obj/
 bin/
-.idea/
-
-.idea/
 
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
@@ -158,6 +155,9 @@ dist
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
+
+# Tyler wanted this added to the .gitignore
+.idea/
 
 # Build results
 [Dd]ebug/

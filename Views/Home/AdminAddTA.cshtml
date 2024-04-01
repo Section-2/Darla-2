@@ -6,15 +6,15 @@
 }
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model Darla.Models.User
-<h1>Add a Judge!</h1>
-<button type="button" asp-controller="Home" asp-action="AdminJudgeListView">Go Back</button>
+<h1>Add a TA!</h1>
+<button type="button" asp-controller="Home" asp-action="AdminTAListView">Go Back</button>
 <div>
     <form>
         <input type="hidden" asp-for="UserId" />
-        <label asp-for="FirstName">Judge First Name</label>
+        <label asp-for="FirstName">TA First Name</label>
         <br /><input asp-for="FirstName" /><br /><br />
 
-        <label asp-for="LastName">Judge Last Name</label>
+        <label asp-for="LastName">TA Last Name</label>
         <br /><input asp-for="LastName" /><br /><br />
 
         <label asp-for="NetId">Net ID</label><br />
@@ -23,11 +23,11 @@
         <select asp-for="PermissionType">
             Please select a Permission: 
             <option value="">Select a Permission</option>
-            <option value="1">Judge</option>
+            <option value="3">TA</option>
         </select>
         <br /><br />
 
-        <button type="submit">Submit Judge!</button>
+        <button type="submit">Submit TA!</button>
 
         <div asp-validation-summary="All"></div>
     </form>
