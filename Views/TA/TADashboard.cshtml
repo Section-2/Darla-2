@@ -1,17 +1,10 @@
 ﻿@{
     ViewData["Title"] = "INTEX Grading Summary";
 }
-@model GradingProgressViewModel
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
 
 <style>
-
-    /* Change header colors to black */
-    h1, h2 {
-        color: black;
-    }
-
     .quadrant {
         display: flex;
         flex-direction: column;
@@ -24,11 +17,12 @@
 
         .quadrant h2 {
             font-size: 1.5rem; /* Smaller headers */
-            color: #1a1e21;
+            color: black
         }
 
     .grading-progress {
-        font-size: 48px; /* Larger grading progress */
+        font-size: 60px; /* Larger grading progress */
+        font-family: 'Rubik', sans-serif;
     }
 
     /* Updated table style for borderless and no headers */
@@ -64,12 +58,17 @@
     </div>
 
     <div class="row">
-
         <!-- Grading Progress Quadrant -->
         <div class="col-md-6">
             <div class="quadrant">
                 <h2>Grading Progress</h2>
-                <p class="grading-progress" style="color: @(Model.AveragePercentage < 30 ? "#dc3545" : Model.AveragePercentage < 70 ? "#ffc107" : "#28a745");">@Math.Round(Model.AveragePercentage) %</p>
+                @{
+                    Random rand = new Random();
+                    double avgPercentage = rand.Next(0, 101); // Random average percentage
+                                                              // Adjusted color logic based on new criteria
+                    string color = avgPercentage < 30 ? "#dc3545" : avgPercentage < 70 ? "#ffc107" : "#28a745";
+                }
+                <p class="grading-progress" style="color: @color;">@Math.Round(avgPercentage) %</p> <!-- Dynamically colored and rounded -->
             </div>
         </div>
 
@@ -78,12 +77,18 @@
             <div class="quadrant">
                 <h2>Left To Grade</h2>
                 <table class="grading-table">
-                    @foreach (var classInfo in Model.ClassGradingInfos)
-                    {
-                        <tr>
-                            <td>@classInfo.ClassCode</td>
-                            <td>@classInfo.TotalGraded/@classInfo.TotalAssignments (@Math.Round(classInfo.PercentageGraded, 2) %)</td>
-                        </tr>
+                    @{
+                        // Dynamic generation of class grading information
+                        string[] classes = { "IS 401", "IS 413", "IS 414", "IS 455" };
+                        for (int i = 0; i < classes.Length; i++)
+                        {
+                            int graded = rand.Next(0, 241); // Random number of groups graded
+                            int total = 240;
+                            <tr>
+                                <td>@classes[i]</td>
+                                <td>@graded/@total (@Math.Round((double)graded / total * 100) %)</td>
+                            </tr>
+                        }
                     }
                 </table>
             </div>
@@ -98,22 +103,10 @@
                 <ol>
                     <li>Group 2-9</li>
                     @{
-                        Random rand = new Random();
                         // Dynamic generation of top groups
                         List<string> groups = Enumerable.Range(1, 4).Select(x => $"Group {rand.Next(1, 5)}-{rand.Next(1, 11)}").ToList();
                         groups.Insert(0, "Group 2-9"); // Ensure Group 2-9 is always first
                         groups = groups.Distinct().ToList(); // Remove duplicates
-
-                        // If not enough unique groups were generated, create more until there are four.
-                        while (groups.Count < 4)
-                        {
-                            var newGroup = $"Group {rand.Next(1, 5)}-{rand.Next(1, 11)}";
-                            if (!groups.Contains(newGroup))
-                            {
-                                groups.Add(newGroup);
-                            }
-                        }
-
                         foreach (var group in groups.Skip(1).Take(3))
                         {
                             <li>@group</li>
@@ -123,7 +116,6 @@
             </div>
         </div>
     </div>
-
 </div>
 
 
@@ -170,6 +162,3 @@
         $('.section-sort-selector[data-sort-section="all"]').trigger('click');
     });
 </script>
-<a asp-area="" asp-controller="ta" asp-action="classrubric">ClassRubric</a>
-<a asp-area="" asp-controller="ta" asp-action="tagradingprogress">TAgradingprogress</a>
-<a asp-area="" asp-controller="ta" asp-action="allgrades">AllGrades</a>
