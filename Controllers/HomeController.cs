@@ -274,10 +274,24 @@ public class HomeController : Controller
 
     //    return View(judgeSchedule);
     
-    //public IActionResult StudentProgress()
-    //    {
-    //        return View();
-    //    }
+
+
+
+public IActionResult StudentProgress()
+{
+    return View();
+}
+
+public IActionResult ProfEditRubric()
+    {
+        var query = _repo.Users.Where(x => x.PermissionType == 4);
+        return View();
+    }
+
+    public IActionResult StudentProgress()
+    {
+        return View();
+    }
 
 
     //public IActionResult StudentDashboard()
@@ -285,10 +299,10 @@ public class HomeController : Controller
     //    return View();
     //}
 
-    //public IActionResult RubricDetails()
-    //{
-    //    return View();
-    //}
+    public IActionResult RubricDetails()
+    {
+        return View();
+    }
 
     /*[HttpGet]
     public IActionResult Edit(int id)
