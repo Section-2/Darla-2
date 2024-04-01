@@ -1,6 +1,6 @@
 ﻿using Darla.Models;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -176,13 +176,9 @@ public class StudentController : Controller
         await _intexRepo.SaveChangesAsync();
 
         TempData["SuccessMessage"] = "Submission updated successfully!";
-        return View("StudentProgress");
+        return RedirectToAction("StudentProgress");
     }
-
-
-
-
-
+    
     public IActionResult GroupPeerEvals()
     {
         int userId = 7; // Hardcoded userId
@@ -215,7 +211,12 @@ public class StudentController : Controller
         return View();
     }
 
-
+    public IActionResult PeerEvaluation()
+    {
+        //generate the peer eval quiz
+        return View();
+    }
+    
     [HttpGet]
     public IActionResult StudentPeerReview(int subjectId)
     {
@@ -233,15 +234,8 @@ public class StudentController : Controller
         ViewBag.evaluatorId = userId;
         return View();
     }
-
-
-
-
-    public IActionResult PeerEvaluation()
-    {
-        //generate the peer eval quiz
-        return View();
-    }
+    
+  
 
         //if (ModelState.IsValid)
         //{ 
@@ -260,7 +254,7 @@ public class StudentController : Controller
         [HttpPost]
         public async Task<IActionResult> SubmitPeerEvaluation(List<PeerEvaluation> peerEvaluations, int subjectId)
         {
-            int evaluatorId = 7; // Hardcoded evaluatorId for testing
+            var evaluatorId = 7; // Hardcoded evaluatorId for testing
 
             if (peerEvaluations != null && peerEvaluations.Any())
             {
@@ -268,7 +262,7 @@ public class StudentController : Controller
                 {
                     var newEvaluation = new PeerEvaluation
                     {
-                        EvaluatorId = evaluatorId, // Use the hardcoded evaluatorId
+                        EvaluatorId = evaluatorId,
                         SubjectId = evaluation.SubjectId,
                         QuestionId = evaluation.QuestionId,
                         Rating = evaluation.Rating
@@ -288,6 +282,7 @@ public class StudentController : Controller
             // Redirect to StudentPeerReview action to repopulate ViewBag if there are validation errors
             return RedirectToAction("StudentPeerReview", new { subjectId = subjectId });
         }
+
 
 
 
