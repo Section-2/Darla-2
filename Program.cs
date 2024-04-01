@@ -50,7 +50,7 @@ builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
 
 builder.Services.AddDbContext<IntexGraderContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration["ConnectionStrings:IntexConnection"]);
+    options.UseSqlite(builder.Configuration["ConnectionStrings:SqliteConnection"]);
 });
 
 builder.Services.AddScoped<IIntexRepository, EFIntexRepository>();

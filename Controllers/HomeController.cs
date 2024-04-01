@@ -60,16 +60,7 @@ public class HomeController : Controller
     }
 
     // END JUDGES SECTION
-
-
-
-    // Grading Summary Page for TAs
-    public IActionResult Index()
-    {
-        return View();
-    }
     
-
     // ADMINS SECTION
     // Landing page for Admins
     public IActionResult AdminIndex()
