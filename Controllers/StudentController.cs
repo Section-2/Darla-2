@@ -18,7 +18,7 @@ namespace Darla.Controllers
 
         public IActionResult StudentDashboard()
         {
-            var userId = 7; // Assuming you will get the user's ID from somewhere.
+            string userId = "7"; // Assuming you will get the user's ID from somewhere.
             var teamNumber = _intexRepo.StudentTeams
                 .Where(st => st.UserId == userId)
                 .Select(st => (int?)st.TeamNumber)
@@ -34,12 +34,12 @@ namespace Darla.Controllers
             // Get the list of UserIds for the team
             var userIds = _intexRepo.StudentTeams
                 .Where(st => st.TeamNumber == teamNumber.Value)
-                .Select(st => st.UserId)
+                .Select(st => st.UserId.ToString())
                 .ToList();
 
             // Retrieve the names of the Users with those Ids
             teamMemberNames = _intexRepo.Users
-                .Where(u => userIds.Contains(u.UserId))
+                .Where(u => userIds.Contains(u.UserId.ToString()))
                 .Select(u => u.FirstName + " " + u.LastName)
                 .ToList();
 
@@ -52,7 +52,7 @@ namespace Darla.Controllers
             return View();
         }
 
-        private List<TeamSubmission> GetSubmissions(int userId)
+        private List<TeamSubmission> GetSubmissions(string userId)
         {
             var teamNumber = _intexRepo.StudentTeams
                 .FirstOrDefault(st => st.UserId == userId)?.TeamNumber;
@@ -76,11 +76,11 @@ namespace Darla.Controllers
             return submissions;
         }
 
-        [HttpGet]
-        public IActionResult RubricDetails(int classCode)
-        {
-            // Retrieve all rubrics with the given classId from the repository
-            List<Rubric> rubrics = _intexRepo.Rubrics.Where(r => r.ClassCode == classCode).ToList();
+    [HttpGet]
+    public IActionResult StudentRubricDetails(int classCode)
+    {
+        // Retrieve all rubrics with the given classId from the repository
+        List<Rubric> rubrics = _intexRepo.Rubrics.Where(r => r.ClassCode == classCode).ToList();
 
             // Assign the rubrics to the ViewBag
             ViewBag.Rubrics = rubrics;
@@ -92,7 +92,7 @@ namespace Darla.Controllers
         [HttpGet]
         public IActionResult StudentProgress()
         {
-            var userId = 7;
+            string userId = "7";
             var teamNumber = _intexRepo.StudentTeams
                 .FirstOrDefault(st => st.UserId == userId)?.TeamNumber;
 
@@ -147,7 +147,7 @@ namespace Darla.Controllers
         [HttpPost]
         public async Task<IActionResult> Submit(string githubLink, string videoLink)
         {
-            var userId = 7;
+            string userId = "7";
             var teamNumber = _intexRepo.StudentTeams
                                  .FirstOrDefault(st => st.UserId == userId)?.TeamNumber ??
                              0; // Provide a default value of 0 if TeamNumber is null
@@ -182,7 +182,7 @@ namespace Darla.Controllers
 
         public IActionResult GroupPeerEvals()
         {
-            int userId = 7; // Hardcoded userId
+            string userId = "7"; // Hardcoded userId
 
             // Find the team number associated with this user
             var teamNumber = _intexRepo.StudentTeams
@@ -203,7 +203,7 @@ namespace Darla.Controllers
 
             // Retrieve User objects that match the team member IDs
             var teamMemberUsers = _intexRepo.Users
-                .Where(u => teamMemberIds.Contains(u.UserId))
+                .Where(u => teamMemberIds.Contains(u.UserId.ToString()))
                 .ToList();
 
             // Assign the list of User objects to the ViewBag
@@ -218,7 +218,7 @@ namespace Darla.Controllers
         {
             var userId = 7;
             // Retrieve the User object (subject) with the given ID
-            var subject = _intexRepo.Users.FirstOrDefault(u => u.UserId == subjectId);
+            var subject = _intexRepo.Users.FirstOrDefault(u => u.UserId == subjectId.ToString());
 
 
             // Retrieve a list of all PeerEvaluationQuestions from the repository or context
@@ -257,7 +257,7 @@ namespace Darla.Controllers
         [HttpPost]
         public async Task<IActionResult> SubmitPeerEvaluation(List<PeerEvaluation> peerEvaluations, int subjectId)
         {
-            int evaluatorId = 7; // Hardcoded evaluatorId for testing
+            string evaluatorId = "7"; // Hardcoded evaluatorId for testing
 
             if (peerEvaluations != null && peerEvaluations.Any())
             {

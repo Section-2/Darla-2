@@ -1,4 +1,9 @@
-﻿
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    var userDetail = await UserManager.GetUserAsync(User);
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -11,41 +16,302 @@
     <link rel="stylesheet" href="~/Darla.styles.css" asp-append-version="true"/>
 </head>
 <body>
-<!--
-<header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-        <div class="container-fluid">
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Darla</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="">All Grades</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="">AddTA</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="">ListTA</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="judge_survey">Privacy</a>
-                    </li>
+<!-- TA NavBar -->
+@if (SignInManager.IsSignedIn(User) && User.IsInRole("TA"))
+{
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="TA" asp-action="">DARLA - TA</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="StudentProgress">Progress</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="TA" asp-action="">Home</a>
                         </li>
-                </ul>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="TA" asp-action="">Grading</a>
+                        </li>
+                       
+                    </ul>
+                    <ul class="navbar-nav ml-auto">
+                        @*If the user is signed-in display Logout link*@
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <form method="post" id="logoutForm" asp-controller="Account" asp-action="Logout" style="display: none;"></form>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Welcome, @User?.Identity?.Name</a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item" href="javascript:void(0);" onclick="document.getElementById('logoutForm').submit();">Logout</a>
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="ChangePassword">Change Password</a>
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="UpdateProfile">Update Profile</a>
+                                    @if (userDetail != null)
+                                    {
+                                        @if (userDetail.TwoFactorEnabled)
+                                        {
+                                            <a class="dropdown-item" asp-controller="Account" asp-action="ManageTwoFactorAuthentication">Disable 2FA</a>
+                                        }
+                                        else
+                                        {
+                                            <a class="dropdown-item" asp-controller="Account" asp-action="ManageTwoFactorAuthentication">Enable 2FA</a>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span class="dropdown-item disabled">No users found</span>
+                                    }
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="account" asp-action="register">
+                                    Register
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="account" asp-action="login">
+                                    Login
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
             </div>
-        </div>
-    </nav>
-</header>
-    -->
+        </nav>
+    </header>
+}
+
+<!-- Admin NavBar -->
+@if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+{
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="AdminProfIndex">DARLA - Admin</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="AdminProfIndex">Admin Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="">Users</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="">TA Grading</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="adminPeerEvalDashboard">Peer Evaluations</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="AdminRubricFull">Rubric</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Manage</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" asp-controller="Administration" asp-action="ListUsers">Users</a>
+                                <a class="dropdown-item" asp-controller="Administration" asp-action="ListRoles">Roles</a>
+                            </ul>
+                        </li>
+                        
+                    </ul>
+                    <ul class="navbar-nav ml-auto">
+                        @*If the user is signed-in display Logout link*@
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <form method="post" id="logoutForm" asp-controller="Account" asp-action="Logout" style="display: none;"></form>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Welcome, @User?.Identity?.Name</a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item" href="javascript:void(0);" onclick="document.getElementById('logoutForm').submit();">Logout</a>
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="ChangePassword">Change Password</a>
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="UpdateProfile">Update Profile</a>
+                                    @if (userDetail != null)
+                                    {
+                                        @if (userDetail.TwoFactorEnabled)
+                                        {
+                                            <a class="dropdown-item" asp-controller="Account" asp-action="ManageTwoFactorAuthentication">Disable 2FA</a>
+                                        }
+                                        else
+                                        {
+                                            <a class="dropdown-item" asp-controller="Account" asp-action="ManageTwoFactorAuthentication">Enable 2FA</a>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span class="dropdown-item disabled">No users found</span>
+                                    }
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="account" asp-action="register">
+                                    Register
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="account" asp-action="login">
+                                    Login
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+}
+
+<!-- Judge NavBar -->
+@if (SignInManager.IsSignedIn(User) && User.IsInRole("Judge"))
+{
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="JudgePage">DARLA - Judge</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="JudgePage">Home</a>
+                        </li>
+                    
+                    </ul>
+                    <ul class="navbar-nav ml-auto">
+                        @*If the user is signed-in display Logout link*@
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <form method="post" id="logoutForm" asp-controller="Account" asp-action="Logout" style="display: none;"></form>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Welcome, @User?.Identity?.Name</a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item" href="javascript:void(0);" onclick="document.getElementById('logoutForm').submit();">Logout</a>
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="ChangePassword">Change Password</a>
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="UpdateProfile">Update Profile</a>
+                                    @if (userDetail != null)
+                                    {
+                                        @if (userDetail.TwoFactorEnabled)
+                                        {
+                                            <a class="dropdown-item" asp-controller="Account" asp-action="ManageTwoFactorAuthentication">Disable 2FA</a>
+                                        }
+                                        else
+                                        {
+                                            <a class="dropdown-item" asp-controller="Account" asp-action="ManageTwoFactorAuthentication">Enable 2FA</a>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span class="dropdown-item disabled">No users found</span>
+                                    }
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="account" asp-action="register">
+                                    Register
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="account" asp-action="login">
+                                    Login
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+}
+
+<!-- Student NavBar -->
+@if (SignInManager.IsSignedIn(User) && User.IsInRole("Student"))
+{
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Student" asp-action="StudentDashboard">DARLA - Student</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="StudentDashboard">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="StudentRubricDetails">Rubric</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="StudentPeerReview">Peer Reviews</a>
+                        </li>
+                    
+                    </ul>
+                    <ul class="navbar-nav ml-auto">
+                        @*If the user is signed-in display Logout link*@
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <form method="post" id="logoutForm" asp-controller="Account" asp-action="Logout" style="display: none;"></form>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Welcome, @User?.Identity?.Name</a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item" href="javascript:void(0);" onclick="document.getElementById('logoutForm').submit();">Logout</a>
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="ChangePassword">Change Password</a>
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="UpdateProfile">Update Profile</a>
+                                    @if (userDetail != null)
+                                    {
+                                        @if (userDetail.TwoFactorEnabled)
+                                        {
+                                            <a class="dropdown-item" asp-controller="Account" asp-action="ManageTwoFactorAuthentication">Disable 2FA</a>
+                                        }
+                                        else
+                                        {
+                                            <a class="dropdown-item" asp-controller="Account" asp-action="ManageTwoFactorAuthentication">Enable 2FA</a>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span class="dropdown-item disabled">No users found</span>
+                                    }
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="account" asp-action="register">
+                                    Register
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="account" asp-action="login">
+                                    Login
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+}
+
 <div class="container">
     <main role="main" class="pb-3">
         @RenderBody()

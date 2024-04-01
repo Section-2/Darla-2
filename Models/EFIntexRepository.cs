@@ -12,7 +12,8 @@ namespace Darla.Models
             _context = temp;
         }
 
-        public IEnumerable<Rubric> Rubrics => _context.Rubrics;
+        public IEnumerable<Rubric> Rubrics => _context.Rubrics.ToList();
+        
         public IEnumerable<Grade> Grades => _context.Grades;
         public IEnumerable<JudgeRoom> JudgeRooms => _context.JudgeRooms;
         public IEnumerable<Permission> Permissions => _context.Permissions;
@@ -91,8 +92,24 @@ namespace Darla.Models
                 .Where(rs => rs.RoomId == roomId);
 
         }
+        public void AddRubric(Rubric rubric)
+        {
+            _context.Rubrics.Add(rubric);
+            _context.SaveChanges();
+        }
 
+        public void DeleteRubric(Rubric rubric)
+        {
+            _context.Rubrics.Remove(rubric);
+            _context.SaveChanges();
 
+        }
+
+        public void EditRubric(Rubric rubric)
+        {
+            _context.Rubrics.Update(rubric);
+            _context.SaveChanges();
+        }
     }
 
 

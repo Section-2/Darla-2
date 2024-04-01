@@ -5,7 +5,7 @@
 
 <h1>Judge Schedule</h1>
 
-@foreach (var room in Model.Room.Where(r => Model.JudgeRoom.Any(jr => jr.RoomId == r.RoomId && Model.User.Any(u => u.UserId == jr.UserId && u.PermissionType == 4))))
+@foreach (var room in Model.Room.Where(r => Model.JudgeRoom.Any(jr => jr.RoomId == r.RoomId && Model.User.Any(u => u.UserId.ToString() == jr.UserId && u.PermissionType == 4))))
 {
     <h2>@room.RoomName</h2>
 
@@ -18,14 +18,14 @@
             <th>Delete</th>
         </tr>
 
-        @foreach (var user in Model.User.Where(u => Model.JudgeRoom.Any(jr => jr.RoomId == room.RoomId && jr.UserId == u.UserId && u.PermissionType == 4)))
+        @foreach (var user in Model.User.Where(u => Model.JudgeRoom.Any(jr => jr.RoomId == room.RoomId && jr.UserId == u.UserId.ToString() && u.PermissionType == 4)))
         {
             <tr>
                 <td>@user.FirstName</td>
                 <td>@user.LastName</td>
                 <td>@room.RoomName</td>
-                <td><a asp-controller="Home" asp-action="EditJudge" asp-route-id="@user.UserId">Edit</a></td>
-                <td><a asp-controller="Home" asp-action="DeleteJudge" asp-route-id="@user.UserId">Delete</a></td>
+                <td><a asp-controller="Administration" asp-action="EditUser" asp-route-id="@user.UserId">Edit</a></td>
+                <td><a asp-controller="Administration" asp-action="DeleteUser" asp-route-id="@user.UserId">Delete</a></td>
             </tr>
         }
     </table>
