@@ -78,6 +78,7 @@
     
    
     <form asp-controller="Home" asp-action="judge_survey" method="post">
+        <input type="hidden" name="TeamNumber" value="@Model.TeamNumber" />
         <div class="form-group">
             <label for="Satisfaction">Rate (1-10)</label>
             <input type="range" class="custom-range" id="Satisfaction" name="Satisfaction" min="1" max="10" value="5">
@@ -88,9 +89,9 @@
             <label >Do you have any complements or critiques for the group about their communication and delivery?</label>
             <textarea class="note-taking-box" rows="10" placeholder="Enter notes here..."></textarea>
         </div>
-        
+
         <br/><br/>
-        
+
         <div>
             <h3>How effective was the team in DEMONSTRATING THEIR SOLUTION?</h3>
             <br/>
@@ -102,27 +103,28 @@
                 <li>Presence or Lack of Errors/Bugs</li>
             </ul>
         </div>
-        
+
         <div class="form-group">
             <label for="Knowledge">Rate (1-10)</label>
             <input type="range" class="custom-range" id="Knowledge" name="Knowledge" min="1" max="10" value="5">
             <small class="form-text text-muted">Score: <span id="knowledgeValue">5</span></small>
         </div>
         <br/>
-        
+
         <div>
             <label >Do you have any complements or critiques for the group about their technology demo?</label>
             <textarea class="note-taking-box" rows="10" placeholder="Enter notes here..."></textarea>
         </div>
-        
+
         <br/><br/>
-        
-        
-        
-        
-        <div><h3>How effective was the team in BUILDING A SOLUTION THAT MEETS CLIENT NEEDS?</h3>
+
+
+
+
+        <div>
+            <h3>How effective was the team in BUILDING A SOLUTION THAT MEETS CLIENT NEEDS?</h3>
             <br/>
-        <label>Items that may factor into your scoring of this item:</label>
+            <label>Items that may factor into your scoring of this item:</label>
             <ul>
                 <li>The Team Understands the Requirements and Challenges Facing the Client</li>
                 <li>System Meets Client’s Needs</li>
@@ -142,7 +144,7 @@
             <label >Do you have any complements or critiques for the group about the OVERALL SYSTEM QUALITY AND CLIENT SATISFACTION?</label>
             <textarea class="note-taking-box" rows="10" placeholder="Enter notes here..."></textarea>
         </div>
-        
+
         <br/><br/><br/>
         <div>
             <h3>We like to give some of the teams fun awards independent of the overall scores. Please consider one or more creative and fun/funny awards for this team.</h3>
@@ -150,7 +152,7 @@
             <label >(e.g., “The Extra Mile Award”, “Threw in the Kitchen Sink Award”, “Best Analytics Award”, “Funniest Domain Name Award”, “Most Colorful Slides Award”, “It’s Not What You Know, But Who You Know Award”, etc. )</label>
             <textarea class="note-taking-box" rows="10" placeholder="Enter notes here..."></textarea>
         </div>
-        
+
         <br/>
         <div style="text-align: center">
             <p>Thank you for completing our survey! You may submit and exit now. We hope you enjoyed the presentation!</p>
@@ -179,9 +181,9 @@
                     document.getElementById("serviceSpeedValue").innerText = this.value;
                 };
     
-                document.getElementById("OverallExperience").oninput = function() {
-                    document.getElementById("overallExperienceValue").innerText = this.value;
-                };
+                // document.getElementById("OverallExperience").oninput = function() {
+                //     document.getElementById("overallExperienceValue").innerText = this.value;
+                // };
             });
         </script>
 }

@@ -119,15 +119,33 @@
     }
 
     // Event listener for the "Save" button
-    const saveButton = document.getElementById('saveOrderButton');
-    saveButton.addEventListener('click', () => {
-        resetOpacity();
-        // Here you can also implement any other save logic if needed
-    })
+    // const saveButton = document.getElementById('saveOrderButton');
+    // saveButton.addEventListener('click', () => {
+    //     resetOpacity();
+    //     // Here you can also implement any other save logic if needed
+    // })
 
     // Initial setup
     let dragSrcEl = null;
     loadOrder();
     let items = document.querySelectorAll('.ranking-list .box');
     items.forEach(addDnDEvents);
+
+    document.querySelector('#rankingsForm').addEventListener('submit', function(event) {
+        // Prevent the default form submission to update the inputs first
+        event.preventDefault();
+
+        // Your existing code to update the localStorage with the current order
+        updateOrder();
+        
+        // Now, update the hidden inputs before submitting the form
+        const itemOrder = JSON.parse(localStorage.getItem('itemOrder'));
+        itemOrder.forEach(({ id, position }) => {
+            // Find the hidden input for this team's rank and update its value
+            document.querySelector(`#rankForTeam-${id}`).value = position + 1; // Assuming position is 0-indexed
+        });
+
+        // Now submit the form programmatically since we prevented the default action
+        event.target.submit();
+    });
 });
