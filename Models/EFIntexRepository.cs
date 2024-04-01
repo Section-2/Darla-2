@@ -13,6 +13,7 @@ namespace Darla.Models
         }
 
         public IEnumerable<Rubric> Rubrics => _context.Rubrics.ToList();
+        
         public IEnumerable<Grade> Grades => _context.Grades;
         public IEnumerable<JudgeRoom> JudgeRooms => _context.JudgeRooms;
         public IEnumerable<Permission> Permissions => _context.Permissions;

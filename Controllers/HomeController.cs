@@ -318,7 +318,7 @@ public class HomeController : Controller
 
     public IActionResult StudentProgress()
     {
-        return View();
+        return View("Index");
     }
 
     public IActionResult RubricDetails()
@@ -424,7 +424,7 @@ public class HomeController : Controller
             .Where(x => x.ClassCode == classCode)
             .ToList();
 
-        return View(rubric);
+        return View("AdminRubricEdit",rubric);
     }
 
 

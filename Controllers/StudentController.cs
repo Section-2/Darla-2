@@ -218,7 +218,7 @@ namespace Darla.Controllers
         {
             var userId = 7;
             // Retrieve the User object (subject) with the given ID
-            var subject = _intexRepo.Users.FirstOrDefault(u => u.UserId == subjectId);
+            var subject = _intexRepo.Users.FirstOrDefault(u => u.UserId == subjectId.ToString());
 
 
             // Retrieve a list of all PeerEvaluationQuestions from the repository or context
