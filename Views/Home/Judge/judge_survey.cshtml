@@ -80,13 +80,13 @@
     <form asp-controller="Home" asp-action="judge_survey" method="post">
         <div class="form-group">
             <label for="Satisfaction">Rate (1-10)</label>
-            <input type="range" class="custom-range" id="Satisfaction" name="Satisfaction" min="1" max="10" value="5">
+            <input asp-for="CommunicationScore" type="range" class="custom-range" id="Satisfaction" name="Satisfaction" min="1" max="10" value="5">
             <small class="form-text text-muted">Score: <span id="satisfactionValue">5</span></small>
         </div>
         <br/>
         <div>
             <label >Do you have any complements or critiques for the group about their communication and delivery?</label>
-            <textarea class="note-taking-box" rows="10" placeholder="Enter notes here..."></textarea>
+            <textarea asp-for="CommunicationNotes" class="note-taking-box" rows="10" placeholder="Enter notes here..."></textarea>
         </div>
         
         <br/><br/>
@@ -105,14 +105,14 @@
         
         <div class="form-group">
             <label for="Knowledge">Rate (1-10)</label>
-            <input type="range" class="custom-range" id="Knowledge" name="Knowledge" min="1" max="10" value="5">
+            <input asp-for="DemonstrationScore" type="range" class="custom-range" id="Knowledge" name="Knowledge" min="1" max="10" value="5">
             <small class="form-text text-muted">Score: <span id="knowledgeValue">5</span></small>
         </div>
         <br/>
         
         <div>
             <label >Do you have any complements or critiques for the group about their technology demo?</label>
-            <textarea class="note-taking-box" rows="10" placeholder="Enter notes here..."></textarea>
+            <textarea asp-for="DemonstrationNotes" class="note-taking-box" rows="10" placeholder="Enter notes here..."></textarea>
         </div>
         
         <br/><br/>
@@ -134,13 +134,13 @@
 
         <div class="form-group">
             <label for="ServiceSpeed">Rate (1-10)</label>
-            <input type="range" class="custom-range" id="ServiceSpeed" name="ServiceSpeed" min="1" max="10" value="5">
+            <input asp-for="ClientNeedsScore" type="range" class="custom-range" id="ServiceSpeed" name="ServiceSpeed" min="1" max="10" value="5">
             <small class="form-text text-muted">Score: <span id="serviceSpeedValue">5</span></small>
         </div>
         <br/>
         <div>
             <label >Do you have any complements or critiques for the group about the OVERALL SYSTEM QUALITY AND CLIENT SATISFACTION?</label>
-            <textarea class="note-taking-box" rows="10" placeholder="Enter notes here..."></textarea>
+            <textarea asp-for="ClientNeedsNotes" class="note-taking-box" rows="10" placeholder="Enter notes here..."></textarea>
         </div>
         
         <br/><br/><br/>
@@ -148,7 +148,7 @@
             <h3>We like to give some of the teams fun awards independent of the overall scores. Please consider one or more creative and fun/funny awards for this team.</h3>
             <br/>
             <label >(e.g., “The Extra Mile Award”, “Threw in the Kitchen Sink Award”, “Best Analytics Award”, “Funniest Domain Name Award”, “Most Colorful Slides Award”, “It’s Not What You Know, But Who You Know Award”, etc. )</label>
-            <textarea class="note-taking-box" rows="10" placeholder="Enter notes here..."></textarea>
+            <textarea asp-for="Awards" class="note-taking-box" rows="10" placeholder="Enter notes here..."></textarea>
         </div>
         
         <br/>

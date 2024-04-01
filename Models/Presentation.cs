@@ -16,7 +16,7 @@ public partial class Presentation
     public string? CommunicationNotes { get; set; }
 
     public int DemonstrationScore { get; set; }
-
+    
     public string? DemonstrationNotes { get; set; }
 
     public int ClientNeedsScore { get; set; }
