@@ -5,6 +5,10 @@
 @using Darla.Models;
 @model IEnumerable<PeerEvaluationDash>
 
+@* Assume Model is an IEnumerable of a GroupEvaluation type *@
+
+@model IEnumerable<Team>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -96,8 +100,13 @@
                                 <a href="@Url.Action("AdminViewPeerEvalGiven", "Home", new { evaluatorId = member.User.UserId })" class="btn btn-primary btn-sm">View Sent</a>
                                 <!-- Other buttons can be added similarly -->
                             </div>
+                            <div class="member-link">
+                                <!-- View Received Button -->
+                                <a href="@Url.Action("AdminViewPeerEvalReceived", "Home", new { userId = member.User.UserId })" class="btn btn-primary btn-sm">View Received</a>
+                                <!-- Other buttons can be added similarly -->
+                            </div>
                         </div>
-                    }
+                    }*@
                 </div>
             </div>
         }

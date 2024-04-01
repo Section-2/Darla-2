@@ -7,6 +7,7 @@
         IEnumerable<JudgeRoom> JudgeRooms { get; }
         IEnumerable<Permission> Permissions { get; }
         IEnumerable<Presentation> Presentations { get; }
+        public void AddPresentationScore(Presentation presentation);
         IEnumerable<RoomSchedule> RoomSchedules { get; }
         IEnumerable<StudentTeam> StudentTeams { get; }
         IEnumerable<UserPassword> UserPasswords { get; }
@@ -18,6 +19,10 @@
         IEnumerable<TeamSubmission> TeamSubmissions { get; }
 
         IQueryable<StudentTeam> GetQueryableStudentTeams();
+        public void AddRubric(Rubric rubric);
+        public void EditRubric(Rubric rubric);
+        public void DeleteRubric(Rubric rubric);
+
 
     }
 }
