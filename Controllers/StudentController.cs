@@ -77,7 +77,7 @@ namespace Darla.Controllers
         }
 
     [HttpGet]
-    public IActionResult StudentRubricDetails(int classCode)
+    public IActionResult RubricDetails(int classCode)
     {
         // Retrieve all rubrics with the given classId from the repository
         List<Rubric> rubrics = _intexRepo.Rubrics.Where(r => r.ClassCode == classCode).ToList();
@@ -186,7 +186,7 @@ namespace Darla.Controllers
 
 
 
-    public IActionResult StudentGroupPeerEvals()
+    public IActionResult GroupPeerEvals()
     {
         int userId = 7; // Hardcoded userId
 
@@ -290,6 +290,7 @@ namespace Darla.Controllers
 
             // Redirect to StudentPeerReview action to repopulate ViewBag if there are validation errors
             return RedirectToAction("StudentPeerReview", new { subjectId = subjectId });
+            
         }
 
 
