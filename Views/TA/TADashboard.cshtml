@@ -36,7 +36,11 @@
         padding-left: 20px;
     }
 </style>
-
+<div>
+    <a asp-controller="TA" asp-action="AllGrades">all grades</a>
+    <a asp-controller="TA" asp-action="ClassRubric">class rubric</a>
+    <a asp-controller="TA" asp-action="TaGradingProgress">ta grading progress</a>
+</div>
 <div class="container mt-5">
     <h1 class="text-center mb-4">@ViewData["Title"]</h1>
 
@@ -116,6 +120,8 @@
             </div>
         </div>
     </div>
+    
+
 </div>
 
 
