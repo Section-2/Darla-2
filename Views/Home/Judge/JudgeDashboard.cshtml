@@ -1,88 +1,124 @@
-@using Darla.Models
-@using System.Collections.Generic
-@model IQueryable<RoomSchedule> 
-
-
 <!DOCTYPE html>
-<html>  
+<html lang="en">
 <head>
-    <title>Judge Schedule and Ranking</title>
-    <link rel="stylesheet" href="~/css/judges.css" asp-append-version="true"/>
-    <style>
-        .schedule-container {
-            display: flex;
-            justify-content: space-between;
-        }
-        .schedule, .ranking {
-            border: 1px solid #000;
-            margin: 10px;
-            padding: 10px;
-        }
-        .ranking-list {
-            display: flex;
-            flex-direction: column;
-            align-items: start;
-        }
-        .box {
-            cursor: move; /* Change the cursor to indicate draggable items */
-            margin: 5px 0; /* Adjust based on your design */
-            padding: 10px;
-            background-color: #f0f0f0;
-            border: 1px dashed #ddd;
-        }
-        .box.drag-over {
-            border-color: #999;
-        }
-    </style>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title> - Darla</title>
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/site.css?v=7Ufge-E9bsRUGv78vQPyrCmLGz8Xt3G8bRokci4gMWQ" />
+    <link rel="stylesheet" href="/css/darla.css?v=j00Gem52_KoFZAK8_HOSnf5kxK_4d52ZsQmzO5atXn4" />
+    <link rel="stylesheet" href="/css/judges.css?v=xqBDFGz7X_fPXjB7WprhQ8RFYFoMW8J7HyPh1oK3hvQ" />
 </head>
 <body>
-
-<div class="schedule-container">
-    <div class="schedule">
-        <h1>JUDGE:</h1>
-        <h2>Schedule & Surveys</h2>
-        <h3>ROOM W310</h3>
-        @{
-            int count = 0;
-            foreach (RoomSchedule schedule in Model)
-            {
-                <div>@schedule.Timeslot Team @schedule.TeamNumber</div>
-                if (++count == 2) // After the second schedule entry
-                {
-                    <div>Lunch Break</div> // Insert a lunch break
-                }
-            }
-        }
-    </div>
-  
-    <div class="ranking">
-        <h2>Group Ranking</h2>
-        <div id="rankingList" class="ranking-list">
-            @{
-                foreach (RoomSchedule schedule in Model) // Reuse the filtered and sorted list
-                {
-                    <div draggable="true" class="box" data-teamnumber="@schedule.TeamNumber">
-                        Team @schedule.TeamNumber
-                    </div>
-                }
-            }
-            
+<!--
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <div class="container-fluid">
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Darla</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="AllGrades">All Grades</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="">AddTA</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="">ListTA</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="judge_survey">Privacy</a>
+                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="StudentProgress">Progress</a>
+                        </li>
+                </ul>
+            </div>
         </div>
-        <button id="saveOrderButton">Save Order</button>
+    </nav>
+</header>
+    -->
+<div b-0c9pw9ke29 class="container">
+    <main b-0c9pw9ke29 role="main" class="pb-3">
+        
+<!DOCTYPE html>
+<html> 
+
+<div class = "darla-content">
+<head>
+    <title>Judge Schedule and Ranking</title>
+    <link rel="stylesheet" href="/css/judges.css?v=xqBDFGz7X_fPXjB7WprhQ8RFYFoMW8J7HyPh1oK3hvQ" />
+
+</head>
+<body>
+<script src="/js/site.js"></script>
+<h2>Welcome Judge:</h2>
+<br/>
+<div class="schedule-container">
+    <div>
+        <h3>Schedule & Surveys</h3>
+        <h3>ROOM W310</h3>
+                <div> Team 202</div>
+                <div> Team 204</div>
+                    <div>Lunch Break</div>     </div>
+      
+    <div>
+        <h3>Group Ranking</h3>
+            
+        <div class="container">
+            
+            <div class="row">
+    
+                <div id="places" class="col-2">
+                            <div class="box row" data-teamnumber="1">
+                                1
+                            </div>
+                            <div class="box row" data-teamnumber="2">
+                                2
+                            </div>
+                </div>
+                <div id="rankingList" class="ranking-list col-6">
+                            <div draggable="true" class="box row" data-teamnumber="202">
+                                Team 202
+                            </div>
+                            <div draggable="true" class="box row" data-teamnumber="204">
+                                Team 204
+                            </div>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <button id="saveOrderButton">Save Rank</button>
     </div>
+    <br/>
+    <br/>
 </div>
-<form asp-controller="Home" asp-action="UpdateRanks" method="post">
-    @{
-        var counter = 0;
-    }
-    @foreach (RoomSchedule schedule in Model)
-    {
-        <input type="hidden" name="teamRanks[@counter].Key" value="@schedule.TeamNumber"/>
-        <input type="hidden" name="teamRanks[@counter].Value" value=""/>
-        counter++;
-    }
-    <button type="submit">Save Rankings</button>
-</form>
-<script src="~/js/site.js"></script>
+<button class="back-button">Back</button>
+    
+</body>
+</div>
+</html>
+
+
+
+    </main>
+</div>
+
+<footer b-0c9pw9ke29 class="border-top footer text-muted">
+    <div b-0c9pw9ke29 class="container">
+        &copy; 2024 - Darla - <a href="/Home/openingPage">OpeningPage</a>
+    </div>
+</footer>
+<script src="/lib/jquery/dist/jquery.min.js"></script>
+<script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/site.js?v=Wrtjq2SQls_PKd0oF9dS6J_DYMggxPih3d8d58fav-I"></script>
+
 </body>
 </html>
