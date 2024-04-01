@@ -165,7 +165,7 @@ namespace Darla.Controllers
                 TeamNumber = teamNumber,
                 GithubLink = githubLink,
                 VideoLink = videoLink,
-                Timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+            
             };
             _intexRepo.AddTeamSubmission(submission);
         }
@@ -173,7 +173,7 @@ namespace Darla.Controllers
         {
             submission.GithubLink = githubLink;
             submission.VideoLink = videoLink;
-            submission.Timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+       
         }
 
         await _intexRepo.SaveChangesAsync();
