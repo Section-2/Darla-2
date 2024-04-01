@@ -110,6 +110,18 @@ namespace Darla.Models
             _context.Rubrics.Update(rubric);
             _context.SaveChanges();
         }
+
+        public void EditJudge(User updatedInfo)
+        {
+            _context.Update(updatedInfo);
+            _context.SaveChanges();
+        }
+
+        public void DeleteJudge(User removedUser)
+        {
+            _context.Users.Remove(removedUser);
+            _context.SaveChanges();
+        }
     }
 
 
