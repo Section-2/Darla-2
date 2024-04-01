@@ -24,6 +24,6 @@ namespace Darla.Models
         void AddPeerEvaluation(PeerEvaluation evaluation);
         Task SaveChangesAsync();
         IQueryable<StudentTeam> GetQueryableStudentTeams();
-        Task SaveChangesAsync();
+        
     }
 }
