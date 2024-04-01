@@ -1,5 +1,72 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+
 @{
+    var subject = ViewBag.Subject as User;
+    var questions = ViewBag.PeerEvaluationQuestions as List<PeerEvaluationQuestion>;
+    var evaluatorId = ViewBag.evaluatorId; // Replace with actual evaluatorId, possibly from logged-in user
+}
+
+<h1>Peer Evaluation for @subject.FirstName @subject.LastName</h1>
+
+@* <form asp-controller="Student" asp-action="SubmitPeerEvaluation" method="post"> *@
+@*     @for (int i = 0; i < questions.Count; i++) *@
+@*     { *@
+@*         <div> *@
+@*             <h4>@questions[i].Question</h4> *@
+@*             @for (int score = 1; score <= 10; score++) *@
+@*             { *@
+@*                 <input type="radio" name="PeerEvaluations[@i].Rating" value="@score" /> *@
+@*                 <label>@score</label> *@
+@*             } *@
+@*             <input type="hidden" name="PeerEvaluations[@i].QuestionId" value="@questions[i].QuestionId" /> *@
+@*             <input type="hidden" name="PeerEvaluations[@i].SubjectId" value="@subject.UserId" /> *@
+@*             <input type="hidden" name="PeerEvaluations[@i].EvaluatorId" value="@evaluatorId" /> *@
+@*         </div> *@
+@*     } *@
+@* *@
+@*      *@
+@*     <button type="submit">Submit Review</button> *@
+@* </form> *@
+
+<form asp-controller="Student" asp-action="SubmitPeerEvaluation" method="post">
+    @for (int i = 0; i < questions.Count; i++)
+    {
+        <div>
+            <h4>@questions[i].Question</h4>
+            @for (int score = 1; score <= 10; score++)
+            {
+                <input type="radio" name="peerEvaluations[@i].Rating" value="@score" />
+                <label>@score</label>
+            }
+            <input type="hidden" name="peerEvaluations[@i].QuestionId" value="@questions[i].QuestionId" />
+            <input type="hidden" name="peerEvaluations[@i].SubjectId" value="@subject.UserId" />
+            <input type="hidden" name="peerEvaluations[@i].EvaluatorId" value="@evaluatorId" />
+        </div>
+    }
+    <div>
+          <h3>Total:</h3> 
+          <input type="text" id="totalScore" name="totalScore" readonly />
+    </div>
+    <button type="submit">Submit Review</button>
+</form>
+
+
+@section Scripts {
+    <script>
+        document.addEventListener('change', function (e) {
+            if (e.target.type === 'radio') {
+                updateTotal();
+            }
+        });
+
+        function updateTotal() {
+            var radios = document.querySelectorAll('input[type="radio"]:checked');
+            var total = Array.from(radios).reduce(function (sum, radio) {
+                return sum + parseInt(radio.value, 10);
+            }, 0);
+            document.getElementById('totalScore').value = total;
+        }
+    </script>
 }

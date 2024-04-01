@@ -34,6 +34,19 @@ namespace Darla.Models
         public IEnumerable<Team> Teams => _context.Teams;
         public IEnumerable<Room> Rooms => _context.Rooms;
         public IEnumerable<TeamSubmission> TeamSubmissions => _context.TeamSubmissions;
+        public void AddTeamSubmission(TeamSubmission submission)
+        {
+            _context.TeamSubmissions.Add(submission);
+        }
+        public void AddPeerEvaluation(PeerEvaluation evaluation)
+        {
+            _context.PeerEvaluations.Add(evaluation);
+        }
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
+       
 
         public IQueryable<StudentTeam> GetQueryableStudentTeams()
         {
