@@ -27,7 +27,22 @@ namespace Darla.Models
         public IEnumerable<Room> Rooms => _context.Rooms;
         public IEnumerable<TeamSubmission> TeamSubmissions => _context.TeamSubmissions;
 
-       
+        public void AddPeerEvaluation(PeerEvaluation evaluation)
+        {
+            _context.PeerEvaluations.Add(evaluation);
+        }
+
+        public void SaveChanges()
+        {
+            _context.SaveChanges();
+        }
+
+        // Or an asynchronous version
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
+
     }
 
 

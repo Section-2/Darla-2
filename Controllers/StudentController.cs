@@ -214,27 +214,61 @@ public class StudentController : Controller
         return View();
     }
 
-    [HttpGet]
-    public Task<IActionResult> SubmitPeerEvaluation(List<PeerEvaluation> peerEvaluations)
+    //[HttpPost]
+    //public IActionResult SubmitPeerEvaluation(List<PeerEvaluation> peerEvaluations)
+    //{
+
+
+    //    foreach (var evaluation in peerEvaluations)
+    //    {
+    //        _intexRepo.AddPeerEvaluation(evaluation);
+
+
+    //        _intexRepo.SaveChanges(); // Or await _intexRepo.SaveChangesAsync(); for async
+    //        Console.WriteLine("one eval submit");
+    //    }
+    //        // Redirect to a confirmation page or back to the form
+    //        return RedirectToAction("GroupPeerEvals"); // Adjust your redirection as necessary
+
+    //}
+
+    [HttpPost]
+    public async Task<IActionResult> AddHardcodedPeerEvaluation()
     {
-        if (ModelState.IsValid)
+        // Create the PeerEvaluation object with hardcoded values
+        var hardcodedEvaluation = new PeerEvaluation
         {
-            foreach (var evaluation in peerEvaluations)
-            {
-                _intexRepo.PeerEvaluations.Add(evaluation);
-            }
+            EvaluatorId = 1,
+            SubjectId = 7,
+            QuestionId = 1,
+            Rating = 1
+        };
 
-             _intexRepo.SaveChanges();
+        // Check if the hardcoded foreign keys are valid before adding
+        bool evaluatorExists = _intexRepo.StudentTeams.Any(st => st.UserId == hardcodedEvaluation.EvaluatorId);
+        Console.WriteLine(evaluatorExists);
+        bool subjectExists = _intexRepo.StudentTeams.Any(st => st.UserId == hardcodedEvaluation.SubjectId);
+        Console.WriteLine(subjectExists);
+        bool questionExists = _intexRepo.PeerEvaluationQuestions.Any(q => q.QuestionId == hardcodedEvaluation.QuestionId);
+        Console.WriteLine(questionExists);
 
-            // Redirect to a confirmation page or back to the form
-            return RedirectToAction("GroupPeerEvals"); // Adjust your redirection as necessary
+        if (evaluatorExists && subjectExists && questionExists)
+        {
+            // Add the new PeerEvaluation to the repository
+            _intexRepo.AddPeerEvaluation(hardcodedEvaluation);
+
+            // Save changes in the repository
+            await _intexRepo.SaveChangesAsync();
+
+            // Redirect to a success page or another action method as required
+            return RedirectToAction("GroupPeerEvals"); // Adjust as necessary
         }
-        Console.WriteLine("status invalid");
-
-        // If the model state is not valid, return the form with validation messages
-        return View(peerEvaluations); // Adjust the view name and model as necessary
+        else
+        {
+            // Handle the error if foreign keys are not valid (e.g., return an error view)
+            return View("Error", new { message = "Invalid foreign key values." });
+        }
     }
-
 
 
 

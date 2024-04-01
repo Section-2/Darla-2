@@ -1,4 +1,6 @@
 ﻿
+
+
 namespace Darla.Models
 {
     public interface IIntexRepository
@@ -18,6 +20,8 @@ namespace Darla.Models
         IEnumerable<Room> Rooms { get; }
         IEnumerable<TeamSubmission> TeamSubmissions { get; }
 
-     
+        void AddPeerEvaluation(PeerEvaluation evaluation);
+        void SaveChanges();
+        Task SaveChangesAsync();
     }
 }
