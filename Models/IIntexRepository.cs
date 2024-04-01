@@ -1,4 +1,5 @@
 ﻿
+
 namespace Darla.Models
 {
     public interface IIntexRepository
@@ -23,6 +24,6 @@ namespace Darla.Models
         void AddPeerEvaluation(PeerEvaluation evaluation);
         Task SaveChangesAsync();
         IQueryable<StudentTeam> GetQueryableStudentTeams();
-
+        
     }
 }
