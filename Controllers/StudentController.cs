@@ -16,13 +16,13 @@ namespace Darla.Controllers
             _intexRepo = temp;
         }
 
-    public IActionResult StudentDashboard()
-    {
-        var userId = 7; // Assuming you will get the user's ID from somewhere.
-        var teamNumber = _intexRepo.StudentTeams
-            .Where(st => st.UserId == userId)
-            .Select(st => (int?)st.TeamNumber)
-            .FirstOrDefault();
+        public IActionResult StudentDashboard()
+        {
+            string userId = "7"; // Assuming you will get the user's ID from somewhere.
+            var teamNumber = _intexRepo.StudentTeams
+                .Where(st => st.UserId == userId)
+                .Select(st => (int?)st.TeamNumber)
+                .FirstOrDefault();
 
 
             List<string> teamMemberNames = new List<string>();
@@ -34,12 +34,12 @@ namespace Darla.Controllers
             // Get the list of UserIds for the team
             var userIds = _intexRepo.StudentTeams
                 .Where(st => st.TeamNumber == teamNumber.Value)
-                .Select(st => st.UserId)
+                .Select(st => st.UserId.ToString())
                 .ToList();
 
             // Retrieve the names of the Users with those Ids
             teamMemberNames = _intexRepo.Users
-                .Where(u => userIds.Contains(u.UserId))
+                .Where(u => userIds.Contains(u.UserId.ToString()))
                 .Select(u => u.FirstName + " " + u.LastName)
                 .ToList();
 
@@ -49,13 +49,13 @@ namespace Darla.Controllers
             ViewBag.RoomSchedule = roomSchedule;
             ViewBag.TeamMemberNames = teamMemberNames;
 
-        return View();
-    }
+            return View();
+        }
 
-    private List<TeamSubmission> GetSubmissions(int userId)
-    {
-        var teamNumber = _intexRepo.StudentTeams
-            .FirstOrDefault(st => st.UserId == userId)?.TeamNumber;
+        private List<TeamSubmission> GetSubmissions(string userId)
+        {
+            var teamNumber = _intexRepo.StudentTeams
+                .FirstOrDefault(st => st.UserId == userId)?.TeamNumber;
 
             if (!teamNumber.HasValue)
             {
@@ -85,17 +85,16 @@ namespace Darla.Controllers
             // Assign the rubrics to the ViewBag
             ViewBag.Rubrics = rubrics;
 
-            return View();
+            return View("StudentRubricDetails");
         }
 
 
-
-    [HttpGet]
-    public IActionResult StudentProgress()
-    {
-        var userId = 7;
-        var teamNumber = _intexRepo.StudentTeams
-            .FirstOrDefault(st => st.UserId == userId)?.TeamNumber;
+        [HttpGet]
+        public IActionResult StudentProgress()
+        {
+            string userId = "7";
+            var teamNumber = _intexRepo.StudentTeams
+                .FirstOrDefault(st => st.UserId == userId)?.TeamNumber;
 
             if (!teamNumber.HasValue)
             {
@@ -123,8 +122,6 @@ namespace Darla.Controllers
             return View();
         }
 
-
-
         public IActionResult updateCompleteStatus()
         {
             //when an assigments completed check box is click and is emplt or False 
@@ -147,104 +144,101 @@ namespace Darla.Controllers
         //    return submissions;
         //}
 
-    [HttpPost]
-    public async Task<IActionResult> Submit(string githubLink, string videoLink)
-    {
-        var userId = 7;
-        var teamNumber = _intexRepo.StudentTeams
-                             .FirstOrDefault(st => st.UserId == userId)?.TeamNumber ??
-                         0; // Provide a default value of 0 if TeamNumber is null
-
-        var submission = _intexRepo.TeamSubmissions
-            .FirstOrDefault(s => s.TeamNumber == teamNumber);
-
-        if (submission == null)
+        [HttpPost]
+        public async Task<IActionResult> Submit(string githubLink, string videoLink)
         {
-            submission = new TeamSubmission
+            string userId = "7";
+            var teamNumber = _intexRepo.StudentTeams
+                                 .FirstOrDefault(st => st.UserId == userId)?.TeamNumber ??
+                             0; // Provide a default value of 0 if TeamNumber is null
+
+            var submission = _intexRepo.TeamSubmissions
+                .FirstOrDefault(s => s.TeamNumber == teamNumber);
+
+            if (submission == null)
             {
-                TeamNumber = teamNumber,
-                GithubLink = githubLink,
-                VideoLink = videoLink,
-                Timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
-            };
-            _intexRepo.AddTeamSubmission(submission);
+                submission = new TeamSubmission
+                {
+                    TeamNumber = teamNumber,
+                    GithubLink = githubLink,
+                    VideoLink = videoLink,
+
+                };
+                _intexRepo.AddTeamSubmission(submission);
+            }
+            else
+            {
+                submission.GithubLink = githubLink;
+                submission.VideoLink = videoLink;
+
+            }
+
+            await _intexRepo.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Submission updated successfully!";
+            return View("StudentProgress");
         }
-        else
+
+
+        public IActionResult GroupPeerEvals()
         {
-            submission.GithubLink = githubLink;
-            submission.VideoLink = videoLink;
-            submission.Timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            string userId = "7"; // Hardcoded userId
+
+            // Find the team number associated with this user
+            var teamNumber = _intexRepo.StudentTeams
+                .Where(st => st.UserId == userId)
+                .Select(st => st.TeamNumber)
+                .FirstOrDefault();
+
+            if (teamNumber == 0)
+            {
+                return View("Error");
+            }
+
+            // Get all user IDs that are part of the team, excluding the current user
+            var teamMemberIds = _intexRepo.StudentTeams
+                .Where(st => st.TeamNumber == teamNumber && st.UserId != userId)
+                .Select(st => st.UserId)
+                .ToList();
+
+            // Retrieve User objects that match the team member IDs
+            var teamMemberUsers = _intexRepo.Users
+                .Where(u => teamMemberIds.Contains(u.UserId.ToString()))
+                .ToList();
+
+            // Assign the list of User objects to the ViewBag
+            ViewBag.TeamMembers = teamMemberUsers;
+
+            return View("StudentGroupPeerEvals");
         }
 
-        await _intexRepo.SaveChangesAsync();
 
-        TempData["SuccessMessage"] = "Submission updated successfully!";
-        return View("StudentProgress");
-    }
-
-
-
-
-
-    public IActionResult GroupPeerEvals()
-    {
-        int userId = 7; // Hardcoded userId
-
-        // Find the team number associated with this user
-        var teamNumber = _intexRepo.StudentTeams
-            .Where(st => st.UserId == userId)
-            .Select(st => st.TeamNumber)
-            .FirstOrDefault();
-
-        if (teamNumber == 0)
+        [HttpGet]
+        public IActionResult StudentPeerReview(int subjectId)
         {
-            return View("Error", new { message = "User is not part of a team." });
+            var userId = 7;
+            // Retrieve the User object (subject) with the given ID
+            var subject = _intexRepo.Users.FirstOrDefault(u => u.UserId == subjectId);
+
+
+            // Retrieve a list of all PeerEvaluationQuestions from the repository or context
+            var questions = _intexRepo.PeerEvaluationQuestions.ToList();
+
+            // Pass the subject User object and the list of questions to the view using ViewBag
+            ViewBag.Subject = subject;
+            ViewBag.PeerEvaluationQuestions = questions;
+            ViewBag.evaluatorId = userId;
+            return View();
         }
 
-        // Get all user IDs that are part of the team, excluding the current user
-        var teamMemberIds = _intexRepo.StudentTeams
-            .Where(st => st.TeamNumber == teamNumber && st.UserId != userId)
-            .Select(st => st.UserId)
-            .ToList();
-
-        // Retrieve User objects that match the team member IDs
-        var teamMemberUsers = _intexRepo.Users
-            .Where(u => teamMemberIds.Contains(u.UserId))
-            .ToList();
-
-        // Assign the list of User objects to the ViewBag
-        ViewBag.TeamMembers = teamMemberUsers;
-
-        return View();
-    }
-
-
-    [HttpGet]
-    public IActionResult StudentPeerReview(int subjectId)
-    {
-        var userId = 7;
-        // Retrieve the User object (subject) with the given ID
-        var subject = _intexRepo.Users.FirstOrDefault(u => u.UserId == subjectId);
-
-
-        // Retrieve a list of all PeerEvaluationQuestions from the repository or context
-        var questions = _intexRepo.PeerEvaluationQuestions.ToList();
-
-        // Pass the subject User object and the list of questions to the view using ViewBag
-        ViewBag.Subject = subject;
-        ViewBag.PeerEvaluationQuestions = questions;
-        ViewBag.evaluatorId = userId;
-        return View();
-    }
 
 
 
-
-    public IActionResult PeerEvaluation()
-    {
-        //generate the peer eval quiz
-        return View();
-    }
+        public IActionResult PeerEvaluation()
+        {
+            //generate the peer eval quiz
+            return View("StudentPeerReview");
+        }
 
         //if (ModelState.IsValid)
         //{ 
@@ -259,11 +253,11 @@ namespace Darla.Controllers
         //    return RedirectToAction("GroupPeerEvals"); // Adjust your redirection as necessary
         //}
         //Console.WriteLine("status invalid");
-        
+
         [HttpPost]
         public async Task<IActionResult> SubmitPeerEvaluation(List<PeerEvaluation> peerEvaluations, int subjectId)
         {
-            int evaluatorId = 7; // Hardcoded evaluatorId for testing
+            string evaluatorId = "7"; // Hardcoded evaluatorId for testing
 
             if (peerEvaluations != null && peerEvaluations.Any())
             {
@@ -290,13 +284,9 @@ namespace Darla.Controllers
 
             // Redirect to StudentPeerReview action to repopulate ViewBag if there are validation errors
             return RedirectToAction("StudentPeerReview", new { subjectId = subjectId });
-            
+
         }
 
 
-
-
-
-
-
+    }
 }

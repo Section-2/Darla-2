@@ -5,7 +5,7 @@ namespace Darla.Models;
 
 public partial class JudgeRoom
 {
-    public int UserId { get; set; }
+    public string UserId { get; set; }
 
     public int RoomId { get; set; }
 
@@ -14,4 +14,6 @@ public partial class JudgeRoom
     public virtual RoomSchedule Room { get; set; } = null!;
 
     public virtual User User { get; set; } = null!;
+
+    public virtual ApplicationUser ApplicationUser { get; set; }
 }

@@ -2,7 +2,7 @@
 
 @{
 }
-@model IEnumerable<Rubric> //TEsting
+@model IEnumerable<Rubric> 
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -65,7 +65,7 @@
             <th colspan="4" style="border: 1px solid black;;">
                 <span style="float: left">IS @classCode</span>
                 <span style="float: right">
-                    <a asp-action="AdminRubricEdit" asp-route-classCode="@classCode"><button>Edit</button></a>
+                    <a asp-action="ProfEditRubric" asp-route-classCode="@classCode"><button>Edit</button></a>
                 </span>
             </th>
         </tr>
