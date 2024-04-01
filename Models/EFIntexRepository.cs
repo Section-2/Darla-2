@@ -16,7 +16,6 @@ namespace Darla.Models
         public IEnumerable<Grade> Grades => _context.Grades;
         public IEnumerable<JudgeRoom> JudgeRooms => _context.JudgeRooms;
         public IEnumerable<Permission> Permissions => _context.Permissions;
-
         public IEnumerable<Presentation> Presentations =>
             _context.Presentations.Include(x => x.Judge).Include(x => x.TeamNumberNavigation);
         public void AddPresentationScore(Presentation presentation)
@@ -24,26 +23,38 @@ namespace Darla.Models
             _context.Update(presentation);
             _context.SaveChanges();
         }
-        public void UpdateTeamRanks(Dictionary<int,int>teamRanks)
+        public void UpdateTeamRanks(Dictionary<int, int> teamRanks)
         {
-            foreach(var teamRank in teamRanks)
+            foreach (var teamRank in teamRanks)
             {
                 var teamNumber = teamRank.Key;
-                var rank=teamRank.Value;
+                var rank = teamRank.Value;
 
-                var presToUpdate=_context.Presentations.SingleOrDefault(x=>x.TeamNumber==teamNumber);
+                // Attempt to find an existing presentation for the team.
+                var presToUpdate = _context.Presentations.SingleOrDefault(x => x.TeamNumber == teamNumber);
 
-                if(presToUpdate==null)
+                if (presToUpdate == null)
                 {
-                    throw new Exception($"Teamnotfoundforteamnumber:{teamNumber}.");
+                    // If no presentation exists, create a new one.
+                    presToUpdate = new Presentation()
+                    {
+                        TeamNumber = teamNumber, // Make sure to set the TeamNumber too.
+                        TeamRank = rank
+                    };
+                    // Add the new presentation to the context.
+                    _context.Presentations.Add(presToUpdate);
                 }
-                //Updatetheproperty
-                presToUpdate.TeamRank=rank;
+                else
+                {
+                    // If a presentation is found, just update its rank.
+                    presToUpdate.TeamRank = rank;
+                }
             }
 
-            //Savechangesoutsidetheloop
+            // Save changes after processing all team ranks.
             _context.SaveChanges();
         }
+
         public IEnumerable<RoomSchedule> RoomSchedules => _context.RoomSchedules;
         public IQueryable<RoomSchedule> RoomSchedulesWithRooms => _context.RoomSchedules.Include(rs => rs.Room);
         public IEnumerable<StudentTeam> StudentTeams => _context.StudentTeams;
