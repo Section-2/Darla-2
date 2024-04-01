@@ -76,11 +76,11 @@ namespace Darla.Controllers
             return submissions;
         }
 
-        [HttpGet]
-        public IActionResult RubricDetails(int classCode)
-        {
-            // Retrieve all rubrics with the given classId from the repository
-            List<Rubric> rubrics = _intexRepo.Rubrics.Where(r => r.ClassCode == classCode).ToList();
+    [HttpGet]
+    public IActionResult StudentRubricDetails(int classCode)
+    {
+        // Retrieve all rubrics with the given classId from the repository
+        List<Rubric> rubrics = _intexRepo.Rubrics.Where(r => r.ClassCode == classCode).ToList();
 
             // Assign the rubrics to the ViewBag
             ViewBag.Rubrics = rubrics;
