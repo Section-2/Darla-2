@@ -10,6 +10,26 @@
 
 <h1>Peer Evaluation for @subject.FirstName @subject.LastName</h1>
 
+@* <form asp-controller="Student" asp-action="SubmitPeerEvaluation" method="post"> *@
+@*     @for (int i = 0; i < questions.Count; i++) *@
+@*     { *@
+@*         <div> *@
+@*             <h4>@questions[i].Question</h4> *@
+@*             @for (int score = 1; score <= 10; score++) *@
+@*             { *@
+@*                 <input type="radio" name="PeerEvaluations[@i].Rating" value="@score" /> *@
+@*                 <label>@score</label> *@
+@*             } *@
+@*             <input type="hidden" name="PeerEvaluations[@i].QuestionId" value="@questions[i].QuestionId" /> *@
+@*             <input type="hidden" name="PeerEvaluations[@i].SubjectId" value="@subject.UserId" /> *@
+@*             <input type="hidden" name="PeerEvaluations[@i].EvaluatorId" value="@evaluatorId" /> *@
+@*         </div> *@
+@*     } *@
+@* *@
+@*      *@
+@*     <button type="submit">Submit Review</button> *@
+@* </form> *@
+
 <form asp-controller="Student" asp-action="SubmitPeerEvaluation" method="post">
     @for (int i = 0; i < questions.Count; i++)
     {
@@ -17,21 +37,21 @@
             <h4>@questions[i].Question</h4>
             @for (int score = 1; score <= 10; score++)
             {
-                <input type="radio" name="PeerEvaluations[@i].Rating" value="@score" />
+                <input type="radio" name="peerEvaluations[@i].Rating" value="@score" />
                 <label>@score</label>
             }
-            <input type="hidden" name="PeerEvaluations[@i].QuestionId" value="@questions[i].QuestionId" />
-            <input type="hidden" name="PeerEvaluations[@i].SubjectId" value="@subject.UserId" />
-            <input type="hidden" name="PeerEvaluations[@i].EvaluatorId" value="@evaluatorId" />
+            <input type="hidden" name="peerEvaluations[@i].QuestionId" value="@questions[i].QuestionId" />
+            <input type="hidden" name="peerEvaluations[@i].SubjectId" value="@subject.UserId" />
+            <input type="hidden" name="peerEvaluations[@i].EvaluatorId" value="@evaluatorId" />
         </div>
     }
-
     <div>
-        <h3>Total:</h3>
-        <input type="text" id="totalScore" name="totalScore" readonly />
+          <h3>Total:</h3> 
+          <input type="text" id="totalScore" name="totalScore" readonly />
     </div>
     <button type="submit">Submit Review</button>
 </form>
+
 
 @section Scripts {
     <script>
