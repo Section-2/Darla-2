@@ -1,18 +1,20 @@
 ﻿using Darla.Models;
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-
 using Microsoft.EntityFrameworkCore;
 
+// StudentSubmission view
 
-
-public class StudentController : Controller
+namespace Darla.Controllers
 {
-    private IIntexRepository _intexRepo;
-
-    public StudentController(IIntexRepository temp)
+    public class StudentController : Controller
     {
-        _intexRepo = temp;
-    }
+        private IIntexRepository _intexRepo;
+
+        public StudentController(IIntexRepository temp)
+        {
+            _intexRepo = temp;
+        }
 
     public IActionResult StudentDashboard()
     {
@@ -23,29 +25,29 @@ public class StudentController : Controller
             .FirstOrDefault();
 
 
-        List<string> teamMemberNames = new List<string>();
+            List<string> teamMemberNames = new List<string>();
 
 
-        RoomSchedule roomSchedule = _intexRepo.RoomSchedules
-            .FirstOrDefault(rs => rs.TeamNumber == teamNumber.Value);
+            RoomSchedule roomSchedule = _intexRepo.RoomSchedules
+                .FirstOrDefault(rs => rs.TeamNumber == teamNumber.Value);
 
-        // Get the list of UserIds for the team
-        var userIds = _intexRepo.StudentTeams
-            .Where(st => st.TeamNumber == teamNumber.Value)
-            .Select(st => st.UserId)
-            .ToList();
+            // Get the list of UserIds for the team
+            var userIds = _intexRepo.StudentTeams
+                .Where(st => st.TeamNumber == teamNumber.Value)
+                .Select(st => st.UserId)
+                .ToList();
 
-        // Retrieve the names of the Users with those Ids
-        teamMemberNames = _intexRepo.Users
-            .Where(u => userIds.Contains(u.UserId))
-            .Select(u => u.FirstName + " " + u.LastName)
-            .ToList();
+            // Retrieve the names of the Users with those Ids
+            teamMemberNames = _intexRepo.Users
+                .Where(u => userIds.Contains(u.UserId))
+                .Select(u => u.FirstName + " " + u.LastName)
+                .ToList();
 
 
-        // Pass the data to the view using ViewBag
-        ViewBag.TeamNumber = teamNumber;
-        ViewBag.RoomSchedule = roomSchedule;
-        ViewBag.TeamMemberNames = teamMemberNames;
+            // Pass the data to the view using ViewBag
+            ViewBag.TeamNumber = teamNumber;
+            ViewBag.RoomSchedule = roomSchedule;
+            ViewBag.TeamMemberNames = teamMemberNames;
 
         return View();
     }
@@ -55,24 +57,24 @@ public class StudentController : Controller
         var teamNumber = _intexRepo.StudentTeams
             .FirstOrDefault(st => st.UserId == userId)?.TeamNumber;
 
-        if (!teamNumber.HasValue)
-        {
-            throw new Exception("User is not part of a team.");
-        }
-
-        List<TeamSubmission> submissions = _intexRepo.TeamSubmissions
-            .Where(ts => ts.TeamNumber == teamNumber.Value)
-            .Select(ts => new TeamSubmission
+            if (!teamNumber.HasValue)
             {
-                TeamNumber = ts.TeamNumber,
-                GithubLink = ts.GithubLink,
-                VideoLink = ts.VideoLink,
-                Timestamp = ts.Timestamp
-            })
-            .ToList();
+                throw new Exception("User is not part of a team.");
+            }
 
-        return submissions;
-    }
+            List<TeamSubmission> submissions = _intexRepo.TeamSubmissions
+                .Where(ts => ts.TeamNumber == teamNumber.Value)
+                .Select(ts => new TeamSubmission
+                {
+                    TeamNumber = ts.TeamNumber,
+                    GithubLink = ts.GithubLink,
+                    VideoLink = ts.VideoLink,
+                    GoogleDocLink = ts.GoogleDocLink,
+                })
+                .ToList();
+
+            return submissions;
+        }
 
     [HttpGet]
     public IActionResult StudentRubricDetails(int classCode)
@@ -80,11 +82,11 @@ public class StudentController : Controller
         // Retrieve all rubrics with the given classId from the repository
         List<Rubric> rubrics = _intexRepo.Rubrics.Where(r => r.ClassCode == classCode).ToList();
 
-        // Assign the rubrics to the ViewBag
-        ViewBag.Rubrics = rubrics;
+            // Assign the rubrics to the ViewBag
+            ViewBag.Rubrics = rubrics;
 
-        return View();
-    }
+            return View();
+        }
 
 
 
@@ -95,54 +97,55 @@ public class StudentController : Controller
         var teamNumber = _intexRepo.StudentTeams
             .FirstOrDefault(st => st.UserId == userId)?.TeamNumber;
 
-        if (!teamNumber.HasValue)
-        {
-            return View("Error", "User is not part of a team.");
+            if (!teamNumber.HasValue)
+            {
+                return View("Error", "User is not part of a team.");
+            }
+
+            // Throws error: no such column: r.decsription
+            List<int> classes = _intexRepo.Rubrics
+                .Select(r => r.ClassCode)
+                .Distinct()
+                .ToList();
+
+            List<TeamSubmission> submissions = GetSubmissions(userId);
+
+            // Retrieve rubrics for each class
+            Dictionary<int, List<Rubric>> rubricsByClass = classes.ToDictionary(
+                classCode => classCode,
+                classCode => _intexRepo.Rubrics.Where(r => r.ClassCode == classCode).ToList()
+            );
+
+            ViewBag.Submissions = submissions;
+            ViewBag.Classes = classes;
+            ViewBag.RubricsByClass = rubricsByClass;
+
+            return View();
         }
 
-        List<int> classes = _intexRepo.Rubrics
-            .Select(r => r.ClassCode)
-            .Distinct()
-            .ToList();
-
-        List<TeamSubmission> submissions = GetSubmissions(userId);
-
-        // Retrieve rubrics for each class
-        Dictionary<int, List<Rubric>> rubricsByClass = classes.ToDictionary(
-            classCode => classCode,
-            classCode => _intexRepo.Rubrics.Where(r => r.ClassCode == classCode).ToList()
-        );
-
-        ViewBag.Submissions = submissions;
-        ViewBag.Classes = classes;
-        ViewBag.RubricsByClass = rubricsByClass;
-
-        return View();
-    }
 
 
+        public IActionResult updateCompleteStatus()
+        {
+            //when an assigments completed check box is click and is emplt or False 
+            //then change it to checked and True and vis versa
+            //possibly if this is a stylized radio button have this action happen every time the button is clicked uing an event listener of some sort
+            //using the assignmentID update the value of the complete attibute of that assignment
+            return View("StudentProgress");
+        }
 
-    public IActionResult updateCompleteStatus()
-    {
-        //when an assigments completed check box is click and is emplt or False 
-        //then change it to checked and True and vis versa
-        //possibly if this is a stylized radio button have this action happen every time the button is clicked uing an event listener of some sort
-        //using the assignmentID update the value of the complete attibute of that assignment
-        return View();
-    }
+        //public IActionResult getSubmissions()
+        //{
 
-    //public IActionResult getSubmissions()
-    //{
+        //    //this action will check all assignmetns across all ruberics to and get the addignmetns id of those that have a isDeliverable peramiter of True
+        //    // so it should take the Group ID as a peramiter so that it can add submisssions to the submissison table the are assosiated with that group
 
-    //    //this action will check all assignmetns across all ruberics to and get the addignmetns id of those that have a isDeliverable peramiter of True
-    //    // so it should take the Group ID as a peramiter so that it can add submisssions to the submissison table the are assosiated with that group
+        //    // reference the draw.io for what the submission table looks like
+        //    //it should then return a list of submission. this function will be called on the Student progress page
+        //    var submissions = [];
 
-    //    // reference the draw.io for what the submission table looks like
-    //    //it should then return a list of submission. this function will be called on the Student progress page
-    //    var submissions = [];
-
-    //    return submissions;
-    //}
+        //    return submissions;
+        //}
 
     [HttpPost]
     public async Task<IActionResult> Submit(string githubLink, string videoLink)

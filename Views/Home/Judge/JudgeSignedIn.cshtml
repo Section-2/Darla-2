@@ -1,0 +1,16 @@
+﻿@{
+    ViewData["Title"] = "INTEX Judging Signed In Page";
+}
+
+<!-- Move title down -->
+<div class="text-center">
+    <h1 class="display-4">Intex Grading</h1>
+    <p>Schedule View <a href="@Url.Action("JudgeDashboard", "Home")">CLICK HERE FOR SCHEDULE VIEW</a></p>
+    <p>Survey View <a href="@Url.Action("judge_survey", "Home")">CLICK HERE FOR SURVEY VIEW</a></p>
+    <!-- Buttons Quadrant - fix top padding -->
+    <div class="col-md-6 d-flex align-items-center justify-content-around">
+        <!-- Add padding to buttons, fix alignment -->
+        <button type="button" class="btn btn-primary" asp-controller="TA" asp-action="TaTesting">Start Grading</button>
+        <button type="button" class="btn btn-secondary">Sign Out</button>
+    </div>
+</div>

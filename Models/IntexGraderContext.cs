@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Darla.Models;
 
 public partial class IntexGraderContext : DbContext
+
 {
     public IntexGraderContext()
     {
@@ -45,7 +46,7 @@ public partial class IntexGraderContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlite("Data Source=intex_grader.sqlite");
+        => optionsBuilder.UseSqlServer("Server=tcp:michaelsdbserver.database.windows.net,1433;Initial Catalog=Michael's Database 1;Persist Security Info=False;User ID=michaelsdbserver;Password=Mikeyey121;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -208,7 +209,7 @@ public partial class IntexGraderContext : DbContext
 
             entity.Property(e => e.AssignmentId).HasColumnName("assignment_id");
             entity.Property(e => e.ClassCode).HasColumnName("class_code");
-            entity.Property(e => e.Decsription).HasColumnName("decsription");
+            entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.InstructorNotes).HasColumnName("instructor_notes");
             entity.Property(e => e.MaxPoints).HasColumnName("max_points");
             entity.Property(e => e.Subcategory).HasColumnName("subcategory");
@@ -251,7 +252,7 @@ public partial class IntexGraderContext : DbContext
                 .ValueGeneratedNever()
                 .HasColumnName("team_number");
             entity.Property(e => e.GithubLink).HasColumnName("github_link");
-            entity.Property(e => e.Timestamp).HasColumnName("timestamp");
+            entity.Property(e => e.GoogleDocLink).HasColumnName("google_doc_link");
             entity.Property(e => e.VideoLink).HasColumnName("video_link");
 
             entity.HasOne(d => d.TeamNumberNavigation).WithOne(p => p.TeamSubmission)
