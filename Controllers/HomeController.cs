@@ -5,6 +5,7 @@ using SQLitePCL;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Darla.Models.ViewModels;
 
 namespace Darla.Controllers;
 
@@ -167,7 +168,7 @@ public class HomeController : Controller
         // Pass the model to the view
         return View(model);
     }
-
+    /*
     public IActionResult AdminViewPeerEvalGiven(int evaluatorId)
     {
         var evaluationData = _repo.PeerEvaluations
@@ -209,6 +210,7 @@ public class HomeController : Controller
 
         return View(evaluationData);
     }
+    
 
     public IActionResult AdminViewPeerEvalReceived(int evaluatorId)
     {
@@ -251,6 +253,7 @@ public class HomeController : Controller
 
         return View(evaluationData);
     }
+    */
 
     public IActionResult MasterJudgeSchedule()
     {
