@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Darla.Models;
 
 public partial class IntexGraderContext : DbContext
+
 {
     public IntexGraderContext()
     {
@@ -208,7 +209,7 @@ public partial class IntexGraderContext : DbContext
 
             entity.Property(e => e.AssignmentId).HasColumnName("assignment_id");
             entity.Property(e => e.ClassCode).HasColumnName("class_code");
-            entity.Property(e => e.Description).HasColumnName("decsription");
+            entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.InstructorNotes).HasColumnName("instructor_notes");
             entity.Property(e => e.MaxPoints).HasColumnName("max_points");
             entity.Property(e => e.Subcategory).HasColumnName("subcategory");
