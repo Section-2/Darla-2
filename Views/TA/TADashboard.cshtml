@@ -2,9 +2,17 @@
     ViewData["Title"] = "INTEX Grading Summary";
 }
 
+@model GradingProgressViewModel
+
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
 
 <style>
+
+    /* Change header colors to black */
+    h1, h2 {
+        color: black;
+    }
+
     .quadrant {
         display: flex;
         flex-direction: column;
@@ -66,13 +74,7 @@
         <div class="col-md-6">
             <div class="quadrant">
                 <h2>Grading Progress</h2>
-                @{
-                    Random rand = new Random();
-                    double avgPercentage = rand.Next(0, 101); // Random average percentage
-                                                              // Adjusted color logic based on new criteria
-                    string color = avgPercentage < 30 ? "#dc3545" : avgPercentage < 70 ? "#ffc107" : "#28a745";
-                }
-                <p class="grading-progress" style="color: @color;">@Math.Round(avgPercentage) %</p> <!-- Dynamically colored and rounded -->
+                <p class="grading-progress" style="color: @(Model.AveragePercentage < 30 ? "#dc3545" : Model.AveragePercentage < 70 ? "#ffc107" : "#28a745");">@Math.Round(Model.AveragePercentage) %</p>
             </div>
         </div>
 
@@ -81,18 +83,12 @@
             <div class="quadrant">
                 <h2>Left To Grade</h2>
                 <table class="grading-table">
-                    @{
-                        // Dynamic generation of class grading information
-                        string[] classes = { "IS 401", "IS 413", "IS 414", "IS 455" };
-                        for (int i = 0; i < classes.Length; i++)
-                        {
-                            int graded = rand.Next(0, 241); // Random number of groups graded
-                            int total = 240;
-                            <tr>
-                                <td>@classes[i]</td>
-                                <td>@graded/@total (@Math.Round((double)graded / total * 100) %)</td>
-                            </tr>
-                        }
+                    @foreach (var classInfo in Model.ClassGradingInfos)
+                    {
+                        <tr>
+                            <td>@classInfo.ClassCode</td>
+                            <td>@classInfo.TotalGraded/@classInfo.TotalAssignments (@Math.Round(classInfo.PercentageGraded, 2) %)</td>
+                        </tr>
                     }
                 </table>
             </div>
@@ -107,6 +103,7 @@
                 <ol>
                     <li>Group 2-9</li>
                     @{
+                        Random rand = new Random();
                         // Dynamic generation of top groups
                         List<string> groups = Enumerable.Range(1, 4).Select(x => $"Group {rand.Next(1, 5)}-{rand.Next(1, 11)}").ToList();
                         groups.Insert(0, "Group 2-9"); // Ensure Group 2-9 is always first
