@@ -285,44 +285,44 @@ public class HomeController : Controller
         return View();
     }
 
-        public IActionResult RubricDetails()
-        {
-            return View();
-        }
+    public IActionResult RubricDetails()
+    {
+        return View();
+    }
 
-        /*[HttpGet]
-        public IActionResult Edit(int id)
-        {
-            var recordToEdit = _context.Users
-                .Single(x => x.UserId == id);
-            return View("AdminAddJudge", recordToEdit);
-        }
+    /*[HttpGet]
+    public IActionResult Edit(int id)
+    {
+        var recordToEdit = _context.Users
+            .Single(x => x.UserId == id);
+        return View("AdminAddJudge", recordToEdit);
+    }
 
-        [HttpPost]
-        public IActionResult Edit(User updatedInfo)
-        {
-            _context.Update(updatedInfo);
-            _context.SaveChanges();
-            return RedirectToAction("AdminJudgeListView");
-        }
+    [HttpPost]
+    public IActionResult Edit(User updatedInfo)
+    {
+        _context.Update(updatedInfo);
+        _context.SaveChanges();
+        return RedirectToAction("AdminJudgeListView");
+    }
 
 
-        [HttpGet]
-        public IActionResult Delete(int id)
-        {
-            var recordToDelete = _context.Users
-                .Single(x => x.UserId == id);
-            return View(recordToDelete);
-        }  
+    [HttpGet]
+    public IActionResult Delete(int id)
+    {
+        var recordToDelete = _context.Users
+            .Single(x => x.UserId == id);
+        return View(recordToDelete);
+    }  
 
-        [HttpPost]
-        public IActionResult Delete(User removedUser)
-        {
-            _context.Users.Remove(removedUser);
-            _context.SaveChanges();
+    [HttpPost]
+    public IActionResult Delete(User removedUser)
+    {
+        _context.Users.Remove(removedUser);
+        _context.SaveChanges();
 
-            return RedirectToAction("AdminJudgeListView");
-        }*/
+        return RedirectToAction("AdminJudgeListView");
+    }*/
 
     }
 
