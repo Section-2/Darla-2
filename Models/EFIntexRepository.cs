@@ -65,6 +65,12 @@ namespace Darla.Models
         public IEnumerable<Team> Teams => _context.Teams;
         public IEnumerable<Room> Rooms => _context.Rooms;
         public IEnumerable<TeamSubmission> TeamSubmissions => _context.TeamSubmissions;
+        public IQueryable<RoomSchedule> GetRoomSchedulesByRoomId(int roomId)
+        {
+            return _context.RoomSchedules.AsNoTracking().Include(rs => rs.Room)
+                .Where(rs => rs.RoomId == roomId);
+
+        }
 
 
     }

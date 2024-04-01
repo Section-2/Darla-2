@@ -90,9 +90,15 @@ public class HomeController : Controller
     }
 
     // Action to open judge schedule
-    public IActionResult JudgeDashboard()
+    // public IActionResult JudgeDashboard()
+    // {
+    //     var roomSchedules = _repo.RoomSchedulesWithRooms;
+    //     return View("Judge/JudgeDashboard", roomSchedules);
+    // }
+    
+    public IActionResult ScheduleByRoomId(int roomId)
     {
-        var roomSchedules = _repo.RoomSchedulesWithRooms;
+        var roomSchedules = _repo.GetRoomSchedulesByRoomId(roomId);
         return View("Judge/JudgeDashboard", roomSchedules);
     }
     [HttpPost]
@@ -101,6 +107,7 @@ public class HomeController : Controller
         _repo.UpdateTeamRanks(teamRanks);
         return RedirectToAction("JudgeDashboard");
     }
+
 
     // END JUDGES SECTION
 
