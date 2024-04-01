@@ -66,6 +66,5 @@ namespace Darla.Controllers
             return View(viewModel);
         }
 
-
     }
 }
