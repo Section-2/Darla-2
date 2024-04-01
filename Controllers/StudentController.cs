@@ -75,7 +75,7 @@ public class StudentController : Controller
     }
 
     [HttpGet]
-    public IActionResult RubricDetails(int classCode)
+    public IActionResult StudentRubricDetails(int classCode)
     {
         // Retrieve all rubrics with the given classId from the repository
         List<Rubric> rubrics = _intexRepo.Rubrics.Where(r => r.ClassCode == classCode).ToList();
@@ -182,7 +182,7 @@ public class StudentController : Controller
 
 
 
-    public IActionResult GroupPeerEvals()
+    public IActionResult StudentGroupPeerEvals()
     {
         int userId = 7; // Hardcoded userId
 
