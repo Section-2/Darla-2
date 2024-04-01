@@ -145,7 +145,7 @@ namespace Darla.Controllers
                 {
                     // Handle locked out user
                     // You can redirect to a lockout view or display an error message
-                    return View("Lockout");
+                    return View("Error");
                 }
                 else
                 {
@@ -390,13 +390,13 @@ namespace Darla.Controllers
             {
                 // Handle the situation when the user does not exist or Email already confirmed.
                 // For security, don't reveal that the user does not exist or Email is already confirmed
-                return View("ConfirmationEmailSent");
+                return View("ConfirmEmail");
             }
 
             //Then send the Confirmation Email to the User
             await SendConfirmationEmail(Email, user);
 
-            return View("ConfirmationEmailSent");
+            return View("ConfirmEmail");
         }
 
         [Authorize]
