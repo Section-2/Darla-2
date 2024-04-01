@@ -29,28 +29,33 @@
 @*      *@
 @*     <button type="submit">Submit Review</button> *@
 @* </form> *@
-
-<form asp-controller="Student" asp-action="SubmitPeerEvaluation" method="post">
-    @for (int i = 0; i < questions.Count; i++)
-    {
-        <div>
-            <h4>@questions[i].Question</h4>
-            @for (int score = 1; score <= 10; score++)
+<div class="darla-content">
+    <div class="container darla-peer-review">
+        <form asp-controller="Student" asp-action="SubmitPeerEvaluation" method="post">
+            @for (int i = 0; i < questions.Count; i++)
             {
-                <input type="radio" name="peerEvaluations[@i].Rating" value="@score" />
-                <label>@score</label>
+                <div>
+                    <h4>@questions[i].Question</h4>
+                    @for (int score = 1; score <= 10; score++)
+                    {
+                        <input type="radio" name="peerEvaluations[@i].Rating" value="@score" />
+                        <label>@score</label>
+                    }
+                    <input type="hidden" name="peerEvaluations[@i].QuestionId" value="@questions[i].QuestionId" />
+                    <input type="hidden" name="peerEvaluations[@i].SubjectId" value="@subject.UserId" />
+                    <input type="hidden" name="peerEvaluations[@i].EvaluatorId" value="@evaluatorId" />
+                </div>
             }
-            <input type="hidden" name="peerEvaluations[@i].QuestionId" value="@questions[i].QuestionId" />
-            <input type="hidden" name="peerEvaluations[@i].SubjectId" value="@subject.UserId" />
-            <input type="hidden" name="peerEvaluations[@i].EvaluatorId" value="@evaluatorId" />
-        </div>
-    }
-    <div>
-          <h3>Total:</h3> 
-          <input type="text" id="totalScore" name="totalScore" readonly />
+            <div>
+                <h3>Total:</h3>
+                <input type="text" id="totalScore" name="totalScore" readonly />
+            </div>
+            <button type="submit">Submit Review</button>
+        </form>
     </div>
-    <button type="submit">Submit Review</button>
-</form>
+    
+</div>
+
 
 
 @section Scripts {
