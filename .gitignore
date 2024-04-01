@@ -159,6 +159,9 @@ dist
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
+# Tyler wanted this added to the .gitignore
+.idea/
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
