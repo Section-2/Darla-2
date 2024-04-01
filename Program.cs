@@ -9,10 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 // THIS IS FOR DOTNET IDENTITY
-var connectionString = builder.Configuration.GetConnectionString("LoginConnection")
-    ?? throw new InvalidOperationException("Connection string not found");
 
-builder.Services.AddDbContext<LoginDbContext>(options => options.UseSqlite(connectionString));
+builder.Services.AddDbContext<LoginDbContext>(options => options.UseSqlServer(builder.Configuration["ConnectionStrings:IntexConnection"]));
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(
     options =>
