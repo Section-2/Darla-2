@@ -214,22 +214,22 @@ public class StudentController : Controller
         return View();
     }
 
-    [HttpPost]
-    public async Task<IActionResult> SubmitPeerEvaluation(List<PeerEvaluation> peerEvaluations)
+    [HttpGet]
+    public Task<IActionResult> SubmitPeerEvaluation(List<PeerEvaluation> peerEvaluations)
     {
-        //if (ModelState.IsValid)
-        //{
-        //    foreach (var evaluation in peerEvaluations)
-        //    {
-        //        _intexRepo.AddPeerEvaluation(evaluation);
-        //    }
+        if (ModelState.IsValid)
+        {
+            foreach (var evaluation in peerEvaluations)
+            {
+                _intexRepo.PeerEvaluations.Add(evaluation);
+            }
 
-        //    await _intexRepo.SaveChangesAsync();
+             _intexRepo.SaveChanges();
 
-        //    // Redirect to a confirmation page or back to the form
-        //    return RedirectToAction("GroupPeerEvals"); // Adjust your redirection as necessary
-        //}
-        //Console.WriteLine("status invalid");
+            // Redirect to a confirmation page or back to the form
+            return RedirectToAction("GroupPeerEvals"); // Adjust your redirection as necessary
+        }
+        Console.WriteLine("status invalid");
 
         // If the model state is not valid, return the form with validation messages
         return View(peerEvaluations); // Adjust the view name and model as necessary
