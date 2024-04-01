@@ -1,3 +1,4 @@
+@using Darla.Models
 @{
     var groups = new List<dynamic>
     {
@@ -14,9 +15,59 @@
         new { Name = "Group C", Score = 75 }
     };
 }
-@model List<Darla.Models.Team>
 
-<h1>all grades</h1>
+@* Testing *@
+@model Darla.Models.IntexViewModel
+<table class="table">
+    <thead>
+        <tr>
+            <th>AssignmentId</th>
+            <th>UserId</th>
+            <th>TeamNumber</th>
+            <th>PointsEarned</th>
+            <th>Comments</th>
+            <th>GradeId</th>
+            <th>ClassCode</th>
+            <th>Subcategory</th>
+            <th>Description</th>
+            <th>MaxPoints</th>
+            <th>InstructorNotes</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var grade in Model.Grades.ToList())
+        {
+            var rubric = Model.Rubrics.FirstOrDefault(r => r.AssignmentId == grade.AssignmentId);
+
+            <tr>
+                <td>@grade.AssignmentId</td>
+                <td>@grade.UserId</td>
+                <td>@grade.TeamNumber</td>
+                <td>@grade.PointsEarned</td>
+                <td>@grade.Comments</td>
+                <td>@grade.GradeId</td>
+                @if (rubric != null)
+                {
+                    <td>@rubric.ClassCode</td>
+                    <td>@rubric.Subcategory</td>
+                    @* <td>@rubric.Description</td> *@
+                    <td>@rubric.MaxPoints</td>
+                    <td>@rubric.InstructorNotes</td>
+                }
+                else
+                {
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+@* <h1>all grades</h1>
 <p>this view will display a table with the list of all the groups, their scores, and the ability to sort from highest to lowest, etc.</p>
 <a asp-controller="Home" asp-action="Index">index</a>
 <a asp-controller="TA" asp-action="ClassRubric">class rubric</a>
@@ -127,4 +178,4 @@
             }
         });
     </script>
-}
+} *@
