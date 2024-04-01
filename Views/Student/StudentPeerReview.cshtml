@@ -8,7 +8,7 @@
     var evaluatorId = ViewBag.evaluatorId; // Replace with actual evaluatorId, possibly from logged-in user
 }
 
-<h1>Peer Evaluation for @subject.FirstName @subject.LastName</h1>
+
 
 @* <form asp-controller="Student" asp-action="SubmitPeerEvaluation" method="post"> *@
 @*     @for (int i = 0; i < questions.Count; i++) *@
@@ -31,11 +31,12 @@
 @* </form> *@
 <div class="darla-content">
     <div class="container darla-peer-review">
+        <h2>Peer Evaluation for @subject.FirstName @subject.LastName</h2>
         <form asp-controller="Student" asp-action="SubmitPeerEvaluation" method="post">
             @for (int i = 0; i < questions.Count; i++)
             {
                 <div>
-                    <h4>@questions[i].Question</h4>
+                    <p>@questions[i].Question</p>
                     @for (int score = 1; score <= 10; score++)
                     {
                         <input type="radio" name="peerEvaluations[@i].Rating" value="@score" />
