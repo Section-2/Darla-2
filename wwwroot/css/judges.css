@@ -1,67 +1,164 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&family=Share+Tech&display=swap');
+
+:root {
+    --color-background-primary: #37323E;
+    --color-background-content: #BFBDC1;
+    --color-yellow: #DEB841;
+    --color-white: #FFFFFF;
+    --color-light-gray: #BFBDC1;
+    --color-gray: #6D6A75;
+    --color-dark-gray: #37323E;
+}
+
+/* General Styling */
 body {
-    font-family: "Benton Sans", "Helvetica Neue", helvetica, arial, sans-serif;
-    margin: 2em;
+    background-color: var(--color-background-primary);
+    font-family: 'Share Tech', sans-serif;
 }
 
-/* Assuming the .ranking class is for the "Group Ranking" box */
-.ranking {
-    border: 3px solid #666; /* Use a solid border for the entire ranking box */
-    border-radius: .5em; /* Rounded corners */
-    padding: 10px;
-    margin-top: 20px; /* Space above the ranking box */
-    width: 300px; /* Adjust the width as needed */
-    min-height: 200px; /* Minimum height to accommodate at least a few items */
-    display: flex; /* Use flex to align child elements */
-    flex-direction: column; /* Stack children vertically */
-    align-items: center; /* Center items horizontally */
-    background-color: #fff; /* Background color for the ranking box */
-    overflow: auto; /* Allow scrolling for overflow content */
-    position: relative; /* Positioning context for absolute children */
+h1 {
+    color: var(--color-yellow);
+    font-size: 3em;
+    font-family: 'Rubik', sans-serif;
+    font-weight: bold;
 }
 
-/* .ranking-list is the direct container for .box elements */
-.ranking-list {
-    width: 100%; /* Full width to fit in the .ranking box */
-    list-style: none; /* Remove list styling if it's a <ul> */
-    padding: 0; /* Remove padding for accurate placement */
-    margin: 0; /* Remove margins for accurate placement */
+h2 {
+    color: var(--color-white);
+    font-size: 2em;
+    font-family: 'Rubik', sans-serif;
 }
 
-/* .box styles for draggable items */
+h3 {
+    color: var(--color-dark-gray);
+    font-size: 1.5em;
+    font-family: 'Rubik', sans-serif;
+}
+
+h4 {
+    color: var(--color-gray);
+    font-size: 1.25em;
+    font-family: 'Rubik', sans-serif;
+}
+
+h5 {
+    color: var(--color-gray);
+    font-size: 1em;
+    font-family: 'Rubik', sans-serif;
+}
+
+h6 {
+    color: var(--color-gray);
+    font-size: 0.75em;
+    font-family: 'Rubik', sans-serif;
+}
+
+p {
+    color: var(--color-light-gray);
+    font-size: 1.25em;
+    font-family: 'Share Tech', sans-serif;
+}
+
+.darla-content {
+    background-color: var(--color-background-content);
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.darla-content p {
+    color: var(--color-dark-gray);
+    font-size: 1.25em;
+    font-family: 'Share Tech', sans-serif;
+}
+
+span {
+    color: var(--color-yellow);
+    font-weight: bold;
+}
+
+.back-button {
+
+}
+
+.darla-content button {
+    background-color: var(--color-dark-gray);
+    color: var(--color-white);
+    border: none;
+    width: 100px;
+    height: 50px;
+    font-size: 1.5em;
+    cursor: pointer;
+    border-radius: 15px;
+    transition: .2s;
+}
+.darla-content button:hover {
+    background-color: var(--color-yellow);
+    color: var(--color-dark-gray);
+}
+
+.darla-content span {
+    color: var(--color-white);
+    font-weight: bold;
+}
+
+button {
+    background-color: var(--color-yellow);
+    color: var(--color-dark-gray);
+    border: none;
+    width: 100px;
+    height: 50px;
+    font-size: 1.5em;
+    cursor: pointer;
+    border-radius: 15px;
+    transition: .2s;
+}
+button:hover {
+    background-color: var(--color-gray);
+    color: var(--color-white);
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr; /* Single column */
+    gap: 10px;
+}
+
 .box {
-    border: 3px solid #666;
+    border: 2px solid var(--color-dark-gray);
     background-color: #ddd;
-    border-radius: .5em;
-    padding: 10px;
-    margin: 5px 0; /* Space between boxes */
-    cursor: move; /* Indicates that an item is movable */
+    /*border-radius: .5em;*/
+    padding: 7px;
+    cursor: move;
+    /*border-radius: 0 !important;*/
 }
 
-/* Highlight for the .box element that is being dragged over */
-.box.over {
-    border: 3px dotted #666;
-}
+/*.box.over {*/
+/*    border: 3px dotted #666;*/
+/*    background-color: var(--color-gray);*/
+/*    color: var(--color-white);*/
+/*}*/
 
 [draggable] {
-    user-select: none; /* Prevent text selection during drag */
+    user-select: none;
 }
-
-/* If you use a .dropzone, style it accordingly */
 .dropzone {
-    border: 2px solid black;
+    border: 2px solid black; /* Black border */
     padding: 10px;
-    margin-top: 20px;
-    width: 200px;
-    text-align: center;
+    margin-top: 20px; /* Added margin for separation */
+    width: 200px; /* Added width for better visibility */
+    text-align: center; /* Center the text */
 }
-
-#saveOrderButton {
-    padding: 10px 20px;
-    margin-top: 10px;
-    font-size: 1em;
-    cursor: pointer;
+.schedule-container {
+    display: flex;
+    justify-content: space-between;
 }
-
-#saveOrderButton:hover {
-    background-color: #e0e0e0; /* Light grey background on hover */
+.schedule, .ranking {
+    border: 1px solid #000;
+    margin: 10px;
+    padding: 10px;
+}
+.ranking-list {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
 }
