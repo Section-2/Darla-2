@@ -89,7 +89,6 @@ namespace Darla.Controllers
         }
 
 
-
         [HttpGet]
         public IActionResult StudentProgress()
         {
@@ -122,8 +121,6 @@ namespace Darla.Controllers
 
             return View();
         }
-
-
 
         public IActionResult updateCompleteStatus()
         {
@@ -181,9 +178,6 @@ namespace Darla.Controllers
             TempData["SuccessMessage"] = "Submission updated successfully!";
             return View("StudentProgress");
         }
-
-
-
 
 
         public IActionResult GroupPeerEvals()
