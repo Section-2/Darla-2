@@ -11,7 +11,7 @@
 
 <h2>Confirm Deletion</h2>
 <h3>@Model.FirstName @Model.LastName</h3>
-<form asp-controller="Home" asp-action="AdminDeletionConfirmation" method="post">
+<form asp-controller="Home" asp-action="DeleteUser" method="post">
     <input type="hidden" asp-for="UserId" />
     <button type="submit">Delete</button>
     <a class="btn btn-info" asp-controller="Home" asp-action="AdminJudgeListView">Cancel</a>
