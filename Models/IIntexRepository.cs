@@ -19,6 +19,7 @@ namespace Darla.Models
         IEnumerable<TeamSubmission> TeamSubmissions { get; }
         void AddTeamSubmission(TeamSubmission submission);
         Task SaveChangesAsync();
+        void AddPeerEvaluation(PeerEvaluation evaluation);
 
      
     }

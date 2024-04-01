@@ -30,10 +30,16 @@ namespace Darla.Models
         {
             _context.TeamSubmissions.Add(submission);
         }
+        public void AddPeerEvaluation(PeerEvaluation evaluation)
+        {
+            _context.PeerEvaluations.Add(evaluation);
+        }
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
         }
+       
+
        
     }
 

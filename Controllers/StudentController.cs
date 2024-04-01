@@ -49,7 +49,7 @@ public class StudentController : Controller
 
         return View();
     }
-   
+
     private List<TeamSubmission> GetSubmissions(int userId)
     {
         var teamNumber = _intexRepo.StudentTeams
@@ -149,7 +149,8 @@ public class StudentController : Controller
     {
         var userId = 7;
         var teamNumber = _intexRepo.StudentTeams
-            .FirstOrDefault(st => st.UserId == userId)?.TeamNumber ?? 0; // Provide a default value of 0 if TeamNumber is null
+                             .FirstOrDefault(st => st.UserId == userId)?.TeamNumber ??
+                         0; // Provide a default value of 0 if TeamNumber is null
 
         var submission = _intexRepo.TeamSubmissions
             .FirstOrDefault(s => s.TeamNumber == teamNumber);
@@ -221,7 +222,7 @@ public class StudentController : Controller
         var userId = 7;
         // Retrieve the User object (subject) with the given ID
         var subject = _intexRepo.Users.FirstOrDefault(u => u.UserId == subjectId);
-       
+
 
         // Retrieve a list of all PeerEvaluationQuestions from the repository or context
         var questions = _intexRepo.PeerEvaluationQuestions.ToList();
@@ -242,9 +243,6 @@ public class StudentController : Controller
         return View();
     }
 
-    [HttpPost]
-    public async Task<IActionResult> SubmitPeerEvaluation(List<PeerEvaluation> peerEvaluations)
-    {
         //if (ModelState.IsValid)
         //{ 
         //    foreach (var evaluation in peerEvaluations)
@@ -258,10 +256,41 @@ public class StudentController : Controller
         //    return RedirectToAction("GroupPeerEvals"); // Adjust your redirection as necessary
         //}
         //Console.WriteLine("status invalid");
+        
+        [HttpPost]
+        public async Task<IActionResult> SubmitPeerEvaluation(List<PeerEvaluation> peerEvaluations, int subjectId)
+        {
+            int evaluatorId = 7; // Hardcoded evaluatorId for testing
 
-        // If the model state is not valid, return the form with validation messages
-        return View(peerEvaluations); // Adjust the view name and model as necessary
-    }
+            if (peerEvaluations != null && peerEvaluations.Any())
+            {
+                foreach (var evaluation in peerEvaluations)
+                {
+                    var newEvaluation = new PeerEvaluation
+                    {
+                        EvaluatorId = evaluatorId, // Use the hardcoded evaluatorId
+                        SubjectId = evaluation.SubjectId,
+                        QuestionId = evaluation.QuestionId,
+                        Rating = evaluation.Rating
+                    };
+                    _intexRepo.AddPeerEvaluation(newEvaluation);
+                }
+
+                await _intexRepo.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Peer evaluations submitted successfully!";
+                return RedirectToAction("StudentDashboard");
+            }
+            else
+            {
+                ModelState.AddModelError("", "No evaluations provided.");
+            }
+
+            // Redirect to StudentPeerReview action to repopulate ViewBag if there are validation errors
+            return RedirectToAction("StudentPeerReview", new { subjectId = subjectId });
+        }
+
+
+
 
 
 
