@@ -85,7 +85,13 @@ public class HomeController : Controller
 
     public IActionResult ProfFullRubric()
     {
-        return View();
+        return View("AdminRubricFull");
+    }
+    
+    public IActionResult ProfEditRubric()
+    {
+        var query = _repo.Users.Where(x => x.PermissionType == 4);
+        return View("AdminRubricEdit");
     }
 
     public IActionResult AdminPeerEvalDashboard()
@@ -279,22 +285,10 @@ public class HomeController : Controller
     }
 
 
-    public IActionResult ProfEditRubric()
-    {
-        var query = _repo.Users.Where(x => x.PermissionType == 4);
-        return View();
-    }
-
-    public IActionResult StudentProgress()
-    {
-        return View();
-    }
 
 
-    public IActionResult StudentDashboard()
-    {
-        return View();
-    }
+
+
 
     public IActionResult RubricDetails()
     {
