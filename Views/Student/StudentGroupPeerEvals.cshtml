@@ -1,0 +1,25 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    var teamMembers = ViewBag.TeamMembers as List<User>;
+}
+
+<h1>This is the Group Peer Eval page that will show the list of all the group members other than the user and when the user clicks on that member's name it will take them to that member's StudentPeerReview</h1>
+
+@if (teamMembers != null && teamMembers.Any())
+{
+    <h2>Team Members</h2>
+    <ul>
+        @foreach (var member in teamMembers)
+        {
+            <li>
+                <a asp-controller="Student" asp-action="StudentPeerReview" asp-route-subjectId="@member.UserId" class="btn btn-primary">@member.FirstName @member.LastName</a>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No team members found.</p>
+}
