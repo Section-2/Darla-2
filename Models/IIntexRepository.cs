@@ -10,6 +10,7 @@ namespace Darla.Models
         IEnumerable<Presentation> Presentations { get; }
         public void AddPresentationScore(Presentation presentation);
         IEnumerable<RoomSchedule> RoomSchedules { get; }
+        IQueryable<RoomSchedule> RoomSchedulesWithRooms { get; }
         IEnumerable<StudentTeam> StudentTeams { get; }
         IEnumerable<UserPassword> UserPasswords { get; }
         IEnumerable<User> Users { get; }
