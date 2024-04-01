@@ -1,0 +1,67 @@
+body {
+    font-family: "Benton Sans", "Helvetica Neue", helvetica, arial, sans-serif;
+    margin: 2em;
+}
+
+/* Assuming the .ranking class is for the "Group Ranking" box */
+.ranking {
+    border: 3px solid #666; /* Use a solid border for the entire ranking box */
+    border-radius: .5em; /* Rounded corners */
+    padding: 10px;
+    margin-top: 20px; /* Space above the ranking box */
+    width: 300px; /* Adjust the width as needed */
+    min-height: 200px; /* Minimum height to accommodate at least a few items */
+    display: flex; /* Use flex to align child elements */
+    flex-direction: column; /* Stack children vertically */
+    align-items: center; /* Center items horizontally */
+    background-color: #fff; /* Background color for the ranking box */
+    overflow: auto; /* Allow scrolling for overflow content */
+    position: relative; /* Positioning context for absolute children */
+}
+
+/* .ranking-list is the direct container for .box elements */
+.ranking-list {
+    width: 100%; /* Full width to fit in the .ranking box */
+    list-style: none; /* Remove list styling if it's a <ul> */
+    padding: 0; /* Remove padding for accurate placement */
+    margin: 0; /* Remove margins for accurate placement */
+}
+
+/* .box styles for draggable items */
+.box {
+    border: 3px solid #666;
+    background-color: #ddd;
+    border-radius: .5em;
+    padding: 10px;
+    margin: 5px 0; /* Space between boxes */
+    cursor: move; /* Indicates that an item is movable */
+}
+
+/* Highlight for the .box element that is being dragged over */
+.box.over {
+    border: 3px dotted #666;
+}
+
+[draggable] {
+    user-select: none; /* Prevent text selection during drag */
+}
+
+/* If you use a .dropzone, style it accordingly */
+.dropzone {
+    border: 2px solid black;
+    padding: 10px;
+    margin-top: 20px;
+    width: 200px;
+    text-align: center;
+}
+
+#saveOrderButton {
+    padding: 10px 20px;
+    margin-top: 10px;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+#saveOrderButton:hover {
+    background-color: #e0e0e0; /* Light grey background on hover */
+}

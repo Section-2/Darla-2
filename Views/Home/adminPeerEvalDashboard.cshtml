@@ -1,0 +1,56 @@
+﻿
+
+@* Assume Model is an IEnumerable of a GroupEvaluation type *@
+
+@model IEnumerable<Team>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peer Evaluation Form</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .peer-info img {
+            max-width: 100px;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Peer Evaluation Dashboard</h1>
+
+    <div class="evaluation-container">
+        @foreach (var group in Model)
+        {
+            <div class="group">
+                <div class="group-header">
+                    <h2>@group.TeamNumber</h2>
+                </div>
+                <div class="group-body">
+                    @*@foreach (var member in group.)
+                    {
+                        <div class="member">
+                            <span class="score" style="background-color:@member.GetScoreColor();">@member.Score</span>
+                            <span class="name">@member.Name</span>
+                            <span class="view-link">
+                                @if (!string.IsNullOrEmpty(member.EvaluationLink))
+                                {
+                                    <a href="@member.EvaluationLink">View</a>
+                                }
+                                else
+                                {
+                                    <span>None</span>
+                                }
+                            </span>
+                        </div>
+                    }*@
+                </div>
+            </div>
+        }
+    </div>
+</body>
+
+
