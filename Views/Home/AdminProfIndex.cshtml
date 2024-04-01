@@ -1,10 +1,11 @@
 
-
 @{
     Layout = "_LayoutProf";
 }
 
-<h1>Welcome Admin!</h1>
+@model Darla.Models.AdminGradeProgressBarComposite
+
+<h1>Welcome (Admin)!</h1>
 <br/><br/>
 
 
@@ -76,13 +77,12 @@
                 <div class="col-lg-12">
                     <!-- Lower Right: Grading Progress Tracker -->
                     <div class="card">
-                        <div class="card-body">
-                            <h3>Grading Progress Tracker</h3>
-                            <div class="progress">
-                                <div class="progress-bar" role="progressbar" style="width: @ViewData["GradingProgress"]%;" aria-valuenow="@ViewData["GradingProgress"]" aria-valuemin="0" aria-valuemax="100">@ViewData["GradingProgress"]%</div>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: @Model.GradingProgress%">
+                                @Model.GradingProgress%
                             </div>
-                            
                         </div>
+                        <p>Grading Progress: @Model.GradingProgress%</p>
                     </div>
                 </div>
             </div>

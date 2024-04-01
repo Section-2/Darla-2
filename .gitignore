@@ -19,9 +19,6 @@ lerna-debug.log*
 
 obj/
 bin/
-.idea/
-
-.idea/
 
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
