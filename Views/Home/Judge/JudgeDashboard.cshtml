@@ -49,23 +49,25 @@
                     }
 
                 </div>
-                <button id="saveOrderButton">Save Order</button>
             </div>
         </div>
     </div>
 </div>
-<form id="rankingsForm" asp-controller="Home" asp-action="UpdateRanks" method="post">
-    @{
-        var counter = 0;
-    }
-    @foreach (RoomSchedule schedule in Model)
-    {
-        <input type="hidden" name="teamRanks[@counter].Key" value="@schedule.TeamNumber"/>
-        <input type="hidden" id="rankForTeam-@schedule." name="teamRanks[@counter].Value" value=""/>
-        counter++;
-    }
-    <button type="submit">Save Rankings</button>
-</form>
+<div id="formContainer">
+    <!-- Dynamically added form will go here -->
+    <form id="rankingsForm" asp-controller="Home" asp-action="UpdateRanks" method="post">
+        @{
+            var counter = 0;
+        }
+        @foreach (RoomSchedule schedule in Model)
+        {
+            <input type="hidden" name="teamRanks[@counter].Key" value="@schedule.TeamNumber"/>
+            <input type="hidden" id="rankForTeam-@schedule.TeamNumber" name="teamRanks[@counter].Value" value=""/>
+            counter++;
+        }
+        <button type="submit">Save Rankings</button>
+    </form>
+</div>
 <script src="~/js/site.js"></script>
 </body>
 </html>

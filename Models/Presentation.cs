@@ -28,6 +28,6 @@ public partial class Presentation
     public int? TeamRank { get; set; }
 
     public virtual JudgeRoom Judge { get; set; } = null!;
-
+    
     public virtual Team TeamNumberNavigation { get; set; } = null!;
 }
