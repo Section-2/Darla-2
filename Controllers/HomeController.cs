@@ -1,69 +1,88 @@
 using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 using Darla.Models;
-using Darla.Models.ViewModels;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using SQLitePCL;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Darla.Controllers;
 
 public class HomeController : Controller
 {
-
     private IIntexRepository _repo;
-
-    public HomeController(IIntexRepository temp)
-    {
-        _repo = temp;
-    }
-
-    public IActionResult Index()
-    {
-        return View();
-    }
-
-    public IActionResult BYULogin()
-    {
-        return View();
-    }
-
-    public IActionResult AllGrades()
-    {
-        return View();
-    }
-    public IActionResult ClassRubric()
-    {
-        return View();
-    }
-    public IActionResult TaGradingProgress()
-    {
-        return View();
-    }
     
-    public IActionResult JudgePage()
+    public HomeController(IIntexRepository Repo)
     {
-        return View();
+        _repo = Repo;
     }
 
-    public IActionResult judge_survey()
-    {
-
-        return View();
-    }
-
-    // Action to open judge schedule
-    public IActionResult ScheduleView()
-    {
-        return View("Judge/ScheduleView");
-    }
-
-
+    // START HERE!
     public IActionResult OpeningPage()
     {
         return View();
     }
 
-    //Allowing access to StudentSubmission
-    public IActionResult StudentProgress()
+    // JUDGES SECTION
+    public IActionResult JudgePage()
+    {
+        return View();
+    }
+
+    public IActionResult JudgeSignedIn()
+    {
+        return View("Judge/JudgeSignedIn");
+    }
+
+    [HttpGet]
+    public IActionResult judge_survey()
+    {
+        return View("Judge/judge_survey",new Presentation());
+    }
+
+    [HttpPost]
+    public IActionResult judge_survey(Presentation p)
+    {
+        if (ModelState.IsValid)
+        {
+            _repo.AddPresentationScore(p);
+        }
+
+        return RedirectToAction("JudgeDashboard", new Presentation());
+    }
+
+    // Action to open judge schedule
+    public IActionResult JudgeDashboard()
+    {
+        var roomSchedules = _repo.RoomSchedulesWithRooms;
+        return View("Judge/JudgeDashboard", roomSchedules);
+    }
+
+    // END JUDGES SECTION
+
+
+
+    // Grading Summary Page for TAs
+    public IActionResult Index()
+    {
+        return View();
+    }
+    
+
+    // ADMINS SECTION
+    // Landing page for Admins
+    public IActionResult AdminIndex()
+    {
+        ViewData["GradingProgress"] = 70;
+        return View("AdminIndexDashboard");
+    }
+
+    public IActionResult ProfAddJudge()
+    {
+        return View("AdminAddJudge");
+    }
+
+    public IActionResult ProfFullRubric()
     {
         return View();
     }
@@ -212,41 +231,66 @@ public class HomeController : Controller
         };
 
         return View(judgeSchedule);
+    
+    public IActionResult ProfEditRubric()
+    {
+    var query = _repo.Users.Where(x => x.PermissionType == 4);
+    return View();
+    }
+    
+    public IActionResult StudentProgress()
+        {
+            return View();
+        }
+
+
+    public IActionResult StudentDashboard()
+    {
+        return View();
     }
 
+        public IActionResult RubricDetails()
+        {
+            return View();
+        }
 
-    /*[HttpGet]
-    public IActionResult Edit(int id)
-    {
-        var recordToEdit = _context.Users
-            .Single(x => x.UserId == id);
-        return View("AdminAddJudge", recordToEdit);
+        /*[HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var recordToEdit = _context.Users
+                .Single(x => x.UserId == id);
+            return View("AdminAddJudge", recordToEdit);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(User updatedInfo)
+        {
+            _context.Update(updatedInfo);
+            _context.SaveChanges();
+            return RedirectToAction("AdminJudgeListView");
+        }
+
+
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            var recordToDelete = _context.Users
+                .Single(x => x.UserId == id);
+            return View(recordToDelete);
+        }  
+
+        [HttpPost]
+        public IActionResult Delete(User removedUser)
+        {
+            _context.Users.Remove(removedUser);
+            _context.SaveChanges();
+
+            return RedirectToAction("AdminJudgeListView");
+        }*/
+
     }
 
-    [HttpPost]
-    public IActionResult Edit(User updatedInfo)
-    {
-        _context.Update(updatedInfo);
-        _context.SaveChanges();
-        return RedirectToAction("AdminJudgeListView");
-    }
-
-
-    [HttpGet]
-    public IActionResult Delete(int id)
-    {
-        var recordToDelete = _context.Users
-            .Single(x => x.UserId == id);
-        return View(recordToDelete);
-    }
-
-    [HttpPost]
-    public IActionResult Delete(User removedUser)
-    {
-        _context.Users.Remove(removedUser);
-        _context.SaveChanges();
-
-        return RedirectToAction("AdminJudgeListView");
-    }*/
-
+    /* Potential missing actions for views: TeacherViewPeerEvalSingle, ListTA, adminPeerEvalDashboard, 
+     * AdminJudgeListView, AdminDeleteJudge
+     */
 }

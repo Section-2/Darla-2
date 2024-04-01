@@ -16,7 +16,14 @@ namespace Darla.Models
         public IEnumerable<Grade> Grades => _context.Grades;
         public IEnumerable<JudgeRoom> JudgeRooms => _context.JudgeRooms;
         public IEnumerable<Permission> Permissions => _context.Permissions;
-        public IEnumerable<Presentation> Presentations => _context.Presentations;
+
+        public IEnumerable<Presentation> Presentations =>
+            _context.Presentations.Include(x => x.Judge).Include(x => x.TeamNumberNavigation);
+        public void AddPresentationScore(Presentation presentation)
+        {
+            _context.Update(presentation);
+            _context.SaveChanges();
+        }
         public IEnumerable<RoomSchedule> RoomSchedules => _context.RoomSchedules;
         public IEnumerable<StudentTeam> StudentTeams => _context.StudentTeams;
         public IEnumerable<UserPassword> UserPasswords => _context.UserPasswords;

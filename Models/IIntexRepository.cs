@@ -7,6 +7,7 @@
         IEnumerable<JudgeRoom> JudgeRooms { get; }
         IEnumerable<Permission> Permissions { get; }
         IEnumerable<Presentation> Presentations { get; }
+        public void AddPresentationScore(Presentation presentation);
         IEnumerable<RoomSchedule> RoomSchedules { get; }
         IEnumerable<StudentTeam> StudentTeams { get; }
         IEnumerable<UserPassword> UserPasswords { get; }
