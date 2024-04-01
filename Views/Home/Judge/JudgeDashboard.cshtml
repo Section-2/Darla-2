@@ -2,73 +2,71 @@
 @using System.Collections.Generic
 @model IQueryable<RoomSchedule> 
 
+
 <!DOCTYPE html>
-<html>  
+<html lang="en">  
 <head>
     <title>Judge Schedule and Ranking</title>
     <link rel="stylesheet" href="~/css/judges.css" asp-append-version="true"/>
-    <style>
-        .schedule-container {
-            display: flex;
-            justify-content: space-between;
-        }
-        .schedule, .ranking {
-            border: 1px solid #000;
-            margin: 10px;
-            padding: 10px;
-        }
-        .ranking-list {
-            display: flex;
-            flex-direction: column;
-            align-items: start;
-        }
-        .box {
-            cursor: move; /* Change the cursor to indicate draggable items */
-            margin: 5px 0; /* Adjust based on your design */
-            padding: 10px;
-            background-color: #f0f0f0;
-            border: 1px dashed #ddd;
-        }
-        .box.drag-over {
-            border-color: #999;
-        }
-    </style>
 </head>
 <body>
 
-<div class="schedule-container">
-    <div class="schedule">
-        <h1>JUDGE:</h1>
-        <h2>Schedule & Surveys</h2>
-        <h3>ROOM W310</h3>
-        @{
-            int count = 0;
-            foreach (RoomSchedule schedule in Model)
-            {
-                <div>@schedule.Timeslot Team @schedule.TeamNumber</div>
-                if (++count == 2) // After the second schedule entry
-                {
-                    <div>Lunch Break</div> // Insert a lunch break
-                }
-            }
-        }
-    </div>
-  
-    <div class="ranking">
-        <h2>Group Ranking</h2>
-        <div id="rankingList" class="ranking-list">
-            @{
-                foreach (RoomSchedule schedule in Model) // Reuse the filtered and sorted list
-                {
-                    <div draggable="true" class="box" data-teamnumber="@schedule.TeamNumber">
-                        Team @schedule.TeamNumber
-                    </div>
-                }
-            }
-            
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1>JUDGE:</h1>
+            <h2>Schedule & Surveys</h2>
+            <h2>ROOM W310</h2>
         </div>
-        <button id="saveOrderButton">Save Order</button>
+        
+        <div class="row">
+            <div class="col-sm-6">
+                @{
+                    int count = 0;
+                    foreach (RoomSchedule schedule in Model)
+                    {
+                        <div>
+                            @schedule.Timeslot 
+                            <a asp-action="judge_survey" asp-route-teamNumber="@schedule.TeamNumber">Team @schedule.TeamNumber</a>
+                        </div>                        
+                        if (++count == 2) // After the second schedule entry
+                        {
+                            <div>Lunch Break</div> // Insert a lunch break
+                        }
+                    }
+                }
+            </div>
+            <div class="col-sm-6">
+                <h2>Group Ranking</h2>
+                <div id="rankingList" class="ranking-list">
+                    @{
+                        foreach (RoomSchedule schedule in Model) // Reuse the filtered and sorted list
+                        {
+                            <div draggable="true" class="box" data-teamnumber="@schedule.TeamNumber">
+                                Team @schedule.TeamNumber
+                            </div>
+                        }
+                    }
+
+                </div>
+            </div>
+        </div>
     </div>
+</div>
+<div id="formContainer">
+    <!-- Dynamically added form will go here -->
+    <form id="rankingsForm" asp-controller="Home" asp-action="UpdateRanks" method="post">
+        @{
+            var counter = 0;
+        }
+        @foreach (RoomSchedule schedule in Model)
+        {
+            <input type="hidden" name="teamRanks[@counter].Key" value="@schedule.TeamNumber"/>
+            <input type="hidden" id="rankForTeam-@schedule.TeamNumber" name="teamRanks[@counter].Value" value=""/>
+            counter++;
+        }
+        <button type="submit">Save Rankings</button>
+    </form>
 </div>
 <script src="~/js/site.js"></script>
 </body>

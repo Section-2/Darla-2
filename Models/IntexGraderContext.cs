@@ -156,7 +156,7 @@ public partial class IntexGraderContext : DbContext
             entity.Property(e => e.DemonstrationNotes).HasColumnName("demonstration_notes");
             entity.Property(e => e.DemonstrationScore).HasColumnName("demonstration_score");
             entity.Property(e => e.JudgeId)
-                .HasColumnType("NUMERIC")
+                .HasColumnType("NVARCHAR")
                 .HasColumnName("judge_id");
             entity.Property(e => e.TeamNumber).HasColumnName("team_number");
             entity.Property(e => e.TeamRank).HasColumnName("team_rank");

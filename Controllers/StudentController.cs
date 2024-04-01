@@ -85,9 +85,8 @@ namespace Darla.Controllers
             // Assign the rubrics to the ViewBag
             ViewBag.Rubrics = rubrics;
 
-            return View();
+            return View("StudentRubricDetails");
         }
-
 
 
         [HttpGet]
@@ -122,8 +121,6 @@ namespace Darla.Controllers
 
             return View();
         }
-
-
 
         public IActionResult updateCompleteStatus()
         {
@@ -183,9 +180,6 @@ namespace Darla.Controllers
         }
 
 
-
-
-
         public IActionResult GroupPeerEvals()
         {
             int userId = 7; // Hardcoded userId
@@ -198,7 +192,7 @@ namespace Darla.Controllers
 
             if (teamNumber == 0)
             {
-                return View("Error", new { message = "User is not part of a team." });
+                return View("Error");
             }
 
             // Get all user IDs that are part of the team, excluding the current user
@@ -215,7 +209,7 @@ namespace Darla.Controllers
             // Assign the list of User objects to the ViewBag
             ViewBag.TeamMembers = teamMemberUsers;
 
-            return View();
+            return View("StudentGroupPeerEvals");
         }
 
 
@@ -243,7 +237,7 @@ namespace Darla.Controllers
         public IActionResult PeerEvaluation()
         {
             //generate the peer eval quiz
-            return View();
+            return View("StudentPeerReview");
         }
 
         //if (ModelState.IsValid)
@@ -292,11 +286,6 @@ namespace Darla.Controllers
             return RedirectToAction("StudentPeerReview", new { subjectId = subjectId });
 
         }
-
-
-    }
-
-
 
 
     }

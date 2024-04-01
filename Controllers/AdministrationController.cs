@@ -11,11 +11,14 @@ namespace Darla.Controllers
     {
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        
+        private IIntexRepository _repo;
 
-        public AdministrationController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
+        public AdministrationController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, IIntexRepository Repo)
         {
             _roleManager = roleManager;
             _userManager = userManager;
+            _repo = Repo;
         }
 
         [HttpGet]
@@ -475,5 +478,8 @@ namespace Darla.Controllers
 
             return RedirectToAction("EditUser", new { UserId = UserId });
         }
+        
+
     }
+    
 }

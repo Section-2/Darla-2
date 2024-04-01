@@ -7,7 +7,7 @@ public partial class Presentation
 {
     public int PresentationId { get; set; }
 
-    public int JudgeId { get; set; }
+    public string JudgeId { get; set; }
 
     public int TeamNumber { get; set; }
 
@@ -27,7 +27,9 @@ public partial class Presentation
 
     public int? TeamRank { get; set; }
 
-    public virtual JudgeRoom Judge { get; set; } = null!;
+    public string? OverallJudgeNotes { get; set; }
 
+    public virtual JudgeRoom Judge { get; set; } = null!;
+    
     public virtual Team TeamNumberNavigation { get; set; } = null!;
 }
