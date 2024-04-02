@@ -316,16 +316,6 @@ public class HomeController : Controller
 
         return View(judgeSchedule);
     }
-
-    public IActionResult StudentProgress()
-    {
-        return View("Index");
-    }
-
-    public IActionResult RubricDetails()
-    {
-        return View();
-    }
     
     public IActionResult JudgeDashboard()
     {
