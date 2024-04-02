@@ -13,6 +13,7 @@ namespace Darla.Models
         }
 
         public IEnumerable<Rubric> Rubrics => _context.Rubrics.ToList();
+        
         public IEnumerable<Grade> Grades => _context.Grades;
         public IEnumerable<JudgeRoom> JudgeRooms => _context.JudgeRooms;
         public IEnumerable<Permission> Permissions => _context.Permissions;
@@ -107,6 +108,18 @@ namespace Darla.Models
         public void EditRubric(Rubric rubric)
         {
             _context.Rubrics.Update(rubric);
+            _context.SaveChanges();
+        }
+
+        public void EditJudge(User updatedInfo)
+        {
+            _context.Update(updatedInfo);
+            _context.SaveChanges();
+        }
+
+        public void DeleteJudge(User removedUser)
+        {
+            _context.Users.Remove(removedUser);
             _context.SaveChanges();
         }
     }
