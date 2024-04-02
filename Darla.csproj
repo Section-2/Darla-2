@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <Content Remove="Views\Home\ProfFullRubric.cshtml" />
+      <Content Remove="wwwroot\css\StudentDashboard.css" />
     </ItemGroup>
 
     <ItemGroup>
