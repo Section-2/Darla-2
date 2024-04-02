@@ -17,6 +17,7 @@ namespace Darla.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            
         }
     }
 }
