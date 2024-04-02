@@ -18,7 +18,8 @@ namespace Darla.Controllers
 
         public IActionResult StudentDashboard()
         {
-            string userId = "7"; // Assuming you will get the user's ID from somewhere.
+            Console.WriteLine("You Made it to student Dashboard\n \n \n");
+            string userId = (string)TempData["UserId"];  // Assuming you will get the user's ID from somewhere.
             var teamNumber = _intexRepo.StudentTeams
                 .Where(st => st.UserId == userId)
                 .Select(st => (int?)st.TeamNumber)
@@ -54,6 +55,7 @@ namespace Darla.Controllers
 
         private List<TeamSubmission> GetSubmissions(string userId)
         {
+
             var teamNumber = _intexRepo.StudentTeams
                 .FirstOrDefault(st => st.UserId == userId)?.TeamNumber;
 
@@ -92,7 +94,7 @@ namespace Darla.Controllers
         [HttpGet]
         public IActionResult StudentProgress()
         {
-            string userId = "7";
+            string userId = (string)TempData["UserId"];
             var teamNumber = _intexRepo.StudentTeams
                 .FirstOrDefault(st => st.UserId == userId)?.TeamNumber;
 
@@ -147,7 +149,7 @@ namespace Darla.Controllers
         [HttpPost]
         public async Task<IActionResult> Submit(string githubLink, string videoLink)
         {
-            string userId = "7";
+            string userId = (string)TempData["UserId"];
             var teamNumber = _intexRepo.StudentTeams
                                  .FirstOrDefault(st => st.UserId == userId)?.TeamNumber ??
                              0; // Provide a default value of 0 if TeamNumber is null
@@ -182,7 +184,7 @@ namespace Darla.Controllers
 
         public IActionResult GroupPeerEvals()
         {
-            string userId = "7"; // Hardcoded userId
+            string userId = (string)TempData["UserId"]; // Hardcoded userId
 
             // Find the team number associated with this user
             var teamNumber = _intexRepo.StudentTeams
@@ -216,7 +218,7 @@ namespace Darla.Controllers
         [HttpGet]
         public IActionResult StudentPeerReview(int subjectId)
         {
-            var userId = 7;
+            string userId = (string)TempData["UserId"];
             // Retrieve the User object (subject) with the given ID
             var subject = _intexRepo.Users.FirstOrDefault(u => u.UserId == subjectId.ToString());
 
@@ -257,7 +259,7 @@ namespace Darla.Controllers
         [HttpPost]
         public async Task<IActionResult> SubmitPeerEvaluation(List<PeerEvaluation> peerEvaluations, int subjectId)
         {
-            string evaluatorId = "7"; // Hardcoded evaluatorId for testing
+            string evaluatorId = (string)TempData["UserId"]; // Hardcoded evaluatorId for testing
 
             if (peerEvaluations != null && peerEvaluations.Any())
             {
