@@ -6,7 +6,7 @@
 @model List<User>
     <button type="button" asp-controller="Home" asp-action="AdminIndex">Go Back</button>
 
-    <button type="button" asp-controller="Home" asp-action="AdminTAListView">TA list</button>
+    <button type="button" asp-controller="Home" asp-action="">TA list</button>
     <button type="button" asp-controller="Home" asp-action="AdminJudgeListView">Judge list</button>
     <button type="button" asp-controller="Administration" asp-action="CreateRole">Create Role!</button>
 
@@ -33,7 +33,7 @@
                 <td>@x.PermissionType</td>
 
                 <td><a class="btn btn-info" asp-controller="Home" asp-action="Edit" asp-route-id="@x.UserId">Edit</a></td>
-                <td><a class="btn btn-danger" asp-controller="Home" asp-action="Delete" asp-route-id="@x.UserId">Delete</a></td>
+                <td><a class="btn btn-danger" asp-controller="Home" asp-action="" asp-route-id="@x.UserId">Delete</a></td>
             </tr>
         </tbody>
     }
