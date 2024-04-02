@@ -1,0 +1,73 @@
+:root {
+    --color-background-primary: #FFFFFF;
+    --color-background-content: #EEEEEE;
+    --color-yellow: #DEB841;
+    --color-white: #FFFFFF;
+    --color-blue-light: #BBD1EA;
+    --color-blue: #A1C6EA;
+    --color-blue-dark: #507DBC;
+}
+
+
+.login-select-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid;
+    height: auto;
+    border-radius: 8px;
+    margin: auto !important;
+    cursor: pointer;
+
+}
+
+.btn-group {
+    margin: auto;
+}
+
+.login-select-group :nth-last-child(1) {
+    border-left: 1px solid;
+    border-radius: 0 8px 8px 0;
+}
+
+.login-select-group :nth-child(1) {
+    border-right: 1px solid;
+    border-radius: 8px 0 0 8px;
+}
+
+.login-select-btn {
+    padding: 1rem;
+    /* Add transition; */
+    transition: background-color 0.3s;
+
+}
+
+.login-select-btn:hover {
+    background-color: var(--color-blue-dark);
+    color: var(--color-white)
+}
+
+.container {
+    display: grid;
+}
+
+.login-form {
+    flex-direction: column;
+
+    margin: auto;
+    max-width: 50%;
+    padding: 1rem;
+    border: 1px solid;
+    border-radius: 8px;
+}
+
+.custom-sign-in{
+    border-radius: 1.25rem;
+}
+
+.btn-focus {
+    background-color: var(--color-blue-dark);
+    color: var(--color-white)
+    
+}
