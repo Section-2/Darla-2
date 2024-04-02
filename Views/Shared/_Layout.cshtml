@@ -13,15 +13,14 @@
     <title>@ViewData["Title"] - Darla</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/Darla.styles.css" asp-append-version="true"/>
-    
+    <link rel="stylesheet" href="~/css/darla.css" asp-append-version="true"/>
 </head>
 <body>
 <!-- TA NavBar -->
 @if (SignInManager.IsSignedIn(User) && User.IsInRole("TA"))
 {
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="TA" asp-action="">DARLA - TA</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -104,7 +103,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="AdminProfIndex">Admin Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="AdminUserListView">Users</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="">Users</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="">TA Grading</a>
