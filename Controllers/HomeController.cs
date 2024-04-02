@@ -1,9 +1,5 @@
-using System.Diagnostics;
 using Darla.Models;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using SQLitePCL;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Darla.Models.ViewModels;
 
@@ -13,9 +9,9 @@ public class HomeController : Controller
 {
     private IIntexRepository _repo;
     
-    public HomeController(IIntexRepository Repo)
+    public HomeController(IIntexRepository repo)
     {
-        _repo = Repo;
+        _repo = repo;
     }
 
     // START HERE!
@@ -428,7 +424,10 @@ public class HomeController : Controller
             .OrderBy(x => x.PermissionDescription)
             .Where(x => x.PermissionType == 4)
             .ToList();
-        return View("AdminJudgeListView", new User());
+        
+        List<User> users = new List<User> { new User() };
+        
+        return View("AdminJudgeListView", users);
     }
     [HttpPost]
     public IActionResult AdminJudgeListView(User response)
@@ -436,14 +435,17 @@ public class HomeController : Controller
         if (ModelState.IsValid)
         {
             _repo.AddJudge(response);
-            return View("AdminAddJudgeConfirmation", response);
+            return View("AdminAddJudge", response);
         }
         else
         {
             ViewBag.Permissions = _repo.Permissions.ToList()
                 .OrderBy(x => x.PermissionDescription)
                 .ToList();
-            return View("AdminJudgeListView", new User());
+            
+            List<User> users = new List<User> { new User() };
+
+            return View("AdminJudgeListView", users);
         }
     }
 
