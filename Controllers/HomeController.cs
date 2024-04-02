@@ -405,7 +405,7 @@ public class HomeController : Controller
 
         if (ModelState.IsValid)
         {
-            _repo.AddRubric();
+            _repo.AddRubric(rubric);
             return View("AdminRubricEdit", rubric);
         }
         else

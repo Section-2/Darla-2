@@ -92,7 +92,7 @@ namespace Darla.Models
                 .Where(rs => rs.RoomId == roomId);
 
         }
-        public void AddRubric()
+        public void AddRubric(List<Rubric> rubricList)
         {
             var toAdd = _context.Rubrics
                 .FirstOrDefault();
