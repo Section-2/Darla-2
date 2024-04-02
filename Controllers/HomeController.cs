@@ -5,6 +5,7 @@ using SQLitePCL;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Darla.Models.ViewModels;
 
 namespace Darla.Controllers;
 
@@ -35,28 +36,64 @@ public class HomeController : Controller
     }
 
     [HttpGet]
-    public IActionResult judge_survey()
+    public IActionResult judge_survey(int? teamNumber)
     {
-        return View("Judge/judge_survey",new Presentation());
+        var presentation = new Presentation();
+
+        if (teamNumber.HasValue)
+        {
+            presentation.TeamNumber = teamNumber.Value;
+            // If JudgeId is needed from the logged-in user, assign it similarly
+            // presentation.JudgeId = ...;
+        }
+
+        return View("Judge/judge_survey", presentation);
     }
 
     [HttpPost]
     public IActionResult judge_survey(Presentation p)
     {
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
-            _repo.AddPresentationScore(p);
+            // Log each model error
+            foreach (var modelState in ModelState.Values)
+            {
+                foreach (var error in modelState.Errors)
+                {
+                    // Log the error to your logging framework; for example:
+                    Console.WriteLine(error.ErrorMessage); // Replace with your actual logging mechanism
+                }
+            }
+
+            // Return to the view with the current Presentation model to display errors
+            return View("Judge/judge_survey", p);
         }
+
+        // If the model is valid, proceed with adding the presentation score
+        _repo.AddPresentationScore(p);
 
         return RedirectToAction("JudgeDashboard", new Presentation());
     }
 
     // Action to open judge schedule
-    public IActionResult JudgeDashboard()
+    // public IActionResult JudgeDashboard()
+    // {
+    //     var roomSchedules = _repo.RoomSchedulesWithRooms;
+    //     return View("Judge/JudgeDashboard", roomSchedules);
+    // }
+    
+    public IActionResult ScheduleByRoomId(int roomId)
     {
-        var roomSchedules = _repo.RoomSchedulesWithRooms;
+        var roomSchedules = _repo.GetRoomSchedulesByRoomId(roomId);
         return View("Judge/JudgeDashboard", roomSchedules);
     }
+    [HttpPost]
+    public IActionResult UpdateRanks(Dictionary<int,int>teamRanks)
+    {
+        _repo.UpdateTeamRanks(teamRanks);
+        return RedirectToAction("JudgeDashboard");
+    }
+
 
     // END JUDGES SECTION
 
@@ -84,7 +121,13 @@ public class HomeController : Controller
 
     public IActionResult ProfFullRubric()
     {
-        return View();
+        return View("AdminRubricFull");
+    }
+    
+    public IActionResult ProfEditRubric()
+    {
+        var query = _repo.Users.Where(x => x.PermissionType == 4);
+        return View("AdminRubricEdit");
     }
 
     public IActionResult AdminPeerEvalDashboard()
@@ -206,7 +249,6 @@ public class HomeController : Controller
             })
             .ToList();
 
-
         return View(evaluationData);
     }
 
@@ -248,7 +290,6 @@ public class HomeController : Controller
             })
             .ToList();
 
-
         return View(evaluationData);
     }
 
@@ -273,64 +314,119 @@ public class HomeController : Controller
         };
 
         return View(judgeSchedule);
-    
-    public IActionResult ProfEditRubric()
-    {
-    var query = _repo.Users.Where(x => x.PermissionType == 4);
-    return View();
     }
-    
+
     public IActionResult StudentProgress()
-        {
-            return View();
-        }
+    {
+        return View("Index");
+    }
 
-
-    public IActionResult StudentDashboard()
+    public IActionResult RubricDetails()
     {
         return View();
     }
-
-        public IActionResult RubricDetails()
-        {
-            return View();
-        }
-
-        /*[HttpGet]
-        public IActionResult Edit(int id)
-        {
-            var recordToEdit = _context.Users
-                .Single(x => x.UserId == id);
-            return View("AdminAddJudge", recordToEdit);
-        }
-
-        [HttpPost]
-        public IActionResult Edit(User updatedInfo)
-        {
-            _context.Update(updatedInfo);
-            _context.SaveChanges();
-            return RedirectToAction("AdminJudgeListView");
-        }
-
-
-        [HttpGet]
-        public IActionResult Delete(int id)
-        {
-            var recordToDelete = _context.Users
-                .Single(x => x.UserId == id);
-            return View(recordToDelete);
-        }  
-
-        [HttpPost]
-        public IActionResult Delete(User removedUser)
-        {
-            _context.Users.Remove(removedUser);
-            _context.SaveChanges();
-
-            return RedirectToAction("AdminJudgeListView");
-        }*/
-
+    
+    public IActionResult JudgeDashboard()
+    {
+        return View("Judge/JudgeDashboard");
     }
+
+    [HttpGet]
+    public IActionResult EditJudge(string id)
+    {
+        var recordToEdit = _repo.Users
+            .Single(x => x.UserId == id);
+        return View("AdminAddJudge", recordToEdit);
+    }
+
+    [HttpPost]
+    public IActionResult Edit(User updatedInfo)
+    {
+        _repo.EditJudge(updatedInfo);
+        return RedirectToAction("AdminJudgeListView");
+    }
+
+
+    [HttpGet]
+    public IActionResult DeleteJudge(string id)
+    {
+        var recordToDelete = _repo.Users
+            .Single(x => x.UserId == id);
+        return View(recordToDelete);
+    }
+
+    [HttpPost]
+    public IActionResult DeleteJudge(User removedUser)
+    {
+        _repo.DeleteJudge(removedUser);
+
+        return RedirectToAction("AdminJudgeListView");
+    }
+
+
+    public IActionResult AdminRubricFull()
+    {
+        var rubrics = _repo.Rubrics.ToList();
+
+        return View(rubrics);
+    }
+
+    [HttpGet]
+    public IActionResult AdminRubricEdit(int classCode)
+    {
+        var rubric = _repo.Rubrics
+            .Where(x => x.ClassCode == classCode)
+            .ToList();
+
+        return View(rubric);
+    }
+
+    [HttpPost]
+    public IActionResult AdminRubricEdit(Rubric updatedRubric, int classCode)
+    {
+        var rubric = _repo.Rubrics
+                .Where(x => x.ClassCode == classCode)
+                .ToList();
+
+        if (ModelState.IsValid)
+        {
+            _repo.EditRubric(updatedRubric);
+
+            return RedirectToAction("AdminRubricFull");
+        }
+        else
+        {
+            return View(rubric);
+        }
+    }
+
+    [HttpPost]
+    public IActionResult AdminRubricAdd(int classCode, Rubric addedTask)
+    {
+        var rubric = _repo.Rubrics
+        .Where(x => x.ClassCode == classCode)
+        .ToList();
+
+        if (ModelState.IsValid)
+        {
+            _repo.AddRubric(addedTask);
+            return RedirectToAction("Index");
+        }
+        else
+        {
+            return View("AdminRubricEdit", rubric);
+        }
+    }
+
+    public IActionResult AdminRubricDelete(int classCode)
+    {
+        var rubric = _repo.Rubrics
+            .Where(x => x.ClassCode == classCode)
+            .ToList();
+
+        return View("AdminRubricEdit",rubric);
+    }
+
 
     /* Potential missing actions for views: TeacherViewPeerEvalSingle, ListTA, adminPeerEvalDashboard, 
      * AdminJudgeListView, AdminDeleteJudge

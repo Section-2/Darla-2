@@ -126,7 +126,7 @@ namespace Darla.Controllers
                     else
                     {
                         // Redirect to default page
-                        return RedirectToAction("StudentDashboard", "Home");
+                        return RedirectToAction("StudentDashboard", "Student");
                     }
                 }
                 if (result.RequiresTwoFactor)

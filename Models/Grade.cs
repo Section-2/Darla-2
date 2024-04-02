@@ -7,7 +7,7 @@ public partial class Grade
 {
     public int AssignmentId { get; set; }
 
-    public int UserId { get; set; }
+    public string UserId { get; set; }
 
     public int TeamNumber { get; set; }
 

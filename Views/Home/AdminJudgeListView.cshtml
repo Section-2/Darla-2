@@ -2,7 +2,6 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-    Layout = "_LayoutProf";
 }
 @using Darla.Models
 
@@ -30,8 +29,8 @@
                 <td>@x.LastName</td>
                 <td>@x.PermissionType</td>
 
-                <td><a class="btn btn-info" asp-controller="Home" asp-action="Edit" asp-route-id="@x.UserId">Edit</a></td>
-                <td><a class="btn btn-danger" asp-controller="Home" asp-action="Delete" asp-route-id="@x.UserId">Delete</a></td>
+                <td><a class="btn btn-info" asp-controller="Home" asp-action="" asp-route-id="@x.UserId">Edit</a></td>
+                <td><a class="btn btn-danger" asp-controller="Home" asp-action="" asp-route-id="@x.UserId">Delete</a></td>
             </tr>
         </tbody>
     }
