@@ -1,4 +1,4 @@
-﻿@*
+﻿@* 
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
@@ -9,6 +9,83 @@
 
 <form method="post">
     <h2>Admin Rubric Edit</h2>
+    <div class="container" style="color:black">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col-10">
+                <table class="table table-bordered" style="margin-bottom: 20px; color: black;">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Task Name</th>
+                            <th>Student Description</th>
+                            <th>TA Description</th>
+                            <th>Max Total Points</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null)
+                        {
+                            @foreach (var rubric in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <input type="text" class="form-control" name="Rubrics[@rubric.AssignmentId].Subcategory" value="@rubric.Subcategory" />
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" name="Rubrics[@rubric.AssignmentId].Description" value="@rubric.Description" />
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" name="Rubrics[@rubric.AssignmentId].InstructorNotes" value="@rubric.InstructorNotes" />
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" name="Rubrics[@rubric.AssignmentId].MaxPoints" value="@rubric.MaxPoints" />
+                                    </td>
+                                    <td>
+                                        <button type="button" asp-controller="Home" asp-action="AdminRubricDelete" asp-route-assignmentId="@rubric.AssignmentId">Delete</button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        <tr>
+                            <td colspan="5" style="text-align: right;">Total Max Total Points:</td>
+                            <td>
+                                @Model.Sum(r => r.MaxPoints)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button type="button" asp-controller="Home" asp-action="AdminRubricAdd">Add a Task</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <button type="submit" asp-controller="Home" asp-action="AdminRubricEdit">Submit Edits</button>
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ @*<form method="post">
+    <h2>Admin Rubric Edit</h2>
     <table style="border-collapse: collapse; border: 1px solid black; margin-bottom: 20px; color: white;">
         <tr>
             <th style="border: 1px solid black;">Task Name</th>
@@ -16,22 +93,25 @@
             <th style="border: 1px solid black;">TA Description</th>
             <th style="border: 1px solid black;">Max Total Points</th>
         </tr>
-        @foreach (var rubric in Model)
+        @if (Model != null)
         {
-            <tr>
-                <td style="border: 1px solid black;">
-                    <input type="text" name="Rubrics[@rubric.AssignmentId].Subcategory" value="@rubric.Subcategory" />
-                </td>
-                <td style="border: 1px solid black;">
-                    <input type="text" name="Rubrics[@rubric.AssignmentId].Description" value="@rubric.Description" />
-                </td>
-                <td style="border: 1px solid black;">
-                    <input type="text" name="Rubrics[@rubric.AssignmentId].InstructorNotes" value="@rubric.InstructorNotes" />
-                </td>
-                <td style="border: 1px solid black;">
-                    <input type="number" name="Rubrics[@rubric.AssignmentId].MaxPoints" value="@rubric.MaxPoints" />
-                </td>
-            </tr>
+            @foreach (var rubric in Model)
+            {
+                <tr>
+                    <td style="border: 1px solid black;">
+                        <input type="text" name="Rubrics[@rubric.AssignmentId].Subcategory" value="@rubric.Subcategory" />
+                    </td>
+                    <td style="border: 1px solid black;">
+                        <input type="text" name="Rubrics[@rubric.AssignmentId].Description" value="@rubric.Description" />
+                    </td>
+                    <td style="border: 1px solid black;">
+                        <input type="text" name="Rubrics[@rubric.AssignmentId].InstructorNotes" value="@rubric.InstructorNotes" />
+                    </td>
+                    <td style="border: 1px solid black;">
+                        <input type="number" name="Rubrics[@rubric.AssignmentId].MaxPoints" value="@rubric.MaxPoints" />
+                    </td>
+                </tr>
+            }
         }
         <tr>
             <td colspan="4" style="border: 1px solid black;">
@@ -50,4 +130,4 @@
             </td>
         </tr>
     </table>
-</form>
+</form>*@

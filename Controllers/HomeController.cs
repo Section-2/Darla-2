@@ -1,9 +1,5 @@
-using System.Diagnostics;
 using Darla.Models;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using SQLitePCL;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Darla.Models.ViewModels;
 
@@ -13,9 +9,9 @@ public class HomeController : Controller
 {
     private IIntexRepository _repo;
     
-    public HomeController(IIntexRepository Repo)
+    public HomeController(IIntexRepository repo)
     {
-        _repo = Repo;
+        _repo = repo;
     }
 
     // START HERE!
@@ -104,7 +100,7 @@ public class HomeController : Controller
     {
         return View();
     }
-    
+
 
     // ADMINS SECTION
     // Landing page for Admins
@@ -211,121 +207,120 @@ public class HomeController : Controller
         return View(model);
     }
 
-    //public IActionResult AdminViewPeerEvalGiven(int evaluatorId)
-    //{
-    //    var evaluationData = _repo.PeerEvaluations
-    //        .Join(_repo.StudentTeams, pe => pe.EvaluatorId, st => st.UserId, (pe, st) => new { pe, st })
-    //        .Join(_repo.Users, temp1 => temp1.st.UserId, u => u.UserId, (temp1, u) => new { temp1.pe, temp1.st, u })
-    //        .Join(_repo.PeerEvaluationQuestions, temp2 => temp2.pe.QuestionId, pq => pq.QuestionId, (temp2, pq) => new { temp2.pe, temp2.st, temp2.u, pq })
-    //        .Join(
-    //            (from peInner in _repo.PeerEvaluations
-    //             join stInner in _repo.StudentTeams on peInner.SubjectId equals stInner.UserId
-    //             join uInner in _repo.Users on stInner.UserId equals uInner.UserId
-    //             select new
-    //             {
-    //                 SubjFName = uInner.FirstName,
-    //                 SubjLName = uInner.LastName,
-    //                 peInner.SubjectId,
-    //                 uInner.UserId
-    //             }),
-    //            temp3 => temp3.pe.SubjectId,
-    //            subj => subj.UserId,
-    //            (temp3, subj) => new { temp3.pe, temp3.st, temp3.u, temp3.pq, subj }
-    //        )
-    //        .GroupBy(x => x.pe.PeerEvaluationId)
-    //        .Select(group => group.First()) // Selecting the first element from each group
-    //        .Select(result => new EvaluationViewModel
-    //        {
-    //            EvaluatorId = result.pe.EvaluatorId,
-    //            SubjectId = result.pe.SubjectId,
-    //            UserId = result.st.UserId,
-    //            NetId = result.u.NetId,
-    //            FirstName = result.u.FirstName,
-    //            LastName = result.u.LastName,
-    //            SubjFName = result.subj.SubjFName,
-    //            SubjLName = result.subj.SubjLName,
-    //            Question = result.pq.Question,
-    //            QuestionId = result.pq.QuestionId,
-    //        })
-    //        .ToList();
+    public IActionResult AdminViewPeerEvalGiven(int evaluatorId)
+    {
+        var evaluationData = _repo.PeerEvaluations
+            .Join(_repo.StudentTeams, pe => pe.EvaluatorId, st => st.UserId, (pe, st) => new { pe, st })
+            .Join(_repo.Users, temp1 => temp1.st.UserId, u => u.UserId, (temp1, u) => new { temp1.pe, temp1.st, u })
+            .Join(_repo.PeerEvaluationQuestions, temp2 => temp2.pe.QuestionId, pq => pq.QuestionId, (temp2, pq) => new { temp2.pe, temp2.st, temp2.u, pq })
+            .Join(
+                (from peInner in _repo.PeerEvaluations
+                 join stInner in _repo.StudentTeams on peInner.SubjectId equals stInner.UserId
+                 join uInner in _repo.Users on stInner.UserId equals uInner.UserId
+                 select new
+                 {
+                     SubjFName = uInner.FirstName,
+                     SubjLName = uInner.LastName,
+                     peInner.SubjectId,
+                     uInner.UserId
+                 }),
+                temp3 => temp3.pe.SubjectId,
+                subj => subj.UserId,
+                (temp3, subj) => new { temp3.pe, temp3.st, temp3.u, temp3.pq, subj }
+            )
+            .GroupBy(x => x.pe.PeerEvaluationId)
+            .Select(group => group.First()) // Selecting the first element from each group
+            .Select(result => new EvaluationViewModel
+            {
+                EvaluatorId = result.pe.EvaluatorId,
+                SubjectId = result.pe.SubjectId,
+                UserId = result.st.UserId,
+                NetId = result.u.NetId,
+                FirstName = result.u.FirstName,
+                LastName = result.u.LastName,
+                SubjFName = result.subj.SubjFName,
+                SubjLName = result.subj.SubjLName,
+                Question = result.pq.Question,
+                QuestionId = result.pq.QuestionId,
+            })
+            .ToList();
 
+        return View(evaluationData);
+    }
 
-    //    return View(evaluationData);
-    //}
+    public IActionResult AdminViewPeerEvalReceived(int evaluatorId)
+    {
+        var evaluationData = _repo.PeerEvaluations
+            .Join(_repo.StudentTeams, pe => pe.EvaluatorId, st => st.UserId, (pe, st) => new { pe, st })
+            .Join(_repo.Users, temp1 => temp1.st.UserId, u => u.UserId, (temp1, u) => new { temp1.pe, temp1.st, u })
+            .Join(_repo.PeerEvaluationQuestions, temp2 => temp2.pe.QuestionId, pq => pq.QuestionId, (temp2, pq) => new { temp2.pe, temp2.st, temp2.u, pq })
+            .Join(
+                (from peInner in _repo.PeerEvaluations
+                 join stInner in _repo.StudentTeams on peInner.SubjectId equals stInner.UserId
+                 join uInner in _repo.Users on stInner.UserId equals uInner.UserId
+                 select new
+                 {
+                     SubjFName = uInner.FirstName,
+                     SubjLName = uInner.LastName,
+                     peInner.SubjectId,
+                     uInner.UserId
+                 }),
+                temp3 => temp3.pe.SubjectId,
+                subj => subj.UserId,
+                (temp3, subj) => new { temp3.pe, temp3.st, temp3.u, temp3.pq, subj }
+            )
+            .GroupBy(x => x.pe.PeerEvaluationId)
+            .Select(group => group.First()) // Selecting the first element from each group
+            .Select(result => new EvaluationViewModel
+            {
+                EvaluatorId = result.pe.EvaluatorId,
+                SubjectId = result.pe.SubjectId,
+                UserId = result.st.UserId,
+                NetId = result.u.NetId,
+                FirstName = result.u.FirstName,
+                LastName = result.u.LastName,
+                SubjFName = result.subj.SubjFName,
+                SubjLName = result.subj.SubjLName,
+                Question = result.pq.Question,
+                QuestionId = result.pq.QuestionId,
+            })
+            .ToList();
 
-    //public IActionResult AdminViewPeerEvalReceived(int evaluatorId)
-    //{
-    //    var evaluationData = _repo.PeerEvaluations
-    //        .Join(_repo.StudentTeams, pe => pe.EvaluatorId, st => st.UserId, (pe, st) => new { pe, st })
-    //        .Join(_repo.Users, temp1 => temp1.st.UserId, u => u.UserId, (temp1, u) => new { temp1.pe, temp1.st, u })
-    //        .Join(_repo.PeerEvaluationQuestions, temp2 => temp2.pe.QuestionId, pq => pq.QuestionId, (temp2, pq) => new { temp2.pe, temp2.st, temp2.u, pq })
-    //        .Join(
-    //            (from peInner in _repo.PeerEvaluations
-    //             join stInner in _repo.StudentTeams on peInner.SubjectId equals stInner.UserId
-    //             join uInner in _repo.Users on stInner.UserId equals uInner.UserId
-    //             select new
-    //             {
-    //                 SubjFName = uInner.FirstName,
-    //                 SubjLName = uInner.LastName,
-    //                 peInner.SubjectId,
-    //                 uInner.UserId
-    //             }),
-    //            temp3 => temp3.pe.SubjectId,
-    //            subj => subj.UserId,
-    //            (temp3, subj) => new { temp3.pe, temp3.st, temp3.u, temp3.pq, subj }
-    //        )
-    //        .GroupBy(x => x.pe.PeerEvaluationId)
-    //        .Select(group => group.First()) // Selecting the first element from each group
-    //        .Select(result => new EvaluationViewModel
-    //        {
-    //            EvaluatorId = result.pe.EvaluatorId,
-    //            SubjectId = result.pe.SubjectId,
-    //            UserId = result.st.UserId,
-    //            NetId = result.u.NetId,
-    //            FirstName = result.u.FirstName,
-    //            LastName = result.u.LastName,
-    //            SubjFName = result.subj.SubjFName,
-    //            SubjLName = result.subj.SubjLName,
-    //            Question = result.pq.Question,
-    //            QuestionId = result.pq.QuestionId,
-    //        })
-    //        .ToList();
-
-    //    return View(evaluationData);
+        return View(evaluationData);
+    }
+    // return View(evaluationData);
     // }
-    
 
     //    return View(evaluationData);
     //}
 
-    //public IActionResult MasterJudgeSchedule()
-    //{
-    //    var judgeRooms = _repo.JudgeRooms.ToList();
-    //    var roomSchedules = _repo.RoomSchedules.ToList();
-    //    var permissions = _repo.Permissions.ToList();
-    //    var rooms = _repo.Rooms.ToList();
+    public IActionResult MasterJudgeSchedule()
+    {
+        var judgeRooms = _repo.JudgeRooms.ToList();
+        var roomSchedules = _repo.RoomSchedules.ToList();
+        var permissions = _repo.Permissions.ToList();
+        var rooms = _repo.Rooms.ToList();
 
-    //    var users = _repo.Users
-    //        .Where(u => u.PermissionType == 4 && judgeRooms.Any(jr => jr.UserId == u.UserId))
-    //        .ToList();
+        var users = _repo.Users
+            .Where(u => u.PermissionType == 4 && judgeRooms.Any(jr => jr.UserId == u.UserId))
+            .ToList();
 
-    //    var judgeSchedule = new MasterJudgeScheduleViewModel
-    //    {
-    //        JudgeRoom = judgeRooms,
-    //        RoomSchedule = roomSchedules,
-    //        User = users,
-    //        Permission = permissions,
-    //        Room = rooms
-    //    };
+        var judgeSchedule = new MasterJudgeScheduleViewModel
+        {
+            JudgeRoom = judgeRooms,
+            RoomSchedule = roomSchedules,
+            User = users,
+            Permission = permissions,
+            Room = rooms
+        };
 
-    //    return View(judgeSchedule);
+        return View(judgeSchedule);
+    }
 
     public IActionResult StudentProgress()
     {
         return View("Index");
     }
-
-
 
     public IActionResult RubricDetails()
     {
@@ -337,10 +332,10 @@ public class HomeController : Controller
         return View("Judge/JudgeDashboard");
     }
 
-    /*[HttpGet]WS
-    public IActionResult Edit(int id)
+    [HttpGet]
+    public IActionResult EditJudge(string id)
     {
-        var recordToEdit = _context.Users
+        var recordToEdit = _repo.Users
             .Single(x => x.UserId == id);
         return View("AdminAddJudge", recordToEdit);
     }
@@ -348,28 +343,28 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult Edit(User updatedInfo)
     {
-        _context.Update(updatedInfo);
-        _context.SaveChanges();
-        return RedirectToAction("AdminJudgeListView");
+        _repo.EditJudge(updatedInfo);
+    return RedirectToAction("");
+    /*return RedirectToAction("AdminJudgeListView");*/
+
     }
 
 
     [HttpGet]
-    public IActionResult Delete(int id)
+    public IActionResult DeleteJudge(string id)
     {
-        var recordToDelete = _context.Users
+        var recordToDelete = _repo.Users
             .Single(x => x.UserId == id);
-        return View(recordToDelete);
-    }  
+        return View("AdminDeleteJudge",recordToDelete);
+    }
 
     [HttpPost]
-    public IActionResult Delete(User removedUser)
+    public IActionResult DeleteJudge(User removedUser)
     {
-        _context.Users.Remove(removedUser);
-        _context.SaveChanges();
-
-        return RedirectToAction("AdminJudgeListView");
-    }*/
+        _repo.DeleteJudge(removedUser);
+        return RedirectToAction("");
+        /*return RedirectToAction("AdminJudgeListView");*/
+    }
 
 
     public IActionResult AdminRubricFull()
@@ -382,43 +377,39 @@ public class HomeController : Controller
     [HttpGet]
     public IActionResult AdminRubricEdit(int classCode)
     {
-        var rubric = _repo.Rubrics
-            .Where(x => x.ClassCode == classCode)
-            .ToList();
+        var rubrics = _repo.Rubrics
+            .Where(x => x.ClassCode == classCode).ToList();
 
-        return View(rubric);
+        return View("AdminRubricEdit", rubrics);
     }
 
     [HttpPost]
-    public IActionResult AdminRubricEdit(Rubric updatedRubric, int classCode)
+    public IActionResult AdminRubricEdit(Rubric updatedRubric)
     {
-        var rubric = _repo.Rubrics
-                .Where(x => x.ClassCode == classCode)
-                .ToList();
-
         if (ModelState.IsValid)
         {
             _repo.EditRubric(updatedRubric);
-
-            return RedirectToAction("AdminRubricFull");
+            return RedirectToAction("AdminRubricEdit");
         }
         else
         {
-            return View(rubric);
+            return View("AdminRubricAdd", updatedRubric);
         }
     }
 
-    [HttpPost]
-    public IActionResult AdminRubricAdd(int classCode, Rubric addedTask)
+    [HttpGet]
+    public IActionResult AdminRubricAdd()
     {
-        var rubric = _repo.Rubrics
-        .Where(x => x.ClassCode == classCode)
-        .ToList();
-
+        return View(new Rubric());
+    }
+    
+    [HttpPost]
+    public IActionResult AdminRubricAdd(Rubric rubric)
+    {
         if (ModelState.IsValid)
         {
-            _repo.AddRubric(addedTask);
-            return RedirectToAction("Index");
+            _repo.AddRubric(rubric);
+            return View("AdminRubricEdit", rubric);
         }
         else
         {
@@ -426,13 +417,50 @@ public class HomeController : Controller
         }
     }
 
-    public IActionResult AdminRubricDelete(int classCode)
+    [HttpGet]
+    public IActionResult AdminRubricDelete(int assignmentId)
     {
-        var rubric = _repo.Rubrics
-            .Where(x => x.ClassCode == classCode)
-            .ToList();
+        var delete = _repo.Rubrics.Single(x => x.ClassCode == assignmentId);
+        return View("AdminRubricEdit", delete);
+    }
 
-        return View("AdminRubricEdit",rubric);
+    [HttpPost]
+    public IActionResult AdminRubricDelete(Rubric rubric)
+    {
+        _repo.DeleteRubric(rubric);
+        return View("AdminRubricEdit");
+    }
+
+    [HttpGet]
+    public IActionResult AdminJudgeListView()
+    {
+        ViewBag.Permissions = _repo.Permissions.ToList()
+            .OrderBy(x => x.PermissionDescription)
+            .Where(x => x.PermissionType == 4)
+            .ToList();
+        
+        List<User> users = new List<User> { new User() };
+        
+        return View("AdminJudgeListView", users);
+    }
+    [HttpPost]
+    public IActionResult AdminJudgeListView(User response)
+    {
+        if (ModelState.IsValid)
+        {
+            _repo.AddJudge(response);
+            return View("AdminAddJudge", response);
+        }
+        else
+        {
+            ViewBag.Permissions = _repo.Permissions.ToList()
+                .OrderBy(x => x.PermissionDescription)
+                .ToList();
+            
+            List<User> users = new List<User> { new User() };
+
+            return View("AdminJudgeListView", users);
+        }
     }
 
 
