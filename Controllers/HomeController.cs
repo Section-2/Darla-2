@@ -343,7 +343,9 @@ public class HomeController : Controller
     public IActionResult Edit(User updatedInfo)
     {
         _repo.EditJudge(updatedInfo);
-        return RedirectToAction("AdminJudgeListView");
+    return RedirectToAction("");
+    /*return RedirectToAction("AdminJudgeListView");*/
+
     }
 
 
@@ -352,15 +354,15 @@ public class HomeController : Controller
     {
         var recordToDelete = _repo.Users
             .Single(x => x.UserId == id);
-        return View(recordToDelete);
+        return View("AdminDeleteJudge",recordToDelete);
     }
 
     [HttpPost]
     public IActionResult DeleteJudge(User removedUser)
     {
         _repo.DeleteJudge(removedUser);
-
-        return RedirectToAction("AdminJudgeListView");
+        return RedirectToAction("");
+        /*return RedirectToAction("AdminJudgeListView");*/
     }
 
 
