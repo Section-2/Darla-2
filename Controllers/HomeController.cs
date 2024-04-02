@@ -375,12 +375,12 @@ public class HomeController : Controller
     }
 
     [HttpGet]
-    public IActionResult AdminRubricEdit(int classCode)
+    public IActionResult AdminRubricEdit(int assignmentId)
     {
-        var rubrics = _repo.Rubrics
-            .Where(x => x.ClassCode == classCode).ToList();
+        var rubricItem = _repo.Rubrics
+            .Single(x => x.AssignmentId == assignmentId);
 
-        return View("AdminRubricEdit", rubrics);
+        return View("AdminRubricAdd", rubricItem);
     }
 
     [HttpPost]
@@ -389,7 +389,8 @@ public class HomeController : Controller
         if (ModelState.IsValid)
         {
             _repo.EditRubric(updatedRubric);
-            return RedirectToAction("AdminRubricEdit");
+
+            return RedirectToAction("AdminRubricFull");
         }
         else
         {
@@ -398,37 +399,42 @@ public class HomeController : Controller
     }
 
     [HttpGet]
-    public IActionResult AdminRubricAdd()
+    public IActionResult AdminRubricAdd(int classCode)
     {
-        return View(new Rubric());
+        var newItem = new Rubric();
+
+        return View(newItem);
     }
-    
+
     [HttpPost]
-    public IActionResult AdminRubricAdd(Rubric rubric)
+    public IActionResult AdminRubricAdd(Rubric response)
     {
         if (ModelState.IsValid)
         {
-            _repo.AddRubric(rubric);
-            return View("AdminRubricEdit", rubric);
+            _repo.AddRubric(response);
+            return RedirectToAction("AdminRubricFull");
         }
         else
         {
-            return View("AdminRubricEdit", rubric);
+            return View(response);
         }
     }
 
     [HttpGet]
     public IActionResult AdminRubricDelete(int assignmentId)
     {
-        var delete = _repo.Rubrics.Single(x => x.ClassCode == assignmentId);
-        return View("AdminRubricEdit", delete);
+        var itemToDelete = _repo.Rubrics
+            .Single(x => x.AssignmentId == assignmentId);
+
+        return View(itemToDelete);
     }
 
     [HttpPost]
-    public IActionResult AdminRubricDelete(Rubric rubric)
+    public IActionResult AdminRubricDelete(Rubric taskToDelete)
     {
-        _repo.DeleteRubric(rubric);
-        return View("AdminRubricEdit");
+        _repo.DeleteRubric(taskToDelete);
+
+        return View("AdminRubricFull");
     }
 
     [HttpGet]
