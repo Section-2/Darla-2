@@ -13,5 +13,7 @@ public partial class TeamSubmission
 
     public string? GoogleDocLink { get; set; }
 
+    public string? Timestamp { get; set; }
+
     public virtual Team TeamNumberNavigation { get; set; } = null!;
 }

@@ -5,9 +5,9 @@ namespace Darla.Models.ViewModels
     public class EvaluationViewModel
     {
 /*        public IQueryable<PeerEvaluation> PeerEvaluations { get; set; }*/
-        public int EvaluatorId { get; set; }
-        public int SubjectId { get; set; }
-        public int UserId { get; set; }
+        public string EvaluatorId { get; set; }
+        public string SubjectId { get; set; }
+        public string UserId { get; set; }
         public string NetId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
