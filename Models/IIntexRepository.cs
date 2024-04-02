@@ -32,6 +32,8 @@
         public void AddJudge(User response);
         IQueryable<RoomSchedule> GetRoomSchedulesByRoomId(int roomId);
 
+        Task<List<PeerEvaluationViewModel>> GetPeerEvaluationInfo();
+
 
     }
 }

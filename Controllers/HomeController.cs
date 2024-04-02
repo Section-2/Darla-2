@@ -126,43 +126,10 @@ public class HomeController : Controller
         return View("AdminRubricEdit");
     }
 
-    public IActionResult AdminPeerEvalDashboard()
+    public async Task<IActionResult> AdminPeerEvalDashboard()
     {
-        // Include necessary navigation properties to access related data
-        var studentTeams = _repo.GetQueryableStudentTeams()
-            .Include(st => st.User)
-            .Include(st => st.PeerEvaluationSubjects)
-            .ThenInclude(pe => pe.PeerEvaluationNavigation)
-            .ToList();
-
-        // Group by TeamNumber
-        var groupedByTeam = studentTeams.GroupBy(st => st.TeamNumber);
-
-        // Prepare a list of PeerEvaluationDash to hold the dashboard data
-        var peerEvaluationDashes = new List<PeerEvaluationDash>();
-        foreach (var group in groupedByTeam)
-        {
-            var dash = new PeerEvaluationDash
-            {
-                GroupNumber = group.Key,
-                Members = group.Select(member =>
-                {
-                    var evaluations = _repo.PeerEvaluations
-                                           .Where(pe => pe.SubjectId == member.UserId)
-                                           .ToList();
-                    return new StudentEvaluation
-                    {
-                        User = member.User,
-                        PeerEvaluations = evaluations,
-                        // No need to calculate Score here, since it's already a computed property
-                    };
-                }).ToList()
-            };
-            peerEvaluationDashes.Add(dash);
-        }
-
-        // Then, pass this data to the view (if needed)
-        return View(peerEvaluationDashes); // Make sure you have a view named "adminPeerEvalDashboard.cshtml" under Views/Home/
+        var viewModel = await _repo.GetPeerEvaluationInfo();
+        return View(viewModel);
     }
 
     public IActionResult AdminProfIndex()
