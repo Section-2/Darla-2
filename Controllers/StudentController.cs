@@ -18,7 +18,7 @@ namespace Darla.Controllers
 
         public IActionResult StudentDashboard()
         {
-
+            Console.WriteLine("You Made it to student Dashboard\n \n \n");
             string userId = (string)TempData["UserId"];  // Assuming you will get the user's ID from somewhere.
             var teamNumber = _intexRepo.StudentTeams
                 .Where(st => st.UserId == userId)
