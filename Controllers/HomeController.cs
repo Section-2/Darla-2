@@ -1,9 +1,5 @@
-using System.Diagnostics;
 using Darla.Models;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using SQLitePCL;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Darla.Models.ViewModels;
 
@@ -13,9 +9,9 @@ public class HomeController : Controller
 {
     private IIntexRepository _repo;
     
-    public HomeController(IIntexRepository Repo)
+    public HomeController(IIntexRepository repo)
     {
-        _repo = Repo;
+        _repo = repo;
     }
 
     // START HERE!
@@ -104,7 +100,7 @@ public class HomeController : Controller
     {
         return View();
     }
-    
+
 
     // ADMINS SECTION
     // Landing page for Admins
@@ -348,7 +344,9 @@ public class HomeController : Controller
     public IActionResult Edit(User updatedInfo)
     {
         _repo.EditJudge(updatedInfo);
-        return RedirectToAction("AdminJudgeListView");
+    return RedirectToAction("");
+    /*return RedirectToAction("AdminJudgeListView");*/
+
     }
 
 
@@ -357,15 +355,15 @@ public class HomeController : Controller
     {
         var recordToDelete = _repo.Users
             .Single(x => x.UserId == id);
-        return View(recordToDelete);
+        return View("AdminDeleteJudge",recordToDelete);
     }
 
     [HttpPost]
     public IActionResult DeleteJudge(User removedUser)
     {
         _repo.DeleteJudge(removedUser);
-
-        return RedirectToAction("AdminJudgeListView");
+        return RedirectToAction("");
+        /*return RedirectToAction("AdminJudgeListView");*/
     }
 
 
@@ -379,31 +377,38 @@ public class HomeController : Controller
     [HttpGet]
     public IActionResult AdminRubricEdit(int classCode)
     {
-        var rubric = _repo.Rubrics
-            .Where(x => x.ClassCode == classCode)
-            .ToList();
+        var rubrics = _repo.Rubrics
+            .Where(x => x.ClassCode == classCode).ToList();
 
-        return View(rubric);
+        return View("AdminRubricEdit", rubrics);
     }
 
     [HttpPost]
     public IActionResult AdminRubricEdit(Rubric updatedRubric)
     {
-        _repo.EditRubric(updatedRubric);
-
-        return RedirectToAction("AdminRubricFull");
-    }
-
-    [HttpPost]
-    public IActionResult AdminRubricAdd(int classCode)
-    {
-        var rubric = _repo.Rubrics
-        .Where(x => x.ClassCode == classCode)
-        .ToList();
-
         if (ModelState.IsValid)
         {
-            _repo.AddRubric();
+            _repo.EditRubric(updatedRubric);
+            return RedirectToAction("AdminRubricEdit");
+        }
+        else
+        {
+            return View("AdminRubricAdd", updatedRubric);
+        }
+    }
+
+    [HttpGet]
+    public IActionResult AdminRubricAdd()
+    {
+        return View(new Rubric());
+    }
+    
+    [HttpPost]
+    public IActionResult AdminRubricAdd(Rubric rubric)
+    {
+        if (ModelState.IsValid)
+        {
+            _repo.AddRubric(rubric);
             return View("AdminRubricEdit", rubric);
         }
         else
@@ -412,10 +417,17 @@ public class HomeController : Controller
         }
     }
 
+    [HttpGet]
     public IActionResult AdminRubricDelete(int assignmentId)
     {
-        _repo.DeleteRubric(assignmentId);
+        var delete = _repo.Rubrics.Single(x => x.ClassCode == assignmentId);
+        return View("AdminRubricEdit", delete);
+    }
 
+    [HttpPost]
+    public IActionResult AdminRubricDelete(Rubric rubric)
+    {
+        _repo.DeleteRubric(rubric);
         return View("AdminRubricEdit");
     }
 
@@ -426,7 +438,10 @@ public class HomeController : Controller
             .OrderBy(x => x.PermissionDescription)
             .Where(x => x.PermissionType == 4)
             .ToList();
-        return View("AdminJudgeListView", new User());
+        
+        List<User> users = new List<User> { new User() };
+        
+        return View("AdminJudgeListView", users);
     }
     [HttpPost]
     public IActionResult AdminJudgeListView(User response)
@@ -434,14 +449,17 @@ public class HomeController : Controller
         if (ModelState.IsValid)
         {
             _repo.AddJudge(response);
-            return View("AdminAddJudgeConfirmation", response);
+            return View("AdminAddJudge", response);
         }
         else
         {
             ViewBag.Permissions = _repo.Permissions.ToList()
                 .OrderBy(x => x.PermissionDescription)
                 .ToList();
-            return View("AdminJudgeListView", new User());
+            
+            List<User> users = new List<User> { new User() };
+
+            return View("AdminJudgeListView", users);
         }
     }
 
