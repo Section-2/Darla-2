@@ -106,7 +106,7 @@ namespace Darla.Controllers
                 // Attempt to sign in the user using their username and password
                 var user = await userManager.FindByNameAsync(model.Username);
                 var userEmail = user.Email;
-
+               
                 if (user != null && !user.EmailConfirmed && (await userManager.CheckPasswordAsync(user, model.Password)))
                 {
                     ModelState.AddModelError(string.Empty, "Email not confirmed yet");
@@ -125,6 +125,7 @@ namespace Darla.Controllers
                     }
                     else
                     {
+                        TempData["UserId"] = user.Id;
                         // Redirect to default page
                         return RedirectToAction("StudentDashboard", "Student");
                     }
