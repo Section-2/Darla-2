@@ -381,28 +381,35 @@ public class HomeController : Controller
     [HttpGet]
     public IActionResult AdminRubricEdit(int classCode)
     {
-        var rubric = _repo.Rubrics
-            .Where(x => x.ClassCode == classCode)
-            .ToList();
+        var rubrics = _repo.Rubrics
+            .Where(x => x.ClassCode == classCode).ToList();
 
-        return View(rubric);
+        return View("AdminRubricEdit", rubrics);
     }
 
     [HttpPost]
     public IActionResult AdminRubricEdit(Rubric updatedRubric)
     {
-        _repo.EditRubric(updatedRubric);
-
-        return RedirectToAction("AdminRubricFull");
+        if (ModelState.IsValid)
+        {
+            _repo.EditRubric(updatedRubric);
+            return RedirectToAction("AdminRubricEdit");
+        }
+        else
+        {
+            return View("AdminRubricAdd", updatedRubric);
+        }
     }
 
-    [HttpPost]
-    public IActionResult AdminRubricAdd(int classCode)
+    [HttpGet]
+    public IActionResult AdminRubricAdd()
     {
-        var rubric = _repo.Rubrics
-        .Where(x => x.ClassCode == classCode)
-        .ToList();
-
+        return View(new Rubric());
+    }
+    
+    [HttpPost]
+    public IActionResult AdminRubricAdd(Rubric rubric)
+    {
         if (ModelState.IsValid)
         {
             _repo.AddRubric(rubric);
@@ -414,10 +421,17 @@ public class HomeController : Controller
         }
     }
 
+    [HttpGet]
     public IActionResult AdminRubricDelete(int assignmentId)
     {
-        _repo.DeleteRubric(assignmentId);
+        var delete = _repo.Rubrics.Single(x => x.ClassCode == assignmentId);
+        return View("AdminRubricEdit", delete);
+    }
 
+    [HttpPost]
+    public IActionResult AdminRubricDelete(Rubric rubric)
+    {
+        _repo.DeleteRubric(rubric);
         return View("AdminRubricEdit");
     }
 

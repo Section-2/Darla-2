@@ -1,0 +1,30 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model Rubric 
+
+<div class="container">
+    <h3>Add new item</h3>
+    <div class="row">
+        <div>
+            <input asp-for="ClassCode" hidden />
+        </div>
+        <div class="col-3">
+            <input type="text" class="form-control" asp-for="Subcategory" name="Model.Subcategory" placeholder="Task Name" />
+        </div>
+        <div class="col-3">
+            <input type="text" class="form-control" asp-for="Description" name="Model.Description" placeholder="Student Description" />
+        </div>
+        <div class="col-3">
+            <input type="text" class="form-control" asp-for="InstructorNotes" name="Model.InstructorNotes" placeholder="TA Description" />
+        </div>
+        <div class="col-3">
+            <input type="number" class="form-control" asp-for="MaxPoints" name="Model.MaxPoints" placeholder="Max Total Points" />
+        </div>
+        <div class="col-2">
+            <button asp-controller="Home" asp-action="AdminRubricAdd" type="button">Add</button>
+        </div>
+    </div>
+</div>

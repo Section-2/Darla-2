@@ -23,9 +23,9 @@
         void AddPeerEvaluation(PeerEvaluation evaluation);
         Task SaveChangesAsync();
         IQueryable<StudentTeam> GetQueryableStudentTeams();
-        public void AddRubric(List<Rubric> rubricList);
+        public void AddRubric(Rubric rubric);
         public void EditRubric(Rubric rubric);
-        public void DeleteRubric(int assignmentId);
+        public void DeleteRubric(Rubric rubric);
 
         public void EditJudge(User updatedInfo);
         public void DeleteJudge(User removedUser);

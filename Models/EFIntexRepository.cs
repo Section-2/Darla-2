@@ -13,7 +13,6 @@ namespace Darla.Models
         }
 
         public IEnumerable<Rubric> Rubrics => _context.Rubrics.ToList();
-
         public IEnumerable<Grade> Grades => _context.Grades;
         public IEnumerable<JudgeRoom> JudgeRooms => _context.JudgeRooms;
         public IEnumerable<Permission> Permissions => _context.Permissions;
@@ -92,22 +91,15 @@ namespace Darla.Models
                 .Where(rs => rs.RoomId == roomId);
 
         }
-        public void AddRubric(List<Rubric> rubricList)
+        public void AddRubric(Rubric rubric)
         {
-            var toAdd = _context.Rubrics
-                .FirstOrDefault();
-
-            _context.Rubrics.Add(toAdd);
+            _context.Rubrics.Add(rubric);
             _context.SaveChanges();
         }
 
-        public void DeleteRubric(int assignmentId)
+        public void DeleteRubric(Rubric rubric)
         {
-            var toDelete = _context.Rubrics
-                .Where(x => x.AssignmentId == assignmentId)
-                .FirstOrDefault();
-
-            _context.Rubrics.Remove(toDelete);
+            _context.Rubrics.Remove(rubric);
             _context.SaveChanges();
         }
 

@@ -42,37 +42,20 @@
                                         <input type="number" class="form-control" name="Rubrics[@rubric.AssignmentId].MaxPoints" value="@rubric.MaxPoints" />
                                     </td>
                                     <td>
-                                        <a asp-controller="Home" asp-action="AdminRubricDelete" asp-route-assignmentId="@rubric.AssignmentId"><button>Delete</button></a>
+                                        <button type="button" asp-controller="Home" asp-action="AdminRubricDelete" asp-route-assignmentId="@rubric.AssignmentId">Delete</button>
                                     </td>
                                 </tr>
                             }
                         }
                         <tr>
-                            <td colspan="10">
-                                <h3>Add new item</h3>
-                                <div class="row">
-                                    <div class="col-3">
-                                        <input type="text" class="form-control" name="NewRubric.Subcategory" placeholder="Task Name" />
-                                    </div>
-                                    <div class="col-3">
-                                        <input type="text" class="form-control" name="NewRubric.Description" placeholder="Student Description" />
-                                    </div>
-                                    <div class="col-3">
-                                        <input type="text" class="form-control" name="NewRubric.InstructorNotes" placeholder="TA Description" />
-                                    </div>
-                                    <div class="col-3">
-                                        <input type="number" class="form-control" name="NewRubric.MaxPoints" placeholder="Max Total Points" />
-                                    </div>
-                                    <div class="col-2">
-                                        <a asp-controller="Home" asp-action="AdminRubricAdd"><button>Add</button></a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
                             <td colspan="5" style="text-align: right;">Total Max Total Points:</td>
                             <td>
                                 @Model.Sum(r => r.MaxPoints)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button type="button" asp-controller="Home" asp-action="AdminRubricAdd">Add a Task</button>
                             </td>
                         </tr>
                     </tbody>
