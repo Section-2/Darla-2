@@ -399,9 +399,12 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult AdminRubricDelete(Rubric taskToDelete)
     {
-        _repo.DeleteRubric(taskToDelete);
+        var itemToDelete = _repo.Rubrics
+            .Single(x => x.AssignmentId == taskToDelete.AssignmentId);
 
-        return View("AdminRubricFull");
+        _repo.DeleteRubric(itemToDelete);
+
+        return RedirectToAction("AdminRubricFull");
     }
 
     [HttpGet]
