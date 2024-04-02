@@ -125,5 +125,30 @@ namespace Darla.Models
             _context.Users.Add(response);
             _context.SaveChanges();
         }
+
+        public async Task<List<PeerEvaluationViewModel>> GetPeerEvaluationInfo()
+        {
+            var peerEvaluations = _context.PeerEvaluations
+                .Include(pe => pe.Subject)
+                .ThenInclude(st => st.User)
+                .AsNoTracking();
+            var groupedEvaluations = await peerEvaluations
+                .GroupBy(pe => pe.Subject.TeamNumber)
+                .Select(group => new PeerEvaluationViewModel
+                {
+                    TeamNumber = group.Key,
+                    Members = group
+                        .GroupBy(g => g.SubjectId)
+                        .Select(m => new MemberEvaluationInfo
+                        {
+                            UserId = m.Key,
+                            FirstName = m.First().Subject.User.FirstName,
+                            LastName = m.First().Subject.User.LastName,
+                            TotalScore = m.Sum(x => x.Rating)
+                        }).ToList()
+                }).ToListAsync();
+            return groupedEvaluations;
+        }
+
     }
 }
