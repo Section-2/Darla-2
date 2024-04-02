@@ -106,7 +106,7 @@ namespace Darla.Controllers
                 // Attempt to sign in the user using their username and password
                 var user = await userManager.FindByNameAsync(model.Username);
                 var userEmail = user.Email;
-               
+                Console.WriteLine( "\n \n \n USER ID: "+ user.Id);
                 if (user != null && !user.EmailConfirmed && (await userManager.CheckPasswordAsync(user, model.Password)))
                 {
                     ModelState.AddModelError(string.Empty, "Email not confirmed yet");
