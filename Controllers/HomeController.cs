@@ -368,7 +368,7 @@ public class HomeController : Controller
     [HttpGet]
     public IActionResult AdminRubricAdd(int classCode)
     {
-        var newItem = new Rubric();
+        var newItem = new Rubric { ClassCode = classCode };
 
         return View(newItem);
     }
