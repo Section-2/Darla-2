@@ -419,6 +419,32 @@ public class HomeController : Controller
         return View("AdminRubricEdit");
     }
 
+    [HttpGet]
+    public IActionResult AdminJudgeListView()
+    {
+        ViewBag.Permissions = _repo.Permissions.ToList()
+            .OrderBy(x => x.PermissionDescription)
+            .Where(x => x.PermissionType == 4)
+            .ToList();
+        return View("AdminJudgeListView", new User());
+    }
+    [HttpPost]
+    public IActionResult AdminJudgeListView(User response)
+    {
+        if (ModelState.IsValid)
+        {
+            _repo.AddJudge(response);
+            return View("AdminAddJudgeConfirmation", response);
+        }
+        else
+        {
+            ViewBag.Permissions = _repo.Permissions.ToList()
+                .OrderBy(x => x.PermissionDescription)
+                .ToList();
+            return View("AdminJudgeListView", new User());
+        }
+    }
+
 
     /* Potential missing actions for views: TeacherViewPeerEvalSingle, ListTA, adminPeerEvalDashboard, 
      * AdminJudgeListView, AdminDeleteJudge

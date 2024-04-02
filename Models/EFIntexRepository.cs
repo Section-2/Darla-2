@@ -128,5 +128,10 @@ namespace Darla.Models
             _context.Users.Remove(removedUser);
             _context.SaveChanges();
         }
+        public void AddJudge(User response)
+        {
+            _context.Users.Add(response);
+            _context.SaveChanges();
+        }
     }
 }

@@ -29,6 +29,7 @@
 
         public void EditJudge(User updatedInfo);
         public void DeleteJudge(User removedUser);
+        public void AddJudge(User response);
         IQueryable<RoomSchedule> GetRoomSchedulesByRoomId(int roomId);
 
 
