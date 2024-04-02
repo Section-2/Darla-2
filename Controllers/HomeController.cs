@@ -11,7 +11,7 @@ namespace Darla.Controllers;
 public class HomeController : Controller
 {
     private IIntexRepository _repo;
-    
+
     public HomeController(IIntexRepository Repo)
     {
         _repo = Repo;
@@ -37,7 +37,7 @@ public class HomeController : Controller
     [HttpGet]
     public IActionResult judge_survey()
     {
-        return View("Judge/judge_survey",new Presentation());
+        return View("Judge/judge_survey", new Presentation());
     }
 
     [HttpPost]
@@ -67,7 +67,7 @@ public class HomeController : Controller
     {
         return View();
     }
-    
+
 
     // ADMINS SECTION
     // Landing page for Admins
@@ -273,23 +273,23 @@ public class HomeController : Controller
         };
 
         return View(judgeSchedule);
-    
-    public IActionResult ProfEditRubric()
-    {
-    var query = _repo.Users.Where(x => x.PermissionType == 4);
-    return View();
     }
+        public IActionResult ProfEditRubric()
+            {
+            var query = _repo.Users.Where(x => x.PermissionType == 4);
+            return View();
+            }
     
-    public IActionResult StudentProgress()
+        public IActionResult StudentProgress()
+            {
+                return View();
+            }
+
+
+        public IActionResult StudentDashboard()
         {
             return View();
         }
-
-
-    public IActionResult StudentDashboard()
-    {
-        return View();
-    }
 
         public IActionResult RubricDetails()
         {
@@ -329,8 +329,6 @@ public class HomeController : Controller
 
             return RedirectToAction("AdminJudgeListView");
         }*/
-
-    }
 
     /* Potential missing actions for views: TeacherViewPeerEvalSingle, ListTA, adminPeerEvalDashboard, 
      * AdminJudgeListView, AdminDeleteJudge
