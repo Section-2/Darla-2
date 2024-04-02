@@ -126,43 +126,10 @@ public class HomeController : Controller
         return View("AdminRubricEdit");
     }
 
-    public IActionResult AdminPeerEvalDashboard()
+    public async Task<IActionResult> AdminPeerEvalDashboard()
     {
-        // Include necessary navigation properties to access related data
-        var studentTeams = _repo.GetQueryableStudentTeams()
-            .Include(st => st.User)
-            .Include(st => st.PeerEvaluationSubjects)
-            .ThenInclude(pe => pe.PeerEvaluationNavigation)
-            .ToList();
-
-        // Group by TeamNumber
-        var groupedByTeam = studentTeams.GroupBy(st => st.TeamNumber);
-
-        // Prepare a list of PeerEvaluationDash to hold the dashboard data
-        var peerEvaluationDashes = new List<PeerEvaluationDash>();
-        foreach (var group in groupedByTeam)
-        {
-            var dash = new PeerEvaluationDash
-            {
-                GroupNumber = group.Key,
-                Members = group.Select(member =>
-                {
-                    var evaluations = _repo.PeerEvaluations
-                                           .Where(pe => pe.SubjectId == member.UserId)
-                                           .ToList();
-                    return new StudentEvaluation
-                    {
-                        User = member.User,
-                        PeerEvaluations = evaluations,
-                        // No need to calculate Score here, since it's already a computed property
-                    };
-                }).ToList()
-            };
-            peerEvaluationDashes.Add(dash);
-        }
-
-        // Then, pass this data to the view (if needed)
-        return View(peerEvaluationDashes); // Make sure you have a view named "adminPeerEvalDashboard.cshtml" under Views/Home/
+        var viewModel = await _repo.GetPeerEvaluationInfo();
+        return View(viewModel);
     }
 
     public IActionResult AdminProfIndex()
@@ -375,12 +342,12 @@ public class HomeController : Controller
     }
 
     [HttpGet]
-    public IActionResult AdminRubricEdit(int classCode)
+    public IActionResult AdminRubricEdit(int assignmentId)
     {
-        var rubrics = _repo.Rubrics
-            .Where(x => x.ClassCode == classCode).ToList();
+        var rubricItem = _repo.Rubrics
+            .Single(x => x.AssignmentId == assignmentId);
 
-        return View("AdminRubricEdit", rubrics);
+        return View("AdminRubricAdd", rubricItem);
     }
 
     [HttpPost]
@@ -389,7 +356,8 @@ public class HomeController : Controller
         if (ModelState.IsValid)
         {
             _repo.EditRubric(updatedRubric);
-            return RedirectToAction("AdminRubricEdit");
+
+            return RedirectToAction("AdminRubricFull");
         }
         else
         {
@@ -398,37 +366,45 @@ public class HomeController : Controller
     }
 
     [HttpGet]
-    public IActionResult AdminRubricAdd()
+    public IActionResult AdminRubricAdd(int classCode)
     {
-        return View(new Rubric());
+        var newItem = new Rubric { ClassCode = classCode };
+
+        return View(newItem);
     }
-    
+
     [HttpPost]
-    public IActionResult AdminRubricAdd(Rubric rubric)
+    public IActionResult AdminRubricAdd(Rubric response)
     {
         if (ModelState.IsValid)
         {
-            _repo.AddRubric(rubric);
-            return View("AdminRubricEdit", rubric);
+            _repo.AddRubric(response);
+            return RedirectToAction("AdminRubricFull");
         }
         else
         {
-            return View("AdminRubricEdit", rubric);
+            return View(response);
         }
     }
 
     [HttpGet]
     public IActionResult AdminRubricDelete(int assignmentId)
     {
-        var delete = _repo.Rubrics.Single(x => x.ClassCode == assignmentId);
-        return View("AdminRubricEdit", delete);
+        var itemToDelete = _repo.Rubrics
+            .Single(x => x.AssignmentId == assignmentId);
+
+        return View(itemToDelete);
     }
 
     [HttpPost]
-    public IActionResult AdminRubricDelete(Rubric rubric)
+    public IActionResult AdminRubricDelete(Rubric taskToDelete)
     {
-        _repo.DeleteRubric(rubric);
-        return View("AdminRubricEdit");
+        var itemToDelete = _repo.Rubrics
+            .Single(x => x.AssignmentId == taskToDelete.AssignmentId);
+
+        _repo.DeleteRubric(itemToDelete);
+
+        return RedirectToAction("AdminRubricFull");
     }
 
     [HttpGet]

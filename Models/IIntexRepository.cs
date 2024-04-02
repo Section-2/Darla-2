@@ -2,7 +2,7 @@
 {
     public interface IIntexRepository
     {
-        IEnumerable<Rubric> Rubrics { get; }
+        List<Rubric> Rubrics { get; }
         IEnumerable<Grade> Grades { get; }
         IEnumerable<JudgeRoom> JudgeRooms { get; }
         IEnumerable<Permission> Permissions { get; }
@@ -31,6 +31,8 @@
         public void DeleteJudge(User removedUser);
         public void AddJudge(User response);
         IQueryable<RoomSchedule> GetRoomSchedulesByRoomId(int roomId);
+
+        Task<List<PeerEvaluationViewModel>> GetPeerEvaluationInfo();
 
 
     }
