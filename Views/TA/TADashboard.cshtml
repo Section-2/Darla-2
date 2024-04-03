@@ -55,17 +55,31 @@
     <div class="row">
         <div class="col d-flex justify-content-end">
             <div class="dropdown">
-                <button class="btn dropdown-toggle" type="button" id="sectionSortDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Sort by Section
-                </button>
-                <div class="dropdown-menu" aria-labelledby="sectionSortDropdown">
-                    <a class="dropdown-item section-sort-selector active" href="#" data-sort-section="all">All Sections</a>
-                    @foreach (var sect in new[] { "Section 1", "Section 2", "Section 3", "Section 4" })
-                    {
-                        <a class="dropdown-item section-sort-selector" href="#" data-sort-section="@sect">@sect</a>
-                    }
+                <div class="dropdown">
+                    <button class="btn btn-outline-primary dropdown-toggle" type="button" id="sectionSortDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Sort by Section
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="sectionSortDropdown">
+                        <a class="dropdown-item section-sort-selector active" href="#" data-sort-section="all">All Sections</a>
+                        @foreach (var sect in new[] { "Section 1", "Section 2", "Section 3", "Section 4" })
+                        {
+                            <a class="dropdown-item section-sort-selector" href="#" data-sort-section="@sect">@sect</a>
+                        }
+                    </div>
                 </div>
-            </div>
+                @* <div class="dropdown"> *@
+                @*     <button class="btn btn-secondary dropdown-toggle" type="button" id="classDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> *@
+                @*         Sort by Section *@
+                @*     </button> *@
+                @*     <div class="dropdown-menu" aria-labelledby="classDropdown"> *@
+                @*         <a class="dropdown-item class-selector active" href="#" data-class="all">All Classes</a> *@
+                @*         @foreach (var course in new[] { "Section 1", "Section 2", "Section 3", "Section 4" }) *@
+                @*         { *@
+                @*             <a class="dropdown-item class-selector" href="#" data-class="@course">@course</a> *@
+                @*         } *@
+                @*     </div> *@
+                @* </div> *@
+            </div> 
         </div>
     </div>
 
@@ -120,7 +134,8 @@
 </div>
 
 
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.4.3/dist/js/bootstrap.bundle.min.js"></script>
+@* <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> *@
 <script>
     $(document).ready(function () {
         // Add event listener for the Sort by Section dropdown
@@ -162,6 +177,8 @@
         // Automatically select All Sections on page load
         $('.section-sort-selector[data-sort-section="all"]').trigger('click');
     });
+    
+
 </script>
 <a asp-area="" asp-controller="ta" asp-action="classrubric">ClassRubric</a>
 <a asp-area="" asp-controller="ta" asp-action="tagradingprogress">TAgradingprogress!</a>
