@@ -30,6 +30,9 @@
         public void EditJudge(User updatedInfo);
         public void DeleteJudge(User removedUser);
         public void AddJudge(User response);
+        public void EditTA(User updatedTAInfo);
+        public void DeleteTA(User removedTAUser);
+        public void AddTA(User addTAResponse);
         IQueryable<RoomSchedule> GetRoomSchedulesByRoomId(int roomId);
 
         Task<List<PeerEvaluationViewModel>> GetPeerEvaluationInfo();

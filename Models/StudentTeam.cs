@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Darla.Models;
 
 public partial class StudentTeam
 {
+    
     public string UserId { get; set; }
 
     public int TeamNumber { get; set; }

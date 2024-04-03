@@ -57,7 +57,7 @@ namespace Darla.Models
 
         public IEnumerable<RoomSchedule> RoomSchedules => _context.RoomSchedules;
         public IQueryable<RoomSchedule> RoomSchedulesWithRooms => _context.RoomSchedules.Include(rs => rs.Room);
-        public IEnumerable<StudentTeam> StudentTeams => _context.StudentTeams;
+        public IEnumerable<StudentTeam> StudentTeams => _context.StudentTeams.ToList();
         public IEnumerable<UserPassword> UserPasswords => _context.UserPasswords;
         public IEnumerable<User> Users => _context.Users;
         public IEnumerable<PeerEvaluationQuestion> PeerEvaluationQuestions => _context.PeerEvaluationQuestions;
@@ -123,6 +123,23 @@ namespace Darla.Models
         public void AddJudge(User response)
         {
             _context.Users.Add(response);
+            _context.SaveChanges();
+        }
+
+        public void EditTA(User updatedTAInfo)
+        {
+            _context.Update(updatedTAInfo);
+            _context.SaveChanges();
+        }
+
+        public void DeleteTA(User removedTAUser)
+        {
+            _context.Users.Remove(removedTAUser);
+            _context.SaveChanges();
+        }
+        public void AddTA(User addTAResponse)
+        {
+            _context.Users.Add(addTAResponse);
             _context.SaveChanges();
         }
 
