@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Darla.Models2;
 
 // StudentSubmission view
 
@@ -116,7 +117,7 @@ namespace Darla.Controllers
 
         [HttpGet]
         public IActionResult StudentProgress()
-        {
+        {  
             string userId = (string)TempData["UserId"];
             var teamNumber = _repo.StudentTeams
                 .FirstOrDefault(st => st.UserId == userId)?.TeamNumber;
@@ -203,6 +204,39 @@ namespace Darla.Controllers
             TempData["SuccessMessage"] = "Submission updated successfully!";
             return View("StudentProgress");
         }
+        // ready for _repo update
+
+        //[HttpPost]
+        //public async Task<IActionResult> Submit(string githubLink, string videoLink)
+        //{
+
+        //    string userId = (string)TempData["UserId"];
+        //    var teamNumber = _intexRepo.student_team
+        //                         .FirstOrDefault(st => st.user_id == userId)?.team_number ??
+        //                     0; // Provide a default value of 0 if TeamNumber is null
+        //    var submission = _intexRepo.team_submission
+        //        .FirstOrDefault(s => s.team_number == teamNumber);
+        //    if (submission == null)
+        //    {
+        //        submission = new team_submission
+        //        {
+        //            team_number = teamNumber,
+        //            github_link = githubLink,
+        //            video_link = videoLink,
+        //            google_doc_link = docLink,
+        //        };
+        //        _intexRepo.AddTeamSubmission(submission);
+        //    }
+        //    else
+        //    {
+        //        submission.github_link = githubLink;
+        //        submission.video_link = videoLink;
+        //        submission.google_doc_link = docLink;
+        //    }
+        //    await _intexRepo.SaveChangesAsync();
+        //    TempData["SuccessMessage"] = "Submission updated successfully!";
+        //    return View("StudentProgress");
+        //}
 
 
         public IActionResult GroupPeerEvals()
