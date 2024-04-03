@@ -91,9 +91,22 @@ public class HomeController : Controller
     
     public IActionResult ScheduleByRoomId(int roomId)
     {
-        var roomSchedules = _repo.GetRoomSchedulesByRoomId(roomId);
-        return View("Judge/JudgeDashboard", roomSchedules);
+        var roomSchedules = _repo.GetRoomSchedulesByRoomId(roomId).ToList();
+    
+        // Assuming RoomSchedules includes Room, fetch the first Room's details if available
+        var roomDetails = roomSchedules.Select(rs => rs.Room).FirstOrDefault();
+
+        var viewModel = new MasterJudgeScheduleViewModel
+        {
+            RoomSchedule = roomSchedules,
+            Room = roomDetails != null ? new List<Room> { roomDetails } : new List<Room>()
+            // Initialize other properties as needed
+        };
+
+        return View("Judge/JudgeDashboard", viewModel);
     }
+
+
     [HttpPost]
     public IActionResult UpdateRanks(Dictionary<int,int>teamRanks)
     {
