@@ -246,3 +246,30 @@ input[type="checkbox"] {
 }
 
 
+.darla-peer-review .container {
+    padding: 20px;
+}
+
+
+.darla-peer-review label {
+    color: var(--color-blue-darker);
+    display: inline-block;
+    margin-right: 20px; /* Adjust as needed */
+    padding: 5px;
+}
+
+.darla-peer-review input[type="radio"] {
+    appearance: none; /* Remove default radio button appearance */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 16px; /* Adjust as needed */
+    height: 16px; /* Adjust as needed */
+    border: 2px solid #BFBDC1;
+    border-radius: 50%; /* Make it circular */
+    outline: none;
+    cursor: pointer;
+}
+
+    .darla-peer-review input[type="radio"]:checked {
+        background-color: var(--color-blue-dark);
+    }
