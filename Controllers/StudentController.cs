@@ -15,49 +15,64 @@ namespace Darla.Controllers
         {
             _repo = temp;
         }
-
+        
         public IActionResult StudentDashboard()
         {
-            // assuming you will get the user's id from somewhere
-            string userId = "55278449-2657-4dea-96cc-ed05914d0a1b";
-            Console.WriteLine("You Made it to student Dashboard\n \n \n" + userId);
-            
-            // get the team number
-            var teamNumber = _repo.student_team
-                .Where(st => st.user_id == userId)
-                .Select(st => st.team_number)
-                .FirstOrDefault();
-            
-            // get team member user ids
-            List<string> teamMemberIds = _repo.student_team
-                .Where(st => st.team_number == teamNumber)
-                .Select(st => st.user_id)
-                .ToList();
+            var userId = "this is a hard coded example";
+            Console.WriteLine("You made it to student dashboard\n \n \n" + userId);
 
-            // get matching names for team ids
-            List<string> teamMemberNames = _repo.AspNetUsers
-                .Where(st => teamMemberIds.Contains(st.Id))
-                .Select(st => $"{st.FirstName} {st.LastName}")
-                .ToList();
-
-            // get room schedule for team
-            RoomSchedule roomSchedule = _repo.room_schedule
-                .FirstOrDefault(rs => rs.team_number == teamNumber);
-
-            // get room name for room id
-            var roomAssignment = _repo.room
-                .Where(st => st.room_id == roomSchedule.room_id)
-                .Select(st => st.room_name)
-                .FirstOrDefault();
+            List<string> teamMemberNames = ["Blake McAvoy", "Hannah Johnson", "Elijah Aken", "Steven Armstrong"];
 
             // Pass the data to the view using ViewBag
-            ViewBag.TeamNumber = teamNumber;
             ViewBag.TeamMemberNames = teamMemberNames;
-            ViewBag.RoomSchedule = roomSchedule;
-            ViewBag.RoomAssignment = roomAssignment;
+            ViewBag.RoomSchedule.team_number = "202";
+            ViewBag.RoomSchedule.timeslot = "THIS IS A HARD CODED EXAMPLE";
+            ViewBag.RoomAssignment = "UNCOMMENT THE METHOD UNDER THIS WHEN _repo IS READY";
             
             return View();
         }
+
+        // public IActionResult StudentDashboard()
+        // {
+        //     // assuming you will get the user's id from somewhere
+        //     string userId = "55278449-2657-4dea-96cc-ed05914d0a1b";
+        //     Console.WriteLine("You made it to student dashboard\n \n \n" + userId);
+        //     
+        //     // get the team number
+        //     var teamNumber = _repo.student_team
+        //         .Where(st => st.user_id == userId)
+        //         .Select(st => st.team_number)
+        //         .FirstOrDefault();
+        //     
+        //     // get team member user ids
+        //     List<string> teamMemberIds = _repo.student_team
+        //         .Where(st => st.team_number == teamNumber)
+        //         .Select(st => st.user_id)
+        //         .ToList();
+        //
+        //     // get matching names for team ids
+        //     List<string> teamMemberNames = _repo.AspNetUsers
+        //         .Where(st => teamMemberIds.Contains(st.Id))
+        //         .Select(st => $"{st.FirstName} {st.LastName}")
+        //         .ToList();
+        //
+        //     // get room schedule for team
+        //     RoomSchedule roomSchedule = _repo.room_schedule
+        //         .FirstOrDefault(rs => rs.team_number == teamNumber);
+        //
+        //     // get room name for room id
+        //     var roomAssignment = _repo.room
+        //         .Where(st => st.room_id == roomSchedule.room_id)
+        //         .Select(st => st.room_name)
+        //         .FirstOrDefault();
+        //
+        //     // Pass the data to the view using ViewBag
+        //     ViewBag.TeamMemberNames = teamMemberNames;
+        //     ViewBag.RoomSchedule = roomSchedule;
+        //     ViewBag.RoomAssignment = roomAssignment;
+        //     
+        //     return View();
+        // }
 
         private List<TeamSubmission> GetSubmissions(string userId)
         {
