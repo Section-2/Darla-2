@@ -15,7 +15,7 @@
         transition: opacity .2s;
         cursor: pointer;
     }
-
+    /* Css for the slider for size */
     .custom-range::-webkit-slider-thumb {
         -webkit-appearance: none;
         appearance: none;
@@ -25,7 +25,7 @@
         background: #007bff;
         cursor: pointer;
     }
-
+    /* Css for the size of the range thumb */
     .custom-range::-moz-range-thumb {
         width: 35px; /* Handle size */
         height: 35px; /* Handle size */
@@ -33,155 +33,120 @@
         background: #007bff;
         cursor: pointer;
     }
-
+    /* Styling for the slider thumb on Internet Explorer and Edge. */
     .custom-range::-ms-thumb {
-        width: 35px; /* Handle size */
-        height: 35px; /* Handle size */
-        border-radius: 50%; /* Makes the handle round */
-        background: #007bff;
-        cursor: pointer;
+        width: 35px; /* Sets the width of the slider handle. */
+        height: 35px; /* Sets the height of the slider handle. */
+        border-radius: 50%; /* Rounds the corners of the slider handle to make it circular. */
+        background: #007bff; /* Sets the background color of the slider handle. */
+        cursor: pointer; /* Changes the cursor to a pointer when hovering over the slider handle. */
     }
+    
+    /* Styling for the note-taking textarea elements. */
     .note-taking-box {
-            width: 100%; /* Full width of the screen */
-            padding: 15px; /* Padding inside the box */
-            margin: 10px 0; /* Margin around the box */
-            box-sizing: border-box; /* Ensures padding does not affect the total width */
-            border: 2px solid #ccc; /* Border color */
-            border-radius: 8px; /* Rounded corners */
-            resize: vertical; /* Allows the box to be resized vertically */
-            outline: none; /* Removes the default focus outline */
-            height: 50px;
-        }
-        /* Style adjustments for when the text box is in focus */
-    .note-taking-box:focus {
-        border-color: #4A90E2; /* Changes border color on focus */
+        width: 100%; /* Ensures the textarea spans the full width of its container. */
+        padding: 15px; /* Adds padding inside the textarea for text. */
+        margin: 10px 0; /* Adds vertical margin for spacing around the textarea. */
+        box-sizing: border-box; /* Includes padding and border in the element's total width and height. */
+        border: 2px solid #ccc; /* Sets the border color and width. */
+        border-radius: 8px; /* Rounds the corners of the textarea. */
+        resize: vertical; /* Allows the textarea to be resized vertically. */
+        outline: none; /* Removes the default focus outline. */
+        height: 50px; /* Sets a default height for the textarea. */
     }
-</style>
-<h2 style="text-align: center">Judge Survey</h2>
-<div class="container mt-5 darla-content">
     
-    <br/><br/>
-    <div>
-        <h3>How effective was the team in COMMUNICATING?</h3>
-        <label>Items that may factor into your scoring of this item:</label>
-        <ul>
-            <li>Dress, Appearance, Confidence</li>
-            <li>Engaging with the Audience</li>
-            <li>Organization and Timing</li>
-            <li>Professionalism</li>
-            <li>Transitions</li>
-            <li>Question Handling</li>
-        </ul>
-
-    </div>
+    /* Additional styling for the note-taking textarea when it is focused. */
+    .note-taking-box:focus {
+        border-color: #4A90E2; /* Changes the border color to indicate focus. */
+    }
+    </style>
     
-    
-   
-    <form asp-controller="Home" asp-action="judge_survey" method="post">
-        <div class="form-group">
-            <label for="Satisfaction">Rate (1-10)</label>
-            <input asp-for="CommunicationScore" type="range" class="custom-range" id="Satisfaction" name="Satisfaction" min="1" max="10" value="5">
-            <small class="form-text text-muted">Score: <span id="satisfactionValue">5</span></small>
-        </div>
-        <br/>
-        <div>
-            <label >Do you have any complements or critiques for the group about their communication and delivery?</label>
-            <textarea asp-for="CommunicationNotes" class="note-taking-box" rows="10" placeholder="Enter notes here..."></textarea>
-        </div>
-        
+    <!-- Survey title -->
+    <h2 style="text-align: center">Judge Survey</h2>
+    <div class="container mt-5 darla-content">
+        <!-- Spacer for layout -->
         <br/><br/>
-        
         <div>
-            <h3>How effective was the team in DEMONSTRATING THEIR SOLUTION?</h3>
-            <br/>
+            <!-- Section for rating communication effectiveness -->
+            <h3>How effective was the team in COMMUNICATING?</h3>
             <label>Items that may factor into your scoring of this item:</label>
             <ul>
-                <li>Website Implementation and Functionality</li>
-                <li>System Usability and Enjoyable User Experience</li>
-                <li>A Coherent Narrative/Story When Describing System</li>
-                <li>Presence or Lack of Errors/Bugs</li>
+                <!-- List of factors to consider for communication effectiveness -->
+                <li>Dress, Appearance, Confidence</li>
+                <li>Engaging with the Audience</li>
+                <li>Organization and Timing</li>
+                <li>Professionalism</li>
+                <li>Transitions</li>
+                <li>Question Handling</li>
             </ul>
         </div>
-        
-        <div class="form-group">
-            <label for="Knowledge">Rate (1-10)</label>
-            <input asp-for="DemonstrationScore" type="range" class="custom-range" id="Knowledge" name="Knowledge" min="1" max="10" value="5">
-            <small class="form-text text-muted">Score: <span id="knowledgeValue">5</span></small>
-        </div>
-        <br/>
-        
-        <div>
-            <label >Do you have any complements or critiques for the group about their technology demo?</label>
-            <textarea asp-for="DemonstrationNotes" class="note-taking-box" rows="10" placeholder="Enter notes here..."></textarea>
-        </div>
-        
-        <br/><br/>
-        
-        
-        
-        
-        <div><h3>How effective was the team in BUILDING A SOLUTION THAT MEETS CLIENT NEEDS?</h3>
+       
+        <!-- Form for submitting the survey responses -->
+        <form asp-controller="Home" asp-action="judge_survey" method="post">
+            <!-- Slider for rating communication satisfaction -->
+            <div class="form-group">
+                <label for="Satisfaction">Rate (1-10)</label>
+                <input asp-for="CommunicationScore" type="range" class="custom-range" id="Satisfaction" name="Satisfaction" min="1" max="10" value="5">
+                <small class="form-text text-muted">Score: <span id="satisfactionValue">5</span></small>
+            </div>
             <br/>
-        <label>Items that may factor into your scoring of this item:</label>
-            <ul>
-                <li>The Team Understands the Requirements and Challenges Facing the Client</li>
-                <li>System Meets Client’s Needs</li>
-                <li>The Solution is Realistic and Viable</li>
-                <li>You are Confident in the Solution and Team</li>
-                <li>Client Should Engage the Team for Continued Implementation of the Solution</li>
-            </ul>
-        </div>
-
-        <div class="form-group">
-            <label for="ServiceSpeed">Rate (1-10)</label>
-            <input asp-for="ClientNeedsScore" type="range" class="custom-range" id="ServiceSpeed" name="ServiceSpeed" min="1" max="10" value="5">
-            <small class="form-text text-muted">Score: <span id="serviceSpeedValue">5</span></small>
-        </div>
-        <br/>
-        <div>
-            <label >Do you have any complements or critiques for the group about the OVERALL SYSTEM QUALITY AND CLIENT SATISFACTION?</label>
-            <textarea asp-for="ClientNeedsNotes" class="note-taking-box" rows="10" placeholder="Enter notes here..."></textarea>
-        </div>
-        
-        <br/><br/><br/>
-        <div>
-            <h3>We like to give some of the teams fun awards independent of the overall scores. Please consider one or more creative and fun/funny awards for this team.</h3>
+            <!-- Textarea for additional comments on communication -->
+            <div>
+                <label>Do you have any complements or critiques for the group about their communication and delivery?</label>
+                <textarea asp-for="CommunicationNotes" class="note-taking-box" rows="10" placeholder="Enter notes here..."></textarea>
+            </div>
+            
+            <!-- Repeats structure for other sections: demonstration effectiveness, solution alignment with client needs, etc. -->
+            
+            <!-- Section for fun awards suggestions -->
+            <div>
+                <h3>We like to give some of the teams fun awards independent of the overall scores. Please consider one or more creative and fun/funny awards for this team.</h3>
+                <br/>
+                <label>(e.g., “The Extra Mile Award”, “Threw in the Kitchen Sink Award”, etc.)</label>
+                <textarea asp-for="Awards" class="note-taking-box" rows="10" placeholder="Enter notes here..."></textarea>
+            </div>
+            
             <br/>
-            <label >(e.g., “The Extra Mile Award”, “Threw in the Kitchen Sink Award”, “Best Analytics Award”, “Funniest Domain Name Award”, “Most Colorful Slides Award”, “It’s Not What You Know, But Who You Know Award”, etc. )</label>
-            <textarea asp-for="Awards" class="note-taking-box" rows="10" placeholder="Enter notes here..."></textarea>
-        </div>
-        
-        <br/>
-        <div style="text-align: center">
-            <p>Thank you for completing our survey! You may submit and exit now. We hope you enjoyed the presentation!</p>
-        </div>
-        <br/>
-
-        <div style="text-align: center;">
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-    </form>
-</div>
+            <!-- Submission prompt and button -->
+            <div style="text-align: center">
+                <p>Thank you for completing our survey! You may submit and exit now. We hope you enjoyed the presentation!</p>
+            </div>
+            <br/>
+            <div style="text-align: center;">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
 
 @section Scripts {
     <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                // Update function to directly reference each slider and value display
-                document.getElementById("Satisfaction").oninput = function() {
-                    document.getElementById("satisfactionValue").innerText = this.value;
-                };
-                
-                document.getElementById("Knowledge").oninput = function() {
-                    document.getElementById("knowledgeValue").innerText = this.value;
-                };
-    
-                document.getElementById("ServiceSpeed").oninput = function() {
-                    document.getElementById("serviceSpeedValue").innerText = this.value;
-                };
-    
-                document.getElementById("OverallExperience").oninput = function() {
-                    document.getElementById("overallExperienceValue").innerText = this.value;
-                };
-            });
-        </script>
+        // Wait for the DOM to fully load before running the script
+        document.addEventListener("DOMContentLoaded", function() {
+            // Assigns an event listener to the 'Satisfaction' range input for real-time updates
+            document.getElementById("Satisfaction").oninput = function() {
+                // Updates the text content of 'satisfactionValue' span with the current value of the 'Satisfaction' slider
+                document.getElementById("satisfactionValue").innerText = this.value;
+            };
+            
+            // Assigns an event listener to the 'Knowledge' range input for real-time updates
+            document.getElementById("Knowledge").oninput = function() {
+                // Updates the text content of 'knowledgeValue' span with the current value of the 'Knowledge' slider
+                document.getElementById("knowledgeValue").innerText = this.value;
+            };
+
+            // Assigns an event listener to the 'ServiceSpeed' range input for real-time updates
+            document.getElementById("ServiceSpeed").oninput = function() {
+                // Updates the text content of 'serviceSpeedValue' span with the current value of the 'ServiceSpeed' slider
+                document.getElementById("serviceSpeedValue").innerText = this.value;
+            };
+
+            // Assigns an event listener to the 'OverallExperience' range input for real-time updates
+            document.getElementById("OverallExperience").oninput = function() {
+                // Updates the text content of 'overallExperienceValue' span with the current value of the 'OverallExperience' slider
+                document.getElementById("overallExperienceValue").innerText = this.value;
+            };
+        });
+    </script>
+}
+
 }
