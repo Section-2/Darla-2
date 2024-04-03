@@ -59,34 +59,7 @@
       <div class="card countdown-card">
         <div class="title">Countdown</div>
         <div class="timer">
-          <div class="label-digit">
-            <div class="label">DAYS</div>
-            <div class="digit">00</div>
-          </div>
-          <div class="label-digit">
-            <div class="label"></div>
-            <div class="digit">:</div>
-          </div>
-          <div class="label-digit">
-            <div class="label">HOURS</div>
-            <div class="digit">00</div>
-          </div>
-          <div class="label-digit">
-            <div class="label"></div>
-            <div class="digit">:</div>
-          </div>
-          <div class="label-digit">
-            <div class="label">MINUTES</div>
-            <div class="digit">00</div>
-          </div>
-          <div class="label-digit">
-            <div class="label"></div>
-            <div class="digit">:</div>
-          </div>
-          <div class="label-digit">
-            <div class="label">SECONDS</div>
-            <div class="digit">00</div>
-          </div>
+            <div id="countdown"></div>
         </div>
       </div>
     </div>
@@ -183,22 +156,6 @@
       flex-wrap: wrap;
   }
   
-  .label-digit {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-right: 20px;
-  }
-  
-  .digit {
-      font-size: 36px;
-  }
-  
-  .label {
-      font-size: 18px;
-      margin-top: 5px;
-  }
-  
   .links {
       display: flex;
       justify-content: center;
@@ -215,3 +172,32 @@
 </style>
 
 <script src="https://kit.fontawesome.com/4c16b1756d.js" crossorigin="anonymous"></script>
+
+<script>
+    // Set the date we're counting down to
+    var countDownDate = new Date("April 12, 2024 11:00:00").getTime();
+
+    // Update the countdown every 1 second
+    var x = setInterval(function () {
+        // Get the current date and time
+        var now = new Date().getTime();
+
+        // Calculate the remaining time
+        var distance = countDownDate - now;
+
+        // Calculate days, hours, minutes, and seconds
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        // Display the countdown
+        document.getElementById("countdown").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+
+        // If the countdown is over, display a message
+        if (distance < 0) {
+            clearInterval(x);
+            document.getElementById("countdown").innerHTML = "EXPIRED";
+        }
+    }, 1000);
+</script>
