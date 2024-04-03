@@ -17,7 +17,7 @@
     
 </head>
 <body>
-<!-- TA NavBar -->
+<!-- TA NavBar (if statement that determines if user is TA) -->
 @if (SignInManager.IsSignedIn(User) && User.IsInRole("TA"))
 {
     <header>
@@ -87,7 +87,7 @@
     </header>
 }
 
-<!-- Admin NavBar -->
+<!-- Admin NavBar (if statement that determines if user is Admin) -->
 @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
 {
     <header>
@@ -104,7 +104,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="AdminProfIndex">Admin Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="AdminUserListView">Users</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="ListUsers">Users</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="">TA Grading</a>
@@ -173,7 +173,7 @@
     </header>
 }
 
-<!-- Judge NavBar -->
+<!-- Judge NavBar (if statement that determines if user is Judge) -->
 @if (SignInManager.IsSignedIn(User) && User.IsInRole("Judge"))
 {
     <header>
@@ -240,7 +240,7 @@
     </header>
 }
 
-<!-- Student NavBar -->
+<!-- Student NavBar (if statement that determines if user is Student) -->
 @if (SignInManager.IsSignedIn(User) && User.IsInRole("Student"))
 {
     <header>

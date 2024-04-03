@@ -1,6 +1,5 @@
 
 @{
-    Layout = "_LayoutProf";
 }
 
 @model Darla.Models.AdminGradeProgressBarComposite
@@ -8,7 +7,7 @@
 <h1>Welcome (Admin)!</h1>
 <br/><br/>
 
-
+@* Dynamic Judge Schedule *@
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-3">
@@ -60,7 +59,8 @@
             </div>
             
             
-        </div>
+        </div> 
+        @* Dynamic Countdown to when grading is due *@
         <div class="col-lg-9">
             <div class="row">
                 <div class="col-lg-12">
@@ -90,6 +90,7 @@
     </div>
 </div>
 <script>
+//Javascript that runs the dynamic countdown
     // Set the date we're counting down to
     var countDownDate = new Date("April 24, 2024 00:00:00").getTime();
 
