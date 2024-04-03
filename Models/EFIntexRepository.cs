@@ -12,8 +12,7 @@ namespace Darla.Models
             _context = temp;
         }
 
-        public IEnumerable<Rubric> Rubrics => _context.Rubrics.ToList();
-        
+        public List<Rubric> Rubrics => _context.Rubrics.ToList();
         public IEnumerable<Grade> Grades => _context.Grades;
         public IEnumerable<JudgeRoom> JudgeRooms => _context.JudgeRooms;
         public IEnumerable<Permission> Permissions => _context.Permissions;
@@ -58,7 +57,7 @@ namespace Darla.Models
 
         public IEnumerable<RoomSchedule> RoomSchedules => _context.RoomSchedules;
         public IQueryable<RoomSchedule> RoomSchedulesWithRooms => _context.RoomSchedules.Include(rs => rs.Room);
-        public IEnumerable<StudentTeam> StudentTeams => _context.StudentTeams;
+        public IEnumerable<StudentTeam> StudentTeams => _context.StudentTeams.ToList();
         public IEnumerable<UserPassword> UserPasswords => _context.UserPasswords;
         public IEnumerable<User> Users => _context.Users;
         public IEnumerable<PeerEvaluationQuestion> PeerEvaluationQuestions => _context.PeerEvaluationQuestions;
@@ -78,7 +77,7 @@ namespace Darla.Models
         {
             await _context.SaveChangesAsync();
         }
-       
+
 
         public IQueryable<StudentTeam> GetQueryableStudentTeams()
         {
@@ -102,7 +101,6 @@ namespace Darla.Models
         {
             _context.Rubrics.Remove(rubric);
             _context.SaveChanges();
-
         }
 
         public void EditRubric(Rubric rubric)
@@ -122,7 +120,52 @@ namespace Darla.Models
             _context.Users.Remove(removedUser);
             _context.SaveChanges();
         }
+        public void AddJudge(User response)
+        {
+            _context.Users.Add(response);
+            _context.SaveChanges();
+        }
+
+        public void EditTA(User updatedTAInfo)
+        {
+            _context.Update(updatedTAInfo);
+            _context.SaveChanges();
+        }
+
+        public void DeleteTA(User removedTAUser)
+        {
+            _context.Users.Remove(removedTAUser);
+            _context.SaveChanges();
+        }
+        public void AddTA(User addTAResponse)
+        {
+            _context.Users.Add(addTAResponse);
+            _context.SaveChanges();
+        }
+
+        public async Task<List<PeerEvaluationViewModel>> GetPeerEvaluationInfo()
+        {
+            var peerEvaluations = _context.PeerEvaluations
+                .Include(pe => pe.Subject)
+                .ThenInclude(st => st.User)
+                .AsNoTracking();
+            var groupedEvaluations = await peerEvaluations
+                .GroupBy(pe => pe.Subject.TeamNumber)
+                .Select(group => new PeerEvaluationViewModel
+                {
+                    TeamNumber = group.Key,
+                    Members = group
+                        .GroupBy(g => g.SubjectId)
+                        .Select(m => new MemberEvaluationInfo
+                        {
+                            UserId = m.Key,
+                            FirstName = m.First().Subject.User.FirstName,
+                            LastName = m.First().Subject.User.LastName,
+                            TotalScore = m.Sum(x => x.Rating)
+                        }).ToList()
+                }).ToListAsync();
+            return groupedEvaluations;
+        }
+
     }
-
-
 }

@@ -1,9 +1,5 @@
-using System.Diagnostics;
 using Darla.Models;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using SQLitePCL;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Darla.Models.ViewModels;
 
@@ -13,15 +9,26 @@ public class HomeController : Controller
 {
     private IIntexRepository _repo;
     
-    public HomeController(IIntexRepository Repo)
+    public HomeController(IIntexRepository repo)
     {
-        _repo = Repo;
+        _repo = repo;
     }
 
     // START HERE!
     public IActionResult OpeningPage()
     {
-        return View();
+        if (User.Identity.IsAuthenticated == true)
+        {
+            // User is logged in, proceed with your logic
+                
+            // Change this logic later
+            return RedirectToAction("StudentDashboard", "Student");
+        }
+        else
+        {
+            // User is not logged in, redirect to the login page
+            return View();
+        }
     }
 
     // JUDGES SECTION
@@ -104,7 +111,7 @@ public class HomeController : Controller
     {
         return View();
     }
-    
+
 
     // ADMINS SECTION
     // Landing page for Admins
@@ -130,43 +137,10 @@ public class HomeController : Controller
         return View("AdminRubricEdit");
     }
 
-    public IActionResult AdminPeerEvalDashboard()
+    public async Task<IActionResult> AdminPeerEvalDashboard()
     {
-        // Include necessary navigation properties to access related data
-        var studentTeams = _repo.GetQueryableStudentTeams()
-            .Include(st => st.User)
-            .Include(st => st.PeerEvaluationSubjects)
-            .ThenInclude(pe => pe.PeerEvaluationNavigation)
-            .ToList();
-
-        // Group by TeamNumber
-        var groupedByTeam = studentTeams.GroupBy(st => st.TeamNumber);
-
-        // Prepare a list of PeerEvaluationDash to hold the dashboard data
-        var peerEvaluationDashes = new List<PeerEvaluationDash>();
-        foreach (var group in groupedByTeam)
-        {
-            var dash = new PeerEvaluationDash
-            {
-                GroupNumber = group.Key,
-                Members = group.Select(member =>
-                {
-                    var evaluations = _repo.PeerEvaluations
-                                           .Where(pe => pe.SubjectId == member.UserId)
-                                           .ToList();
-                    return new StudentEvaluation
-                    {
-                        User = member.User,
-                        PeerEvaluations = evaluations,
-                        // No need to calculate Score here, since it's already a computed property
-                    };
-                }).ToList()
-            };
-            peerEvaluationDashes.Add(dash);
-        }
-
-        // Then, pass this data to the view (if needed)
-        return View(peerEvaluationDashes); // Make sure you have a view named "adminPeerEvalDashboard.cshtml" under Views/Home/
+        var viewModel = await _repo.GetPeerEvaluationInfo();
+        return View(viewModel);
     }
 
     public IActionResult AdminProfIndex()
@@ -292,6 +266,11 @@ public class HomeController : Controller
 
         return View(evaluationData);
     }
+    // return View(evaluationData);
+    // }
+
+    //    return View(evaluationData);
+    //}
 
     public IActionResult MasterJudgeSchedule()
     {
@@ -343,7 +322,9 @@ public class HomeController : Controller
     public IActionResult Edit(User updatedInfo)
     {
         _repo.EditJudge(updatedInfo);
-        return RedirectToAction("AdminJudgeListView");
+    return RedirectToAction("");
+    /*return RedirectToAction("AdminJudgeListView");*/
+
     }
 
 
@@ -352,15 +333,15 @@ public class HomeController : Controller
     {
         var recordToDelete = _repo.Users
             .Single(x => x.UserId == id);
-        return View(recordToDelete);
+        return View("AdminDeleteJudge",recordToDelete);
     }
 
     [HttpPost]
     public IActionResult DeleteJudge(User removedUser)
     {
         _repo.DeleteJudge(removedUser);
-
-        return RedirectToAction("AdminJudgeListView");
+        return RedirectToAction("");
+        /*return RedirectToAction("AdminJudgeListView");*/
     }
 
 
@@ -372,22 +353,17 @@ public class HomeController : Controller
     }
 
     [HttpGet]
-    public IActionResult AdminRubricEdit(int classCode)
+    public IActionResult AdminRubricEdit(int assignmentId)
     {
-        var rubric = _repo.Rubrics
-            .Where(x => x.ClassCode == classCode)
-            .ToList();
+        var rubricItem = _repo.Rubrics
+            .Single(x => x.AssignmentId == assignmentId);
 
-        return View(rubric);
+        return View("AdminRubricAdd", rubricItem);
     }
 
     [HttpPost]
-    public IActionResult AdminRubricEdit(Rubric updatedRubric, int classCode)
+    public IActionResult AdminRubricEdit(Rubric updatedRubric)
     {
-        var rubric = _repo.Rubrics
-                .Where(x => x.ClassCode == classCode)
-                .ToList();
-
         if (ModelState.IsValid)
         {
             _repo.EditRubric(updatedRubric);
@@ -396,35 +372,148 @@ public class HomeController : Controller
         }
         else
         {
-            return View(rubric);
+            return View("AdminRubricAdd", updatedRubric);
         }
+    }
+
+    [HttpGet]
+    public IActionResult AdminRubricAdd(int classCode)
+    {
+        var newItem = new Rubric { ClassCode = classCode };
+
+        return View(newItem);
     }
 
     [HttpPost]
-    public IActionResult AdminRubricAdd(int classCode, Rubric addedTask)
+    public IActionResult AdminRubricAdd(Rubric response)
     {
-        var rubric = _repo.Rubrics
-        .Where(x => x.ClassCode == classCode)
-        .ToList();
-
         if (ModelState.IsValid)
         {
-            _repo.AddRubric(addedTask);
-            return RedirectToAction("Index");
+            _repo.AddRubric(response);
+            return RedirectToAction("AdminRubricFull");
         }
         else
         {
-            return View("AdminRubricEdit", rubric);
+            return View(response);
         }
     }
 
-    public IActionResult AdminRubricDelete(int classCode)
+    [HttpGet]
+    public IActionResult AdminRubricDelete(int assignmentId)
     {
-        var rubric = _repo.Rubrics
-            .Where(x => x.ClassCode == classCode)
+        var itemToDelete = _repo.Rubrics
+            .Single(x => x.AssignmentId == assignmentId);
+
+        return View(itemToDelete);
+    }
+
+    [HttpPost]
+    public IActionResult AdminRubricDelete(Rubric taskToDelete)
+    {
+        var itemToDelete = _repo.Rubrics
+            .Single(x => x.AssignmentId == taskToDelete.AssignmentId);
+
+        _repo.DeleteRubric(itemToDelete);
+
+        return RedirectToAction("AdminRubricFull");
+    }
+
+    [HttpGet]
+    public IActionResult AdminJudgeListView()
+    {
+        ViewBag.Permissions = _repo.Permissions.ToList()
+            .OrderBy(x => x.PermissionDescription)
+            .Where(x => x.PermissionType == 4)
+            .ToList();
+        
+        List<User> users = new List<User> { new User() };
+        
+        return View("AdminJudgeListView", users);
+    }
+    [HttpPost]
+    public IActionResult AdminJudgeListView(User response)
+    {
+        if (ModelState.IsValid)
+        {
+            _repo.AddJudge(response);
+            return View("AdminAddJudge", response);
+        }
+        else
+        {
+            ViewBag.Permissions = _repo.Permissions.ToList()
+                .OrderBy(x => x.PermissionDescription)
+                .ToList();
+            
+            List<User> users = new List<User> { new User() };
+
+            return View("AdminJudgeListView", users);
+        }
+    }
+
+    [HttpGet]
+    public IActionResult AdminTAListView()
+    {
+        ViewBag.Permissions = _repo.Permissions.ToList()
+            .OrderBy(x => x.PermissionDescription)
+            .Where(x => x.PermissionType == 3)
             .ToList();
 
-        return View("AdminRubricEdit",rubric);
+        List<User> users = new List<User> { new User() };
+
+        return View("AdminTAListView", users);
+    }
+
+    [HttpPost]
+    public IActionResult AdminTAListView(User addTAResponse)
+    {
+        if (ModelState.IsValid)
+        {
+            _repo.AddTA(addTAResponse);
+            return View("AdminAddTA", addTAResponse);
+        }
+        else
+        {
+            ViewBag.Permissions = _repo.Permissions.ToList()
+                .OrderBy(x => x.PermissionDescription)
+                .ToList();
+
+            List<User> users = new List<User> { new User() };
+
+            return View("AdminTAListView", users);
+        }
+    }
+
+    //[HttpGet]
+    //public IActionResult EditTA(string id)
+    //{
+    //    var recordToEdit = _repo.Users
+    //        .Single(x => x.UserId == id);
+    //    return View("AdminAddTA", recordToEdit);
+    //}
+
+    //[HttpPost]
+    //public IActionResult Edit(User updatedInfo)
+    //{
+    //    _repo.EditJudge(updatedInfo);
+    //    return RedirectToAction("");
+    //    /*return RedirectToAction("AdminJudgeListView");*/
+
+    //}
+
+
+    [HttpGet]
+    public IActionResult DeleteTA(string id)
+    {
+        var recordToDelete = _repo.Users
+            .Single(x => x.UserId == id);
+        return View("AdminDeleteTA", recordToDelete);
+    }
+
+    [HttpPost]
+    public IActionResult DeleteTA(User removedTAUser)
+    {
+        _repo.DeleteTA(removedTAUser);
+        return RedirectToAction("");
     }
 
 
