@@ -1,6 +1,7 @@
 ﻿@using Darla.Models
 
 @{
+    Layout = "_LayoutProf";
 }
 @model List<Rubric>
 <style>
@@ -64,6 +65,9 @@
         <tr>
             <th colspan="4" style="border: 1px solid black;;">
                 <span style="float: left">IS @classCode</span>
+                <span style="float: right">
+                    <a asp-action="AdminRubricEdit" asp-route-classCode="@classCode"><button>Edit</button></a>
+                </span>
             </th>
         </tr>
         <tr>
@@ -108,6 +112,7 @@
 
 
 
+@* @using Darla.Models
 
 
 

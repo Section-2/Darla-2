@@ -10,7 +10,7 @@ builder.Services.AddControllersWithViews();
 
 // THIS IS FOR DOTNET IDENTITY
 
-builder.Services.AddDbContext<LoginDbContext>(options => options.UseSqlServer(builder.Configuration["ConnectionStrings:IntexConnection"]));
+builder.Services.AddDbContext<LoginDbContext>(options => options.UseSqlite(builder.Configuration["ConnectionStrings:IntexConnection"]));
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(
     options =>

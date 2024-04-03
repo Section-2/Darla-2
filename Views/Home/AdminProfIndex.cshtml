@@ -1,10 +1,14 @@
 
 @{
+    Layout = "_LayoutProf";
 }
 
 @model Darla.Models.AdminGradeProgressBarComposite
 
 <h1>Welcome (Admin)!</h1>
+<br/><br/>
+
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-4">
@@ -79,6 +83,7 @@
                                 @Model.GradingProgress%
                             </div>
                         </div>
+                        <p>Grading Progress: @Model.GradingProgress%</p>
                     </div>
                 </div>
             </div>
