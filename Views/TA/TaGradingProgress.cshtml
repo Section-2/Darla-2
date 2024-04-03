@@ -138,7 +138,7 @@
                     for (let group = 1; group <= 10; group++) {
                         const graded = Math.floor(Math.random() * 5); // Random number of classes graded
                         const finalGrade = graded === 4 ? Math.floor(Math.random() * 41) + 60 + '%' : '-';
-                        $('#tableBody').append(`<tr data-section="${sect}"><td>Group ${sect}-${group}</td><td>${graded}/4</td><td>${finalGrade}</td></tr>`);
+                        $('#tableBody').append(`<tr data-section="${sect}"><td><a class="btn btn-link no-hover" href="/ta/classrubric">Group ${sect}-${group}</a></td><td>${graded}/4</td><td>${finalGrade}</td></tr>`);
                     }
                 }
             } else {

@@ -1,4 +1,5 @@
 ﻿@{
+    // Behold, the title of our epic saga!
     ViewData["Title"] = "INTEX Grading Summary";
 }
 
@@ -7,12 +8,12 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
 
 <style>
-
-    /* Change header colors to black */
+    /* Ensuring our headers are as dark and bold as a knight's armor. */
     h1, h2 {
         color: black;
     }
 
+    /* The quadrants, our four pillars of knowledge, standing tall in their regal attire. */
     .quadrant {
         display: flex;
         flex-direction: column;
@@ -24,63 +25,25 @@
         height: 100%;
     }
 
-        .quadrant h2 {
-            font-size: 1.5rem; /* Smaller headers */
-            color: black
-        }
-
+    /* The Grading Progress, a shining beacon of percentage, bold and grand. */
     .grading-progress {
-        font-size: 60px; /* Larger grading progress */
-        font-family: 'Rubik', sans-serif;
+        font-size: 60px; /* Enlarging the beacon of progress */
+        font-family: 'Rubik', sans-serif; /* In the reliable hands of Rubik */
     }
 
-    /* Updated table style for borderless and no headers */
+    /* The Table of Grading, where the quests of assignments are listed, minus the usual fanfare of borders. */
     .grading-table, .grading-table th, .grading-table td {
         border: none;
         text-align: left;
         padding: 8px;
     }
-
-    .top-groups ol {
-        padding-left: 20px;
-    }
 </style>
+
 <div class="container mt-5">
     <h1 class="text-center mb-4">@ViewData["Title"]</h1>
 
     <div class="row">
-        <div class="col d-flex justify-content-end">
-            <div class="dropdown">
-                <div class="dropdown">
-                    <button class="btn btn-outline-primary dropdown-toggle" type="button" id="sectionSortDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Sort by Section
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="sectionSortDropdown">
-                        <a class="dropdown-item section-sort-selector active" href="#" data-sort-section="all">All Sections</a>
-                        @foreach (var sect in new[] { "Section 1", "Section 2", "Section 3", "Section 4" })
-                        {
-                            <a class="dropdown-item section-sort-selector" href="#" data-sort-section="@sect">@sect</a>
-                        }
-                    </div>
-                </div>
-                @* <div class="dropdown"> *@
-                @*     <button class="btn btn-secondary dropdown-toggle" type="button" id="classDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> *@
-                @*         Sort by Section *@
-                @*     </button> *@
-                @*     <div class="dropdown-menu" aria-labelledby="classDropdown"> *@
-                @*         <a class="dropdown-item class-selector active" href="#" data-class="all">All Classes</a> *@
-                @*         @foreach (var course in new[] { "Section 1", "Section 2", "Section 3", "Section 4" }) *@
-                @*         { *@
-                @*             <a class="dropdown-item class-selector" href="#" data-class="@course">@course</a> *@
-                @*         } *@
-                @*     </div> *@
-                @* </div> *@
-            </div> 
-        </div>
-    </div>
-<br>
-    <div class="row">
-        <!-- Grading Progress Quadrant -->
+        <!-- The first quadrant, where numbers weave tales of grading progress -->
         <div class="col-md-6">
             <div class="quadrant">
                 <h2>Grading Progress</h2>
@@ -88,7 +51,7 @@
             </div>
         </div>
 
-        <!-- Left to Grade Quadrant -->
+        <!-- The second quadrant, whispering tales of assignments yet to face the quill -->
         <div class="col-md-6">
             <div class="quadrant">
                 <h2>Left To Grade</h2>
@@ -106,17 +69,16 @@
     </div>
 
     <div class="row mt-4">
-        <!-- Top 4 Groups Quadrant -->
+        <!-- The third quadrant, where legends are made and the top groups are honored -->
         <div class="col-md-6">
             <div class="quadrant top-groups">
                 <h2>Top 4 Groups</h2>
                 <ol>
                     @{
+                        // In the kingdom of Random, where groups are knighted by fate
                         Random rand = new Random();
-                        // Dynamic generation of top groups
-                        List<string> groups = Enumerable.Range(1, 4).Select(x => $"Group {rand.Next(1, 5)}-{rand.Next(1, 11)}").ToList();
-                        groups = groups.Distinct().ToList(); // Remove duplicates
-                        foreach (var group in groups.Take(4))
+                        var groups = Enumerable.Range(1, 4).Select(x => $"Group {rand.Next(1, 5)}-{rand.Next(1, 11)}").Distinct().Take(4).ToList();
+                        foreach (var group in groups)
                         {
                             <li>@group</li>
                         }
@@ -124,65 +86,58 @@
                 </ol>
             </div>
         </div>
+
+        <!-- The final quadrant, a portal to realms of rubrics, progress, and grades -->
         <div class="col-md-6">
             <div class="quadrant">
-                <a class="btn btn-primary" asp-controller="ta" asp-action="classrubric">Class Rubric</a>
-                <br>
-                <a class="btn btn-primary" asp-area="" asp-controller="ta" asp-action="tagradingprogress">TA Grading Progress</a>
-                <br>
-                <a class="btn btn-primary" asp-area="" asp-controller="ta" asp-action="allgrades">All Grades</a>
+                <a class="btn btn-primary" asp-controller="ta" asp-action="tagradingprogress">TA Grading Progress</a>
+                <br />
+                <a class="btn btn-primary" asp-controller="ta" asp-action="allgrades">All Grades</a>
             </div>
         </div>
     </div>
-    
-
 </div>
 
-
+<!-- Enchanting Bootstrap spells for a smooth and responsive adventure -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.4.3/dist/js/bootstrap.bundle.min.js"></script>
-@* <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> *@
+
+
 <script>
     $(document).ready(function () {
-        // Add event listener for the Sort by Section dropdown
+        // Event listener for changing the displayed data based on the selected section.
         $('.section-sort-selector').click(function (e) {
-            e.preventDefault();
-            var selectedSection = $(this).data('sort-section');
-            var selectedText = $(this).text();
-            $('#sectionSortDropdown').text(selectedText); // Update the dropdown button text
+            e.preventDefault(); // Prevent default anchor behavior.
 
-            // Update Left to Grade Per Class based on selected section
-            // Assume 'grades' object contains the grades for each section and class
+            // Update the dropdown text to reflect the selected section.
+            var selectedSection = $(this).data('sort-section');
+            $('#sectionSortDropdown').text($(this).text());
+
+            // Example data structure for grades. Extend this structure for all sections.
             var grades = {
                 "Section 1": { "IS 401": 45, "IS 413": 50, "IS 414": 55, "IS 455": 60 },
-                // Define grades for other sections...
             };
 
-            // Clear the table and repopulate based on selected section
+            // Clear the table before updating it with data from the selected section.
             $('.grading-table tbody').empty();
-            if (selectedSection === "all") {
-                // If All Sections is selected, calculate and display aggregate data
-                // This part will need dynamic data handling
-            } else {
+            if (selectedSection !== "all") {
                 var sectionGrades = grades[selectedSection];
-                for (var className in sectionGrades) {
-                    $('.grading-table tbody').append(`<tr><td>${className}</td><td>${sectionGrades[className]}/60</td></tr>`);
-                }
+                $.each(sectionGrades, function (className, grade) {
+                    $('.grading-table tbody').append(`<tr><td>${className}</td><td>${grade}/60</td></tr>`);
+                });
             }
+            // For 'all' section, you might want to aggregate data from all sections here.
 
-            // Update Top 4 Groups based on selected section
-            // This part will need dynamic data handling
-            $('.top-groups ol').empty();
-            $('.top-groups ol').append('<li>Group 2-9</li>'); // Group 2-9 is always included
-            // Dynamically add other top groups from the selected section
+            // Refresh the list of top 4 groups. Consider fetching this dynamically based on the selected section.
+            $('.top-groups ol').empty().append('<li>Group 2-9</li>'); // Example static entry.
 
+            // Highlight the currently active section.
             $('.section-sort-selector').removeClass('active');
             $(this).addClass('active');
         });
 
-        // Automatically select All Sections on page load
-        $('.section-sort-selector[data-sort-section="all"]').trigger('click');
+        // Initialize the view by simulating a click on "All Sections".
+        $('.section-sort-selector[data-sort-section="all"]').click();
     });
-    
-
 </script>
+
 
