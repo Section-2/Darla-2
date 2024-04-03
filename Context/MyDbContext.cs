@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Darla.Models2;
+using Darla.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Darla.Context;
@@ -28,39 +28,34 @@ public partial class MyDbContext : DbContext
 
     public virtual DbSet<AspNetUserToken> AspNetUserTokens { get; set; }
 
-    public virtual DbSet<CartLine> CartLines { get; set; }
 
-    public virtual DbSet<Order> Orders { get; set; }
+    public virtual DbSet<Grade> grades { get; set; }
 
-    public virtual DbSet<Project> Projects { get; set; }
+    public virtual DbSet<JudgeRoom> judge_rooms { get; set; }
 
-    public virtual DbSet<grade> grades { get; set; }
+    public virtual DbSet<PeerEvaluation> peer_evaluations { get; set; }
 
-    public virtual DbSet<judge_room> judge_rooms { get; set; }
+    public virtual DbSet<PeerEvaluationQuestion> peer_evaluation_questions { get; set; }
 
-    public virtual DbSet<peer_evaluation> peer_evaluations { get; set; }
+    public virtual DbSet<Permission> permissions { get; set; }
 
-    public virtual DbSet<peer_evaluation_question> peer_evaluation_questions { get; set; }
+    public virtual DbSet<Presentation> presentations { get; set; }
 
-    public virtual DbSet<permission> permissions { get; set; }
+    public virtual DbSet<Room> rooms { get; set; }
 
-    public virtual DbSet<presentation> presentations { get; set; }
+    public virtual DbSet<RoomSchedule> room_schedules { get; set; }
 
-    public virtual DbSet<room> rooms { get; set; }
+    public virtual DbSet<Rubric> rubrics { get; set; }
 
-    public virtual DbSet<room_schedule> room_schedules { get; set; }
+    public virtual DbSet<StudentTeam> student_teams { get; set; }
 
-    public virtual DbSet<rubric> rubrics { get; set; }
+    public virtual DbSet<Team> teams { get; set; }
 
-    public virtual DbSet<student_team> student_teams { get; set; }
+    public virtual DbSet<TeamSubmission> team_submissions { get; set; }
 
-    public virtual DbSet<team> teams { get; set; }
+    public virtual DbSet<User> users { get; set; }
 
-    public virtual DbSet<team_submission> team_submissions { get; set; }
-
-    public virtual DbSet<user> users { get; set; }
-
-    public virtual DbSet<user_password> user_passwords { get; set; }
+    public virtual DbSet<UserPassword> user_passwords { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
@@ -147,85 +142,55 @@ public partial class MyDbContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.AspNetUserTokens).HasForeignKey(d => d.UserId);
         });
 
-        modelBuilder.Entity<CartLine>(entity =>
+
+
+
+        modelBuilder.Entity<Grade>(entity =>
         {
-            entity.HasKey(e => e.CartLineId).HasName("PK__CartLine__5D1C713926004726");
-
-            entity.ToTable("CartLine");
-
-            entity.HasIndex(e => e.OrderID, "IX_CartLine_OrderID");
-
-            entity.HasIndex(e => e.ProjectID, "IX_CartLine_ProjectID");
-
-            entity.HasOne(d => d.Order).WithMany(p => p.CartLines)
-                .HasForeignKey(d => d.OrderID)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("FK_CartLine_Orders");
-
-            entity.HasOne(d => d.Project).WithMany(p => p.CartLines)
-                .HasForeignKey(d => d.ProjectID)
-                .HasConstraintName("FK_CartLine_Projects");
-        });
-
-        modelBuilder.Entity<Order>(entity =>
-        {
-            entity.HasKey(e => e.OrderID).HasName("PK__Orders__C3905BAFFF573599");
-        });
-
-        modelBuilder.Entity<Project>(entity =>
-        {
-            entity.Property(e => e.ProgramName).HasMaxLength(450);
-            entity.Property(e => e.ProjectName).HasMaxLength(450);
-            entity.Property(e => e.ProjectPhase).HasMaxLength(450);
-            entity.Property(e => e.ProjectType).HasMaxLength(450);
-        });
-
-        modelBuilder.Entity<grade>(entity =>
-        {
-            entity.HasKey(e => e.grade_id);
+            entity.HasKey(e => e.GradeId);
 
             entity.ToTable("grade");
 
-            entity.Property(e => e.comments).HasMaxLength(450);
-            entity.Property(e => e.points_earned).HasColumnType("decimal(10, 2)");
-            entity.Property(e => e.user_id).HasMaxLength(450);
+            entity.Property(e => e.Comments).HasMaxLength(450);
+            entity.Property(e => e.PointsEarned).HasColumnType("decimal(10, 2)");
+            entity.Property(e => e.UserId).HasMaxLength(450);
 
-            entity.HasOne(d => d.assignment).WithMany(p => p.grades)
+            entity.HasOne(d => d.Assignment).WithMany(p => p.grades)
                 .HasForeignKey(d => d.assignment_id)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_grade_assignment");
 
-            entity.HasOne(d => d.team_numberNavigation).WithMany(p => p.grades)
+            entity.HasOne(d => d.TeamNumber).WithMany(p => p.grades)
                 .HasForeignKey(d => d.team_number)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_grade_team");
 
-            entity.HasOne(d => d.user).WithMany(p => p.grades)
+            entity.HasOne(d => d.User).WithMany(p => p.Grades)
                 .HasForeignKey(d => d.user_id)
                 .HasConstraintName("FK_grade_student_team");
         });
 
-        modelBuilder.Entity<judge_room>(entity =>
+        modelBuilder.Entity<JudgeRoom>(entity =>
         {
-            entity.HasKey(e => e.user_id);
+            entity.HasKey(e => e.UserId);
 
             entity.ToTable("judge_room");
 
-            entity.HasOne(d => d.room).WithMany(p => p.judge_rooms)
-                .HasForeignKey(d => d.room_id)
+            entity.HasOne(d => d.Room).WithMany(p => p.JudgeRooms)
+                .HasForeignKey(d => d.RoomId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_judge_room_room_schedule");
         });
 
-        modelBuilder.Entity<peer_evaluation>(entity =>
+        modelBuilder.Entity<PeerEvaluation>(entity =>
         {
-            entity.HasKey(e => e.peer_evaluation_id);
+            entity.HasKey(e => e.PeerEvaluationId);
 
             entity.ToTable("peer_evaluation");
 
-            entity.Property(e => e.comments).HasMaxLength(450);
-            entity.Property(e => e.evaluator_id).HasMaxLength(450);
-            entity.Property(e => e.subject_id).HasMaxLength(450);
+            entity.Property(e => e.Comments).HasMaxLength(450);
+            entity.Property(e => e.EvaluatorId).HasMaxLength(450);
+            entity.Property(e => e.SubjectId).HasMaxLength(450);
 
             entity.HasOne(d => d.evaluator).WithMany(p => p.peer_evaluationevaluators)
                 .HasForeignKey(d => d.evaluator_id)
