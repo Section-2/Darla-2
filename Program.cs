@@ -10,7 +10,15 @@ builder.Services.AddControllersWithViews();
 
 // THIS IS FOR DOTNET IDENTITY
 
-builder.Services.AddDbContext<LoginDbContext>(options => options.UseSqlServer(builder.Configuration["ConnectionStrings:IntexConnection"]));
+builder.Services.AddDbContext<LoginDbContext>(options =>
+options.UseSqlServer(builder.Configuration["ConnectionStrings:IntexConnection"],
+sqlServerOptionsAction: sqlOptions =>
+{
+    sqlOptions.EnableRetryOnFailure(
+        maxRetryCount: 5,
+        maxRetryDelay: TimeSpan.FromSeconds(30),
+        errorNumbersToAdd: null);
+}));
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(
     options =>

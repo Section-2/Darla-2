@@ -101,6 +101,7 @@ namespace Darla.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(LoginViewModel model, string? ReturnUrl)
         {
+            Console.WriteLine("This is the Post Loging \n \n \n");
             if (ModelState.IsValid)
             {
                 // Attempt to sign in the user using their username and password
