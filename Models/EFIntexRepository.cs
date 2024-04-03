@@ -126,6 +126,23 @@ namespace Darla.Models
             _context.SaveChanges();
         }
 
+        public void EditTA(User updatedTAInfo)
+        {
+            _context.Update(updatedTAInfo);
+            _context.SaveChanges();
+        }
+
+        public void DeleteTA(User removedTAUser)
+        {
+            _context.Users.Remove(removedTAUser);
+            _context.SaveChanges();
+        }
+        public void AddTA(User addTAResponse)
+        {
+            _context.Users.Add(addTAResponse);
+            _context.SaveChanges();
+        }
+
         public async Task<List<PeerEvaluationViewModel>> GetPeerEvaluationInfo()
         {
             var peerEvaluations = _context.PeerEvaluations

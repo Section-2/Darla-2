@@ -439,6 +439,72 @@ public class HomeController : Controller
         }
     }
 
+    [HttpGet]
+    public IActionResult AdminTAListView()
+    {
+        ViewBag.Permissions = _repo.Permissions.ToList()
+            .OrderBy(x => x.PermissionDescription)
+            .Where(x => x.PermissionType == 3)
+            .ToList();
+
+        List<User> users = new List<User> { new User() };
+
+        return View("AdminTAListView", users);
+    }
+
+    [HttpPost]
+    public IActionResult AdminTAListView(User addTAResponse)
+    {
+        if (ModelState.IsValid)
+        {
+            _repo.AddTA(addTAResponse);
+            return View("AdminAddTA", addTAResponse);
+        }
+        else
+        {
+            ViewBag.Permissions = _repo.Permissions.ToList()
+                .OrderBy(x => x.PermissionDescription)
+                .ToList();
+
+            List<User> users = new List<User> { new User() };
+
+            return View("AdminTAListView", users);
+        }
+    }
+
+    //[HttpGet]
+    //public IActionResult EditTA(string id)
+    //{
+    //    var recordToEdit = _repo.Users
+    //        .Single(x => x.UserId == id);
+    //    return View("AdminAddTA", recordToEdit);
+    //}
+
+    //[HttpPost]
+    //public IActionResult Edit(User updatedInfo)
+    //{
+    //    _repo.EditJudge(updatedInfo);
+    //    return RedirectToAction("");
+    //    /*return RedirectToAction("AdminJudgeListView");*/
+
+    //}
+
+
+    [HttpGet]
+    public IActionResult DeleteTA(string id)
+    {
+        var recordToDelete = _repo.Users
+            .Single(x => x.UserId == id);
+        return View("AdminDeleteTA", recordToDelete);
+    }
+
+    [HttpPost]
+    public IActionResult DeleteTA(User removedTAUser)
+    {
+        _repo.DeleteTA(removedTAUser);
+        return RedirectToAction("");
+    }
+
 
     /* Potential missing actions for views: TeacherViewPeerEvalSingle, ListTA, adminPeerEvalDashboard, 
      * AdminJudgeListView, AdminDeleteJudge
