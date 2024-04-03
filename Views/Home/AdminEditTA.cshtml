@@ -3,15 +3,16 @@
 *@
 @{
 }
-@* This view allows the Admin permission type to Add TA users to the users and give them the permission type of a TA *@
+@* This view allows the Admin permission type to Edit TA users info *@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model Darla.Models.User
-<h1>Add a TA!</h1>
+<h1>Edit a TA</h1>
 <button type="button" asp-controller="Administration" asp-action="">Go Back</button>
 <div>
-    <form>
+    <form asp-controller="Home" asp-action="EditTwo" method="post">
         <input type="hidden" asp-for="UserId" />
         <label asp-for="FirstName">TA First Name</label>
+
         <br /><input asp-for="FirstName" /><br /><br />
 
         <label asp-for="LastName">TA Last Name</label>
@@ -21,14 +22,14 @@
         <input asp-for="NetId" /><br /><br />
 
         <select asp-for="PermissionType">
-            Please select a Permission: 
             <option value="">Select a Permission</option>
-            <option value="3">TA</option>
+            <option value="3" selected="selected">TA</option>
         </select>
         <br /><br />
 
-        <button type="submit">Submit TA!</button>
+        <button type="submit">Update TA Info</button>
 
         <div asp-validation-summary="All"></div>
     </form>
 </div>
+

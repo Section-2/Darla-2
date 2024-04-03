@@ -472,22 +472,20 @@ public class HomeController : Controller
         }
     }
 
-    //[HttpGet]
-    //public IActionResult EditTA(string id)
-    //{
-    //    var recordToEdit = _repo.Users
-    //        .Single(x => x.UserId == id);
-    //    return View("AdminAddTA", recordToEdit);
-    //}
+    [HttpGet]
+    public IActionResult EditTA(string id)
+    {
+        var recordToEdit = _repo.Users
+            .Single(x => x.UserId == id);
+        return View("AdminAddTA", recordToEdit);
+    }
 
-    //[HttpPost]
-    //public IActionResult Edit(User updatedInfo)
-    //{
-    //    _repo.EditJudge(updatedInfo);
-    //    return RedirectToAction("");
-    //    /*return RedirectToAction("AdminJudgeListView");*/
-
-    //}
+    [HttpPost]
+    public IActionResult EditTwo(User updatedTAInfo)
+    {
+        _repo.EditTA(updatedTAInfo);
+        return RedirectToAction("");
+    }
 
 
     [HttpGet]
