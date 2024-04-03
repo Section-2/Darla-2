@@ -6,7 +6,7 @@ namespace Darla.Models;
 
 public partial class StudentTeam
 {
-    [Column("user_id")]
+    
     public string UserId { get; set; }
 
     public int TeamNumber { get; set; }

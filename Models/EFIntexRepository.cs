@@ -57,7 +57,7 @@ namespace Darla.Models
 
         public IEnumerable<RoomSchedule> RoomSchedules => _context.RoomSchedules;
         public IQueryable<RoomSchedule> RoomSchedulesWithRooms => _context.RoomSchedules.Include(rs => rs.Room);
-        public IEnumerable<StudentTeam> StudentTeams => _context.StudentTeams;
+        public IEnumerable<StudentTeam> StudentTeams => _context.StudentTeams.ToList();
         public IEnumerable<UserPassword> UserPasswords => _context.UserPasswords;
         public IEnumerable<User> Users => _context.Users;
         public IEnumerable<PeerEvaluationQuestion> PeerEvaluationQuestions => _context.PeerEvaluationQuestions;

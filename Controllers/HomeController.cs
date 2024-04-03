@@ -17,7 +17,18 @@ public class HomeController : Controller
     // START HERE!
     public IActionResult OpeningPage()
     {
-        return View();
+        if (User.Identity.IsAuthenticated == true)
+        {
+            // User is logged in, proceed with your logic
+                
+            // Change this logic later
+            return RedirectToAction("StudentDashboard", "Student");
+        }
+        else
+        {
+            // User is not logged in, redirect to the login page
+            return View();
+        }
     }
 
     // JUDGES SECTION
