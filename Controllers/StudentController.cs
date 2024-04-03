@@ -21,14 +21,16 @@ namespace Darla.Controllers
             var userId = "this is a hard coded example";
             Console.WriteLine("You made it to student dashboard\n \n \n" + userId);
 
-            List<string> teamMemberNames = ["Blake McAvoy", "Hannah Johnson", "Elijah Aken", "Steven Armstrong"];
+            List<string> teamMemberNames = new List<string> { "Blake McAvoy", "Hannah Johnson", "Elijah Aken", "Steven Armstrong" };
+            var teamNumber = "202";
+            var hardCode = "THIS IS A HARD CODED EXAMPLE";
+            var uncomment = "UNCOMMENT THE METHOD UNDER THIS WHEN _repo IS READY";
 
             // Pass the data to the view using ViewBag
             ViewBag.TeamMemberNames = teamMemberNames;
-            ViewBag.RoomSchedule.team_number = "202";
-            ViewBag.RoomSchedule.timeslot = "THIS IS A HARD CODED EXAMPLE";
-            ViewBag.RoomAssignment = "UNCOMMENT THE METHOD UNDER THIS WHEN _repo IS READY";
-            
+            ViewBag.RoomSchedule = new { team_number = teamNumber, timeslot = hardCode };
+            ViewBag.RoomAssignment = uncomment;
+
             return View();
         }
 
