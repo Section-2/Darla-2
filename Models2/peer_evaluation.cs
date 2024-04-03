@@ -20,6 +20,7 @@ public partial class peer_evaluation
     public virtual student_team? evaluator { get; set; }
 
     public virtual peer_evaluation_question question { get; set; } = null!;
+    
 
     public virtual student_team? subject { get; set; }
 }

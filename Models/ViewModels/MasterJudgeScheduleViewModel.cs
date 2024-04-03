@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Darla.Models.ViewModels;
+namespace Darla.Models2.ViewModels;
 
 public class MasterJudgeScheduleViewModel   
 {
-    public List<JudgeRoom> JudgeRoom { get; set; }
+    public List<judge_room> JudgeRoom { get; set; }
 
-    public List<RoomSchedule> RoomSchedule { get; set; }
+    public List<room_schedule> RoomSchedule { get; set; }
 
-    public List<User> User { get; set; }
+    public List<user> User { get; set; }
 
-    public List<Permission> Permission { get; set; }
+    public List<permission> Permission { get; set; }
 
-    public List<Room> Room { get; set; }
+    public List<room> Room { get; set; }
 }

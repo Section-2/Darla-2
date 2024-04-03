@@ -1,7 +1,9 @@
-using Darla.Models;
+using Darla.Models2;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Darla.Models.ViewModels;
+using IntexGraderContext = Darla.Models.IntexGraderContext;
+using MasterJudgeScheduleViewModel = Darla.Models2.ViewModels.MasterJudgeScheduleViewModel;
 
 namespace Darla.Controllers;
 
@@ -45,11 +47,11 @@ public class HomeController : Controller
     [HttpGet]
     public IActionResult judge_survey(int? teamNumber)
     {
-        var presentation = new Presentation();
+        var presentation = new presentation();
 
         if (teamNumber.HasValue)
         {
-            presentation.TeamNumber = teamNumber.Value;
+            presentation.team_number = teamNumber.Value;
             // If JudgeId is needed from the logged-in user, assign it similarly
             // presentation.JudgeId = ...;
         }
@@ -58,7 +60,7 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public IActionResult judge_survey(Presentation p)
+    public IActionResult judge_survey(presentation p)
     {
         if (!ModelState.IsValid)
         {
@@ -79,7 +81,7 @@ public class HomeController : Controller
         // If the model is valid, proceed with adding the presentation score
         _repo.AddPresentationScore(p);
 
-        return RedirectToAction("JudgeDashboard", new Presentation());
+        return RedirectToAction("JudgeDashboard", new presentation());
     }
 
     // Action to open judge schedule
@@ -94,12 +96,17 @@ public class HomeController : Controller
         var roomSchedules = _repo.GetRoomSchedulesByRoomId(roomId).ToList();
     
         // Assuming RoomSchedules includes Room, fetch the first Room's details if available
-        var roomDetails = roomSchedules.Select(rs => rs.Room).FirstOrDefault();
+        // var roomDetails = roomSchedules.Select(rs => rs.Room).FirstOrDefault();
+        // var roomDetails = roomSchedules = roomSchedules.SelectMany(rs => rs.judge_rooms).Select(jr => jr.room).FirstOrDefault();
+        var roomDetails = roomSchedules
+            .SelectMany(rs => rs.judge_rooms)
+            .Select(jr => jr.room)
+            .FirstOrDefault();
 
-        var viewModel = new MasterJudgeScheduleViewModel
+        var viewModel = new Models2.ViewModels.MasterJudgeScheduleViewModel()
         {
             RoomSchedule = roomSchedules,
-            Room = roomDetails != null ? new List<Room> { roomDetails } : new List<Room>()
+            Room = roomDetails != null ? new List<room> { roomDetails } : new List<room>()
             // Initialize other properties as needed
         };
 
@@ -146,7 +153,7 @@ public class HomeController : Controller
     
     public IActionResult ProfEditRubric()
     {
-        var query = _repo.Users.Where(x => x.PermissionType == 4);
+        var query = _repo.Users.Where(x => x.permission_type == 4);
         return View("AdminRubricEdit");
     }
 
@@ -160,19 +167,19 @@ public class HomeController : Controller
     {
         // Calculate the number of teams with at least one grade entry
         var gradedTeamsCount = _repo.Grades
-            .Select(g => g.TeamNumber)
+            .Select(g => g.team_number)
             .Distinct()
             .Count();
 
         // Calculate the total number of teams
         var totalTeamsCount = _repo.Teams
-            .Select(t => t.TeamNumber)
+            .Select(t => t.team_number)
             .Distinct()
             .Count();
 
         // Calculate the total number of assignments
         var totalAssignmentsCount = _repo.Rubrics
-            .Select(r => r.AssignmentId)
+            .Select(r => r.assignment_id)
             .Distinct()
             .Count();
 
@@ -188,7 +195,7 @@ public class HomeController : Controller
             ViewData["GradingProgress"] = Math.Round(percentageOfTeamsGraded, 2); // Round to two decimal places
         }
 
-        var model = new AdminGradeProgressBarComposite
+        var model = new AdminGradeProgressBarComposite()
         {
             // If there are other properties to set, set them here
             GradingProgress = ViewData["GradingProgress"] != null ? Convert.ToDouble(ViewData["GradingProgress"]) : 0,
@@ -201,38 +208,38 @@ public class HomeController : Controller
     public IActionResult AdminViewPeerEvalGiven(int evaluatorId)
     {
         var evaluationData = _repo.PeerEvaluations
-            .Join(_repo.StudentTeams, pe => pe.EvaluatorId, st => st.UserId, (pe, st) => new { pe, st })
-            .Join(_repo.Users, temp1 => temp1.st.UserId, u => u.UserId, (temp1, u) => new { temp1.pe, temp1.st, u })
-            .Join(_repo.PeerEvaluationQuestions, temp2 => temp2.pe.QuestionId, pq => pq.QuestionId, (temp2, pq) => new { temp2.pe, temp2.st, temp2.u, pq })
+            .Join(_repo.StudentTeams, pe => pe.evaluator_id, st => st.user_id, (pe, st) => new { pe, st })
+            .Join(_repo.Users, temp1 => temp1.st.user_id, u => u.user_id, (temp1, u) => new { temp1.pe, temp1.st, u })
+            .Join(_repo.PeerEvaluationQuestions, temp2 => temp2.pe.question_id, pq => pq.question_id, (temp2, pq) => new { temp2.pe, temp2.st, temp2.u, pq })
             .Join(
                 (from peInner in _repo.PeerEvaluations
-                 join stInner in _repo.StudentTeams on peInner.SubjectId equals stInner.UserId
-                 join uInner in _repo.Users on stInner.UserId equals uInner.UserId
+                 join stInner in _repo.StudentTeams on peInner.subject_id equals stInner.user_id
+                 join uInner in _repo.Users on stInner.user_id equals uInner.user_id
                  select new
                  {
-                     SubjFName = uInner.FirstName,
-                     SubjLName = uInner.LastName,
-                     peInner.SubjectId,
-                     uInner.UserId
+                     SubjFName = uInner.first_name,
+                     SubjLName = uInner.last_name,
+                     peInner.subject_id,
+                     uInner.user_id
                  }),
-                temp3 => temp3.pe.SubjectId,
-                subj => subj.UserId,
+                temp3 => temp3.pe.subject_id,
+                subj => subj.user_id,
                 (temp3, subj) => new { temp3.pe, temp3.st, temp3.u, temp3.pq, subj }
             )
-            .GroupBy(x => x.pe.PeerEvaluationId)
+            .GroupBy(x => x.pe.peer_evaluation_id)
             .Select(group => group.First()) // Selecting the first element from each group
             .Select(result => new EvaluationViewModel
             {
-                EvaluatorId = result.pe.EvaluatorId,
-                SubjectId = result.pe.SubjectId,
-                UserId = result.st.UserId,
-                NetId = result.u.NetId,
-                FirstName = result.u.FirstName,
-                LastName = result.u.LastName,
+                EvaluatorId = result.pe.evaluator_id,
+                SubjectId = result.pe.subject_id,
+                UserId = result.st.user_id,
+                NetId = result.u.net_id,
+                FirstName = result.u.first_name,
+                LastName = result.u.last_name,
                 SubjFName = result.subj.SubjFName,
                 SubjLName = result.subj.SubjLName,
-                Question = result.pq.Question,
-                QuestionId = result.pq.QuestionId,
+                Question = result.pq.question,
+                QuestionId = result.pq.question_id,
             })
             .ToList();
 
@@ -242,38 +249,38 @@ public class HomeController : Controller
     public IActionResult AdminViewPeerEvalReceived(int evaluatorId)
     {
         var evaluationData = _repo.PeerEvaluations
-            .Join(_repo.StudentTeams, pe => pe.EvaluatorId, st => st.UserId, (pe, st) => new { pe, st })
-            .Join(_repo.Users, temp1 => temp1.st.UserId, u => u.UserId, (temp1, u) => new { temp1.pe, temp1.st, u })
-            .Join(_repo.PeerEvaluationQuestions, temp2 => temp2.pe.QuestionId, pq => pq.QuestionId, (temp2, pq) => new { temp2.pe, temp2.st, temp2.u, pq })
+            .Join(_repo.StudentTeams, pe => pe.evaluator_id, st => st.user_id, (pe, st) => new { pe, st })
+            .Join(_repo.Users, temp1 => temp1.st.user_id, u => u.user_id, (temp1, u) => new { temp1.pe, temp1.st, u })
+            .Join(_repo.PeerEvaluationQuestions, temp2 => temp2.pe.question_id, pq => pq.question_id, (temp2, pq) => new { temp2.pe, temp2.st, temp2.u, pq })
             .Join(
                 (from peInner in _repo.PeerEvaluations
-                 join stInner in _repo.StudentTeams on peInner.SubjectId equals stInner.UserId
-                 join uInner in _repo.Users on stInner.UserId equals uInner.UserId
+                 join stInner in _repo.StudentTeams on peInner.subject_id equals stInner.user_id
+                 join uInner in _repo.Users on stInner.user_id equals uInner.user_id
                  select new
                  {
-                     SubjFName = uInner.FirstName,
-                     SubjLName = uInner.LastName,
-                     peInner.SubjectId,
-                     uInner.UserId
+                     SubjFName = uInner.first_name,
+                     SubjLName = uInner.last_name,
+                     peInner.subject_id,
+                     uInner.user_id
                  }),
-                temp3 => temp3.pe.SubjectId,
-                subj => subj.UserId,
+                temp3 => temp3.pe.subject_id,
+                subj => subj.user_id,
                 (temp3, subj) => new { temp3.pe, temp3.st, temp3.u, temp3.pq, subj }
             )
-            .GroupBy(x => x.pe.PeerEvaluationId)
+            .GroupBy(x => x.pe.peer_evaluation_id)
             .Select(group => group.First()) // Selecting the first element from each group
             .Select(result => new EvaluationViewModel
             {
-                EvaluatorId = result.pe.EvaluatorId,
-                SubjectId = result.pe.SubjectId,
-                UserId = result.st.UserId,
-                NetId = result.u.NetId,
-                FirstName = result.u.FirstName,
-                LastName = result.u.LastName,
+                EvaluatorId = result.pe.evaluator_id,
+                SubjectId = result.pe.subject_id,
+                UserId = result.st.user_id,
+                NetId = result.u.net_id,
+                FirstName = result.u.first_name,
+                LastName = result.u.last_name,
                 SubjFName = result.subj.SubjFName,
                 SubjLName = result.subj.SubjLName,
-                Question = result.pq.Question,
-                QuestionId = result.pq.QuestionId,
+                Question = result.pq.question,
+                QuestionId = result.pq.question_id,
             })
             .ToList();
 
@@ -293,10 +300,10 @@ public class HomeController : Controller
         var rooms = _repo.Rooms.ToList();
 
         var users = _repo.Users
-            .Where(u => u.PermissionType == 4 && judgeRooms.Any(jr => jr.UserId == u.UserId))
+            .Where(u => u.permission_type == 4 && judgeRooms.Any(jr => jr.user_id == u.user_id))
             .ToList();
 
-        var judgeSchedule = new MasterJudgeScheduleViewModel
+        var judgeSchedule = new MasterJudgeScheduleViewModel()
         {
             JudgeRoom = judgeRooms,
             RoomSchedule = roomSchedules,
@@ -327,7 +334,7 @@ public class HomeController : Controller
     public IActionResult EditJudge(string id)
     {
         var recordToEdit = _repo.Users
-            .Single(x => x.UserId == id);
+            .Single(x => x.user_id == id);
         return View("AdminAddJudge", recordToEdit);
     }
 

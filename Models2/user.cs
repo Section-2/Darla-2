@@ -16,4 +16,5 @@ public partial class user
     public int permission_type { get; set; }
 
     public virtual permission permission_typeNavigation { get; set; } = null!;
+    public virtual user_password userpassword_typeNavigation { get; set; }
 }

@@ -1,4 +1,4 @@
-using Darla.Models;
+using Darla.Models2;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;

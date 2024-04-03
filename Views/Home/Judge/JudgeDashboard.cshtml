@@ -1,6 +1,6 @@
 @using Darla.Models
 @using System.Collections.Generic
-@model Darla.Models.ViewModels.MasterJudgeScheduleViewModel
+@model Darla.Models2.ViewModels.MasterJudgeScheduleViewModel
 
 
 <!DOCTYPE html>
@@ -16,7 +16,7 @@
         <div class="col-12">
             <h1>JUDGE: </h1>
             <h2>Schedule & Surveys</h2>
-            <h2>ROOM: @Model.Room.FirstOrDefault().RoomName ?? "Not Assigned"</h2>
+            <h2>ROOM: @Model.Room.FirstOrDefault().room_name ?? "Not Assigned"</h2>
 
         </div>
         
@@ -27,8 +27,8 @@
                     foreach (var schedule in Model.RoomSchedule)
                     {
                         <div>
-                            @schedule.Timeslot 
-                            <a asp-action="judge_survey" asp-route-teamNumber="@schedule.TeamNumber">Team @schedule.TeamNumber</a>
+                            @schedule.timeslot 
+                            <a asp-action="judge_survey" asp-route-teamNumber="@schedule.team_number">Team @schedule.team_number</a>
                         </div>                        
                         if (++count == 2) // After the second schedule entry
                         {
@@ -43,8 +43,8 @@
                     @{
                         foreach (var schedule in Model.RoomSchedule) // Reuse the filtered and sorted list
                         {
-                            <div draggable="true" class="box" data-teamnumber="@schedule.TeamNumber">
-                                Team @schedule.TeamNumber
+                            <div draggable="true" class="box" data-teamnumber="@schedule.team_number">
+                                Team @schedule.team_number
                             </div>
                         }
                     }
@@ -62,8 +62,8 @@
         }
         @foreach (var schedule in Model.RoomSchedule)
         {
-            <input type="hidden" name="teamRanks[@counter].Key" value="@schedule.TeamNumber"/>
-            <input type="hidden" id="rankForTeam-@schedule.TeamNumber" name="teamRanks[@counter].Value" value=""/>
+            <input type="hidden" name="teamRanks[@counter].Key" value="@schedule.team_number"/>
+            <input type="hidden" id="rankForTeam-@schedule.team_number" name="teamRanks[@counter].Value" value=""/>
             counter++;
         }
         <button type="submit">Save Rankings</button>

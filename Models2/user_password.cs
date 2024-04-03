@@ -8,4 +8,6 @@ public partial class user_password
     public int user_id { get; set; }
 
     public string? user_password1 { get; set; }
+    
+    public virtual user user_navigation { get; set; }
 }
