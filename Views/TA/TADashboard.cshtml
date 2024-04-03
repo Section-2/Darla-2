@@ -21,6 +21,7 @@
         padding: 20px;
         border: 1px solid #dee2e6;
         background-color: #f8f9fa;
+        height: 100%;
     }
 
         .quadrant h2 {
@@ -44,11 +45,6 @@
         padding-left: 20px;
     }
 </style>
-<div>
-    <a asp-controller="TA" asp-action="AllGrades">all grades</a>
-    <a asp-controller="TA" asp-action="ClassRubric">class rubric</a>
-    <a asp-controller="TA" asp-action="TaGradingProgress">ta grading progress</a>
-</div>
 <div class="container mt-5">
     <h1 class="text-center mb-4">@ViewData["Title"]</h1>
 
@@ -68,7 +64,7 @@
             </div>
         </div>
     </div>
-
+<br>
     <div class="row">
         <!-- Grading Progress Quadrant -->
         <div class="col-md-6">
@@ -114,6 +110,15 @@
                         }
                     }
                 </ol>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="quadrant">
+                <a class="btn btn-primary" asp-controller="ta" asp-action="classrubric">Class Rubric</a>
+                <br>
+                <a class="btn btn-primary" asp-area="" asp-controller="ta" asp-action="tagradingprogress">TA Grading Progress</a>
+                <br>
+                <a class="btn btn-primary" asp-area="" asp-controller="ta" asp-action="allgrades">All Grades</a>
             </div>
         </div>
     </div>
@@ -165,6 +170,4 @@
         $('.section-sort-selector[data-sort-section="all"]').trigger('click');
     });
 </script>
-<a asp-area="" asp-controller="ta" asp-action="classrubric">ClassRubric</a>
-<a asp-area="" asp-controller="ta" asp-action="tagradingprogress">TAgradingprogress!</a>
-<a asp-area="" asp-controller="ta" asp-action="allgrades">AllGrades</a>
+
