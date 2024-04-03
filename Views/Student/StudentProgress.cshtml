@@ -66,10 +66,8 @@
             }
         }
 
-
+        @*Student's submissions*@
         <div class="bg-white p-4 rounded shadow mt-6">
-     
-
             @if (Submissions != null)
             {
                 // This genereateas all submission from the db that match the TeamNumber
@@ -86,6 +84,10 @@
                                 <a href="@submission.VideoLink" target="_blank">@submission.VideoLink</a>
                             </div>
                             <div>
+                                <strong>Google Doc Link:</strong>
+                                <a href="@submission.GoogleDocLink " target="_blank">@submission.GoogleDocLink</a>
+                            </div>
+                            <div>
                                 <strong>Timestamp:</strong> @submission.Timestamp
                             </div>
                         </div>
@@ -95,11 +97,11 @@
             else
             {
                 <p>No submissions found.</p>
-            }
+            } 
 
-
+            @*The button to submit links*@
             <div class="flex justify-end mt-6">
-                <button type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 " data-bs-toggle="modal" data-bs-target="#githubModal">
+                <button type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 " data-bs-toggle="modal" data-bs-target="#linkModal">
                     Submit Links
                 </button>
             </div>
@@ -138,21 +140,8 @@
             };
         });
 
-        function submitGitHubLink() {
-            var githubLink = document.getElementById('githubLinkInput').value;
-            // Perform any necessary validation or processing
-            alert('GitHub link submitted: ' + githubLink);
-            $('#exampleModal').modal('hide');
-        }
-
-        function submitVideo() {
-            var githubLink = document.getElementById('submitVideo').value;
-            // Perform any necessary validation or processing 
-            alert('Video submitted: ' + submitVideo);
-            $('#exampleModal').modal('hide');
-        }
-
-        function submitPorjectInfo() {
+        //Probably dont need it now
+        function submitLinks() {
             var githubLink = document.getElementById('githubLinkInput').value;
             // Perform any necessary validation or processing
             alert('GitHub link submitted: ' + githubLink);
@@ -161,12 +150,12 @@
     </script>
 </body>
 
-
-<div class="modal fade" id="githubModal" tabindex="-1" aria-labelledby="githubModalLabel" aria-hidden="true">
+@* The pop-up modal for link submission *@
+<div class="modal fade" id="linkModal" tabindex="-1" aria-labelledby="linkModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="githubModalLabel">Link Submission</h1>
+                <h1 class="modal-title fs-5" id="linkModalLabel">Link Submission</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form method="post" action="@Url.Action("Submit", "Student")">
@@ -179,33 +168,16 @@
                         <label for="videoLink" class="fw-bold">Video Link</label><br />
                         <input type="text" id="videoLink" name="videoLink" class="form-control" />
                     </div>
+                    <div>
+                        <label for="docLink" class="fw-bold">Google Doc Link</label><br />
+                        <input type="text" id="docLink" name="docLink" class="form-control" />
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </form>
-
-        </div>
-    </div>
-</div>
-
-
-<!-- Link Submission Modal -->
-<div class="modal fade" id="githubModal" tabindex="-1" aria-labelledby="githubModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="githubModalLabel">Github Link Submission</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="submitGitHubLink">Submit</button>
-            </div>
         </div>
     </div>
 </div>
