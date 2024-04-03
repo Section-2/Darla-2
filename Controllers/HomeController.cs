@@ -32,15 +32,40 @@ public class HomeController : Controller
     }
 
     [HttpGet]
-    public IActionResult judge_survey(int? teamNumber)
+    public IActionResult judge_survey(int? teamNumber, int? userId)
     {
         var presentation = new Presentation();
 
         if (teamNumber.HasValue)
         {
             presentation.TeamNumber = teamNumber.Value;
-            // If JudgeId is needed from the logged-in user, assign it similarly
-            // presentation.JudgeId = ...;
+            presentation.TeamNumberNavigation = _repo.Teams.FirstOrDefault(t => t.TeamNumber == teamNumber.Value);
+            Console.WriteLine($"TeamNumber: {teamNumber.Value}, TeamNumberNavigation: {presentation.TeamNumberNavigation}");
+        }
+        else
+        {
+            Console.WriteLine("teamNumber is null");
+        }
+
+        if (userId.HasValue)
+        {
+            presentation.JudgeId = userId.Value;
+            presentation.Judge = _repo.JudgeRooms.FirstOrDefault(jr => jr.UserId == userId.Value);
+            Console.WriteLine($"UserId: {userId.Value}, Judge: {presentation.Judge}");
+        }
+        else
+        {
+            Console.WriteLine("userId is null");
+        }
+
+        if (presentation.Judge == null)
+        {
+            Console.WriteLine("Judge is null");
+        }
+
+        if (presentation.TeamNumberNavigation == null)
+        {
+            Console.WriteLine("TeamNumberNavigation is null");
         }
 
         return View("Judge/judge_survey", presentation);
@@ -81,8 +106,16 @@ public class HomeController : Controller
     public IActionResult ScheduleByRoomId(int roomId)
     {
         var roomSchedules = _repo.GetRoomSchedulesByRoomId(roomId);
+        var judgeRoom = _repo.JudgeRooms.FirstOrDefault(jr => jr.RoomId == roomId);
+        if (judgeRoom != null)
+        {
+            ViewBag.UserId = judgeRoom.UserId; // Store UserId in ViewBag
+            Console.WriteLine($"UserId: {ViewBag.UserId}"); // Add this line
+        }
+        ViewBag.RoomId = roomId; // Pass roomId to the view
         return View("Judge/JudgeDashboard", roomSchedules);
     }
+    
     [HttpPost]
     public IActionResult UpdateRanks(Dictionary<int,int>teamRanks)
     {

@@ -27,7 +27,7 @@
                     {
                         <div>
                             @schedule.Timeslot 
-                            <a asp-action="judge_survey" asp-route-teamNumber="@schedule.TeamNumber">Team @schedule.TeamNumber</a>
+                            <a asp-action="judge_survey" asp-route-teamNumber="@schedule.TeamNumber" asp-route-userId="@ViewBag.UserId">Team @schedule.TeamNumber</a>
                         </div>                        
                         if (++count == 2) // After the second schedule entry
                         {
