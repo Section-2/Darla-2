@@ -4,7 +4,7 @@
 @{
     // This line will retrieve the value from the ViewBag and assign it to a local variable.
     var roomSchedule = ViewBag.RoomSchedule;
-    var teamMemberNames = ViewBag.TeamMemberNames as List<string>;
+    List<string> teamMemberNames = ViewBag.TeamMemberNames;
     var roomAssignment = ViewBag.RoomAssignment;
 }
 
