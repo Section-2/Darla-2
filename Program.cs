@@ -48,7 +48,8 @@ builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
 
 builder.Services.AddDbContext<IntexGraderContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration["ConnectionStrings:IntexConnection"]);
+    options.UseSqlServer(builder.Configuration["ConnectionStrings:IntexConnection"])
+        .LogTo(Console.WriteLine, LogLevel.Information);
 });
 
 builder.Services.AddScoped<IIntexRepository, EFIntexRepository>();

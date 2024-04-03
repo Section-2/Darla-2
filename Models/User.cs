@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Darla.Models;
 
+[Table("AspNetUsers")]
 public partial class User
 {
-    public int UserId { get; set; }
+    public string UserId { get; set; }
 
     public string NetId { get; set; } = null!;
 
