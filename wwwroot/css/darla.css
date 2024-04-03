@@ -8,12 +8,14 @@
     --color-blue-light: #BBD1EA;
     --color-blue: #A1C6EA;
     --color-blue-dark: #507DBC;
+    --color-blue-darker: #2E5A8E;
 }
 
 /* General Styling */
 body {
     background-image: linear-gradient(to top, #a1c6ea, #b5cceb, #c6d3ec, #d5daed, #e1e2ed, #e7e7ef, #ededf0, #f2f2f2, #f5f5f5, #f8f8f8, #fcfcfc, #ffffff);
-    font-family: 'PT Sans', sans-serif;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
 }
 
 h1 {
@@ -21,7 +23,6 @@ h1 {
     font-size: 3em;
     font-family: 'Quicksand', sans-serif;
     font-weight: bolder;
-    text-shadow: 2px 2px 2px var(--color-blue-light);
 }
 
 h2 {
@@ -140,8 +141,9 @@ select {
 
 label {
     color: var(--color-blue-dark);
-    font-size: 1.25em;
+    font-size: 1em;
     font-family: 'Open Sans', sans-serif;
+    padding: 5px 5px;
 }
 
 td {
@@ -162,3 +164,85 @@ td {
     font-weight: bold;
     color: var(--color-blue-dark);
 }
+
+.navbar {
+    background-color: var(--color-blue-dark);
+    color: var(--color-white);
+}
+
+.navbar a {
+    color: var(--color-white);
+}
+.navbar a:hover {
+    color: var(--color-background-content);
+}
+
+.navbar ul li {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+.navbar .show {
+    color: var(--color-background-content);
+}
+
+.nav-link {
+    color: var(--color-white);
+    text-transform: uppercase;
+    font-size: .75em;
+}
+.nav-link:hover {
+    color: var(--color-background-content);
+}
+
+.nav-link:active {
+    color: var(--color-blue-light);
+}
+
+.nav-item {
+    width: auto;
+}
+
+.btn-primary {
+    background-color: var(--color-blue-dark);
+    border: 0;
+    transition: .2s;
+    text-transform: uppercase;
+    border-radius: 15px;
+}
+.btn-primary:hover {
+    background-color: var(--color-blue-darker);
+}
+
+.btn-alt {
+    background-color: var(--color-blue);
+    border: 0;
+    transition: .2s;
+    color: var(--color-blue-darker);
+    border-radius: 15px;
+    text-transform: uppercase;
+}
+.btn-alt:hover {
+    background-color: var(--color-blue-light);
+    color: var(--color-blue-darker);
+}
+
+a {
+    color: var(--color-blue-dark);
+    text-decoration: none;
+    transition: .2s;
+}
+a:hover {
+    color: var(--color-blue-darker);
+    text-decoration: none;
+}
+
+input[type="checkbox"] {
+    width: 1em;
+    height: 1rem;
+    margin: 0px 5px 0;
+    accent-color: var(--color-blue-dark);
+}
+
+
