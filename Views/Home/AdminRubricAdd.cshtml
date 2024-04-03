@@ -1,30 +1,40 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using Darla.Models
+
 @{
+    ViewData["Title"] = "Add/Edit Task";
 }
-@model Rubric 
+
+@model Rubric
 
 <div class="container">
-    <h3>Add new item</h3>
-    <div class="row">
-        <div>
-            <input asp-for="ClassCode" hidden />
-        </div>
-        <div class="col-3">
-            <input type="text" class="form-control" asp-for="Subcategory" name="Model.Subcategory" placeholder="Task Name" />
-        </div>
-        <div class="col-3">
-            <input type="text" class="form-control" asp-for="Description" name="Model.Description" placeholder="Student Description" />
-        </div>
-        <div class="col-3">
-            <input type="text" class="form-control" asp-for="InstructorNotes" name="Model.InstructorNotes" placeholder="TA Description" />
-        </div>
-        <div class="col-3">
-            <input type="number" class="form-control" asp-for="MaxPoints" name="Model.MaxPoints" placeholder="Max Total Points" />
-        </div>
-        <div class="col-2">
-            <button asp-controller="Home" asp-action="AdminRubricAdd" type="button">Add</button>
+    <!-- Add a container to center the grid -->
+    <div class="row justify-content-center">
+        <!-- Use justify-content-center to center the column -->
+        <div class="col-lg-6">
+            <!-- Specify the column size -->
+            <h1>Input a Rubric Task!</h1>
+            <div>
+                <form method="post">
+                    <input type="hidden" asp-for="AssignmentId" />
+                    <label asp-for="Subcategory">Task Name</label>
+                    <input asp-for="Subcategory" /><br /><br />
+
+                    <label asp-for="ClassCode">Class</label>
+                    <input asp-for="ClassCode" /><br /><br />
+
+                    <label asp-for="Description">Description for Students</label>
+                    <input asp-for="Description" /><br /><br />
+
+                    <label asp-for="InstructorNotes">TA/Grading Notes</label>
+                    <input asp-for="InstructorNotes" /><br /><br />
+
+                    <label asp-for="MaxPoints">Max Points Possible</label>
+                    <input asp-for="MaxPoints" /><br /><br />
+
+                    <button type="submit">Submit</button>
+                    <div asp-validation-summary="All"></div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

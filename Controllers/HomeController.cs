@@ -342,12 +342,12 @@ public class HomeController : Controller
     }
 
     [HttpGet]
-    public IActionResult AdminRubricEdit(int classCode)
+    public IActionResult AdminRubricEdit(int assignmentId)
     {
-        var rubrics = _repo.Rubrics
-            .Where(x => x.ClassCode == classCode).ToList();
+        var rubricItem = _repo.Rubrics
+            .Single(x => x.AssignmentId == assignmentId);
 
-        return View("AdminRubricEdit", rubrics);
+        return View("AdminRubricAdd", rubricItem);
     }
 
     [HttpPost]
@@ -356,7 +356,8 @@ public class HomeController : Controller
         if (ModelState.IsValid)
         {
             _repo.EditRubric(updatedRubric);
-            return RedirectToAction("AdminRubricEdit");
+
+            return RedirectToAction("AdminRubricFull");
         }
         else
         {
@@ -365,37 +366,45 @@ public class HomeController : Controller
     }
 
     [HttpGet]
-    public IActionResult AdminRubricAdd()
+    public IActionResult AdminRubricAdd(int classCode)
     {
-        return View(new Rubric());
+        var newItem = new Rubric { ClassCode = classCode };
+
+        return View(newItem);
     }
-    
+
     [HttpPost]
-    public IActionResult AdminRubricAdd(Rubric rubric)
+    public IActionResult AdminRubricAdd(Rubric response)
     {
         if (ModelState.IsValid)
         {
-            _repo.AddRubric(rubric);
-            return View("AdminRubricEdit", rubric);
+            _repo.AddRubric(response);
+            return RedirectToAction("AdminRubricFull");
         }
         else
         {
-            return View("AdminRubricEdit", rubric);
+            return View(response);
         }
     }
 
     [HttpGet]
     public IActionResult AdminRubricDelete(int assignmentId)
     {
-        var delete = _repo.Rubrics.Single(x => x.ClassCode == assignmentId);
-        return View("AdminRubricEdit", delete);
+        var itemToDelete = _repo.Rubrics
+            .Single(x => x.AssignmentId == assignmentId);
+
+        return View(itemToDelete);
     }
 
     [HttpPost]
-    public IActionResult AdminRubricDelete(Rubric rubric)
+    public IActionResult AdminRubricDelete(Rubric taskToDelete)
     {
-        _repo.DeleteRubric(rubric);
-        return View("AdminRubricEdit");
+        var itemToDelete = _repo.Rubrics
+            .Single(x => x.AssignmentId == taskToDelete.AssignmentId);
+
+        _repo.DeleteRubric(itemToDelete);
+
+        return RedirectToAction("AdminRubricFull");
     }
 
     [HttpGet]
@@ -428,6 +437,72 @@ public class HomeController : Controller
 
             return View("AdminJudgeListView", users);
         }
+    }
+
+    [HttpGet]
+    public IActionResult AdminTAListView()
+    {
+        ViewBag.Permissions = _repo.Permissions.ToList()
+            .OrderBy(x => x.PermissionDescription)
+            .Where(x => x.PermissionType == 3)
+            .ToList();
+
+        List<User> users = new List<User> { new User() };
+
+        return View("AdminTAListView", users);
+    }
+
+    [HttpPost]
+    public IActionResult AdminTAListView(User addTAResponse)
+    {
+        if (ModelState.IsValid)
+        {
+            _repo.AddTA(addTAResponse);
+            return View("AdminAddTA", addTAResponse);
+        }
+        else
+        {
+            ViewBag.Permissions = _repo.Permissions.ToList()
+                .OrderBy(x => x.PermissionDescription)
+                .ToList();
+
+            List<User> users = new List<User> { new User() };
+
+            return View("AdminTAListView", users);
+        }
+    }
+
+    //[HttpGet]
+    //public IActionResult EditTA(string id)
+    //{
+    //    var recordToEdit = _repo.Users
+    //        .Single(x => x.UserId == id);
+    //    return View("AdminAddTA", recordToEdit);
+    //}
+
+    //[HttpPost]
+    //public IActionResult Edit(User updatedInfo)
+    //{
+    //    _repo.EditJudge(updatedInfo);
+    //    return RedirectToAction("");
+    //    /*return RedirectToAction("AdminJudgeListView");*/
+
+    //}
+
+
+    [HttpGet]
+    public IActionResult DeleteTA(string id)
+    {
+        var recordToDelete = _repo.Users
+            .Single(x => x.UserId == id);
+        return View("AdminDeleteTA", recordToDelete);
+    }
+
+    [HttpPost]
+    public IActionResult DeleteTA(User removedTAUser)
+    {
+        _repo.DeleteTA(removedTAUser);
+        return RedirectToAction("");
     }
 
 

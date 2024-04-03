@@ -1,0 +1,26 @@
+﻿@using Darla.Models
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model Rubric
+<div class="container">
+    <!-- Add a container to center the grid -->
+    <div class="row justify-content-center">
+        <!-- Use justify-content-center to center the column -->
+        <div class="col-lg-6">
+            <!-- Specify the column size -->
+            <form asp-controller="Home" asp-action="AdminRubricDelete" method="post">
+                <h2>Confirm Deletion?</h2>
+                <h3>@Model.Subcategory</h3>
+                <p>Are you sure you want to delete?</p>
+
+                <input type="hidden" asp-for="AssignmentId" />
+                <button type="submit" class="btn btn-danger">Delete</button> <!-- Add Bootstrap button class -->
+                <a class="btn btn-info" asp-controller="Home" asp-action="AdminRubricFull">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
