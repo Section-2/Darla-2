@@ -9,48 +9,53 @@ namespace Darla.Controllers
 {
     public class StudentController : Controller
     {
-        private IIntexRepository _intexRepo;
+        private IIntexRepository _repo;
 
         public StudentController(IIntexRepository temp)
         {
-            _intexRepo = temp;
+            _repo = temp;
         }
 
         public IActionResult StudentDashboard()
         {
-            string userId = (string)TempData["UserId"];
+            // assuming you will get the user's id from somewhere
+            string userId = "55278449-2657-4dea-96cc-ed05914d0a1b";
             Console.WriteLine("You Made it to student Dashboard\n \n \n" + userId);
-            // Assuming you will get the user's ID from somewhere.
-            var teamNumber = _intexRepo.StudentTeams
-                .Where(st => st.UserId == userId)
-                .Select(st => st.TeamNumber)
+            
+            // get the team number
+            var teamNumber = _repo.student_team
+                .Where(st => st.user_id == userId)
+                .Select(st => st.team_number)
                 .FirstOrDefault();
-
-
-            List<string> teamMemberNames = new List<string>();
-
-
-            RoomSchedule roomSchedule = _intexRepo.RoomSchedules
-                .FirstOrDefault(rs => rs.TeamNumber == teamNumber);
-
-            // Get the list of UserIds for the team
-            var userIds = _intexRepo.StudentTeams
-                .Where(st => st.TeamNumber == teamNumber)
-                .Select(st => st.UserId.ToString())
+            
+            // get team member user ids
+            List<string> teamMemberIds = _repo.student_team
+                .Where(st => st.team_number == teamNumber)
+                .Select(st => st.user_id)
                 .ToList();
 
-            // Retrieve the names of the Users with those Ids
-            teamMemberNames = _intexRepo.Users
-                .Where(u => userIds.Contains(u.UserId.ToString()))
-                .Select(u => u.FirstName + " " + u.LastName)
+            // get matching names for team ids
+            List<string> teamMemberNames = _repo.AspNetUsers
+                .Where(st => teamMemberIds.Contains(st.Id))
+                .Select(st => $"{st.FirstName} {st.LastName}")
                 .ToList();
 
+            // get room schedule for team
+            RoomSchedule roomSchedule = _repo.room_schedule
+                .FirstOrDefault(rs => rs.team_number == teamNumber);
+
+            // get room name for room id
+            var roomAssignment = _repo.room
+                .Where(st => st.room_id == roomSchedule.room_id)
+                .Select(st => st.room_name)
+                .FirstOrDefault();
 
             // Pass the data to the view using ViewBag
             ViewBag.TeamNumber = teamNumber;
-            ViewBag.RoomSchedule = roomSchedule;
             ViewBag.TeamMemberNames = teamMemberNames;
-
+            ViewBag.RoomSchedule = roomSchedule;
+            ViewBag.RoomAssignment = roomAssignment;
+            
             return View();
         }
 
