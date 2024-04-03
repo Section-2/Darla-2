@@ -101,14 +101,12 @@
             <div class="quadrant top-groups">
                 <h2>Top 4 Groups</h2>
                 <ol>
-                    <li>Group 2-10</li>
                     @{
                         Random rand = new Random();
                         // Dynamic generation of top groups
                         List<string> groups = Enumerable.Range(1, 4).Select(x => $"Group {rand.Next(1, 5)}-{rand.Next(1, 11)}").ToList();
-                        groups.Insert(0, "Group 2-9"); // Ensure Group 2-9 is always first
                         groups = groups.Distinct().ToList(); // Remove duplicates
-                        foreach (var group in groups.Skip(1).Take(3))
+                        foreach (var group in groups.Take(4))
                         {
                             <li>@group</li>
                         }
