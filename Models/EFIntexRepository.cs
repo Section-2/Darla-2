@@ -35,6 +35,23 @@ namespace Darla.Models
         public IEnumerable<Room> Rooms => _context.Rooms;
         public IEnumerable<TeamSubmission> TeamSubmissions => _context.TeamSubmissions;
 
+        public IEnumerable<Rubric> GetRubricRequirements()
+        {
+            var requirements = _context.Rubrics.AsEnumerable();
+            return requirements;
+        }
+
+        public void AddGrade(Grade grade)
+        {
+            _context.Add(grade);
+            _context.SaveChanges();
+        }
+
+        public void EditGrade(Grade grade)
+        {
+            _context.Update(grade);
+            _context.SaveChanges();
+        }
 
     }
 

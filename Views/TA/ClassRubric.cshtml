@@ -1,21 +1,7 @@
-
-
 @{
     ViewData["Title"] = "Class Rubric";
-    var requirements = new List<string> {
-        "Outline the main superstructure framework",
-        "Design the power core and energy distribution systems",
-        "Develop advanced targeting systems for the superlaser",
-        "Implement hyperdrive and navigation systems",
-        "Plan the defense mechanisms and shield generators",
-        "Engineer the thermal exhaust systems to prevent vulnerabilities",
-        "Design the detention block security protocols to prevent escapes",
-        "Integrate the command center with real-time battle analytics",
-        "Establish secure communication channels for Imperial fleet coordination",
-        "Develop redundant life support systems for critical areas"
-    };
- 
 }
+@model Darla.Models.ViewModels.GradeViewModel
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
 
@@ -31,10 +17,10 @@
         cursor: pointer;
         margin-right: 10px;
     }
-    
+
     .no-hover {
-                text-decoration: none !important;
-                color: inherit !important;
+        text-decoration: none !important;
+        color: inherit !important;
     }
 
     .table th, .table td {
@@ -55,36 +41,55 @@
     }
 </style>
 
-<div class="container mt-4 main-content">
-    <div class="header">
-        <a asp-controller="TA" asp-action="TADashboard" class="back-arrow no-hover">&#x2190;</a>
-        <h2>Group 1-1 - IS 401</h2>
-    </div>
+@using (Html.BeginForm("ClassRubric", "TA", FormMethod.Post))
+{
+    <div class="container mt-4 main-content">
+        <div class="header">
+            <a asp-action="TaGradingProgress" class="back-arrow no-hover">&#x2190;</a>
+            <h2>@ViewData["Title"]</h2>
+        </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th class="col-8">Requirements</th>
-                <th class="col-1">Points</th>
-                <th class="col-1">Total</th>
-                <th class="col-4">Comments</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var requirement in requirements)
-            {
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@requirement</td>
-                    <td><input type="text" class="form-control points-input" /></td>
-                    <td>100</td> <!-- Example total value -->
-                    <td><input type="text" class="form-control comments-input" /></td>
+                    <th>Class Code</th>
+                    <th>Assignment ID</th>
+                    <th>Subcategory</th>
+                    <th>Description</th>
+                    <th>User ID</th>
+                    <th>Team Number</th>
+                    <th>Points Earned</th>
+                    <th>Max Points</th>
+                    <th>Comments</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.RubricRequirements.Count(); i++)
+                {
+                    <tr>
+                        <td>@Model.RubricRequirements.ElementAt(i).ClassCode</td>
+                        <td>@Model.RubricRequirements.ElementAt(i).AssignmentId</td>
+                        <td>@Model.RubricRequirements.ElementAt(i).Subcategory</td>
+                        <td>@Model.RubricRequirements.ElementAt(i).Description</td>
+                        <td>@Model.Grades.ElementAt(i).UserId</td>
+                        <td>
+                            <input asp-for="@Model.Grades[i].TeamNumber" class="form-control" />
+                        </td>
+                        <td>
+                            <input asp-for="@Model.Grades[i].PointsEarned" class="form-control points-input" />
+                        </td>
+                        <td>@Model.RubricRequirements.ElementAt(i).MaxPoints</td>
+                        <td>
+                            <input asp-for="@Model.Grades[i].Comments" class="form-control comments-input" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
 
-    <button class="btn btn-primary submit-btn">Submit</button>
-</div>
+        <button type="submit" class="btn btn-primary submit-btn">Submit</button>
+    </div>
+}
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>

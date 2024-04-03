@@ -18,5 +18,9 @@
         IEnumerable<Team> Teams { get; }
         IEnumerable<Room> Rooms { get; }
         IEnumerable<TeamSubmission> TeamSubmissions { get; }
+        IEnumerable<Rubric> GetRubricRequirements();
+        public void AddGrade(Grade grade);
+        public void EditGrade(Grade grade);
+
     }
 }
