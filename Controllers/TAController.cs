@@ -33,11 +33,6 @@ namespace Darla.Controllers
             return View(GradeInfo);
         }
 
-        public IActionResult ClassRubric()
-        {
-            return View();
-        }
-
         public ActionResult TADashboard()
         {
             var assignmentToClassMap = new Dictionary<int, string>
@@ -66,5 +61,58 @@ namespace Darla.Controllers
             return View(viewModel);
         }
 
+        [HttpGet]
+        public IActionResult ClassRubric()
+        {
+            var rubricRequirements = _repo.GetRubricRequirements().ToList(); // This will execute the query and convert to List<Rubric>
+
+            var grades = rubricRequirements.Select(r => new Grade
+            {
+                AssignmentId = r.AssignmentId,
+                // Initialize other properties of Grade if necessary
+            }).ToList();
+
+            var viewModel = new GradeViewModel
+            {
+                RubricRequirements = rubricRequirements,
+                Grades = grades
+            };
+
+            return View(viewModel);
+        }
+
+
+        [HttpPost]
+        public IActionResult ClassRubric(GradeViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                foreach (var grade in viewModel.Grades)
+                {
+                    // Validate each grade if necessary
+                    if (TryValidateModel(grade))
+                    {
+                        _repo.AddGrade(grade);
+                    }
+                    else
+                    {
+                        // Handle the case where individual grades might not be valid
+                        // You may want to return immediately or collect all errors before returning
+                    }
+                }
+
+                // Save changes if using an ORM like Entity Framework
+                // _context.SaveChanges();
+
+                // If all grades are valid, or after handling invalid grades
+                return RedirectToAction("ClassRubric");
+            }
+            else
+            {
+                // ViewBag.categories = _repo.Categories.ToList(); // Uncomment if needed
+                return View(viewModel);
+            }
+        }
     }
+
 }
