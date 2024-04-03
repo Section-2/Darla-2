@@ -3,6 +3,7 @@
 *@
 @{
     // This line will retrieve the value from the ViewBag and assign it to a local variable.
+    var firstName = ViewBag.FirstName;
     var roomSchedule = ViewBag.RoomSchedule;
     List<string> teamMemberNames = ViewBag.TeamMemberNames;
     var roomAssignment = ViewBag.RoomAssignment;
@@ -10,7 +11,7 @@
 
 <section class="header-section">
   <div class="container">
-    <h1 class="welcome-message">Welcome Student!</h1>
+      <h1 class="welcome-message">Welcome <span>@firstName</span>!</h1>
     <button href="#" class="back-to-home">Back to Home</button>
   </div>
 </section>
@@ -36,7 +37,7 @@
   <section class="group-info">
     <div class="container">
       <div class="card group-card">
-        <div class="title">@roomSchedule.team_number</div>
+        <div class="title">Group @roomSchedule.team_number</div>
         <div class="members">
           @if (teamMemberNames != null && teamMemberNames.Any())
           {

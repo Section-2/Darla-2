@@ -22,12 +22,14 @@ namespace Darla.Controllers
             var userId = "this is a hard coded example";
             Console.WriteLine("You made it to student dashboard\n \n \n" + userId);
 
+            var userFirstName = "Blake";
             List<string> teamMemberNames = new List<string> { "Blake McAvoy", "Hannah Johnson", "Elijah Aken", "Steven Armstrong" };
             var teamNumber = "202";
             var hardCode = "THIS IS A HARD CODED EXAMPLE";
-            var uncomment = "UNCOMMENT THE METHOD UNDER THIS WHEN _repo IS READY";
+            var uncomment = "UNCOMMENT THE OTHER METHOD LATER";
 
             // Pass the data to the view using ViewBag
+            ViewBag.FirstName = userFirstName;
             ViewBag.TeamMemberNames = teamMemberNames;
             ViewBag.RoomSchedule = new { team_number = teamNumber, timeslot = hardCode };
             ViewBag.RoomAssignment = uncomment;
@@ -40,6 +42,12 @@ namespace Darla.Controllers
         //     // assuming you will get the user's id from somewhere
         //     string userId = "55278449-2657-4dea-96cc-ed05914d0a1b";
         //     Console.WriteLine("You made it to student dashboard\n \n \n" + userId);
+        //     
+        //     // get the user's name
+        //     var userFirstName = _repo.AspNetUsers
+        //         .Where(st => st.Id == userId)
+        //         .Select(st => st.FirstName)
+        //         .FirstOrDefault();
         //     
         //     // get the team number
         //     var teamNumber = _repo.student_team
@@ -70,6 +78,7 @@ namespace Darla.Controllers
         //         .FirstOrDefault();
         //
         //     // Pass the data to the view using ViewBag
+        //     ViewBag.FirstName = userFirstName;
         //     ViewBag.TeamMemberNames = teamMemberNames;
         //     ViewBag.RoomSchedule = roomSchedule;
         //     ViewBag.RoomAssignment = roomAssignment;
