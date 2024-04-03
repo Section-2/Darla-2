@@ -48,10 +48,15 @@ builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
 
 builder.Services.AddDbContext<IntexGraderContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration["ConnectionStrings:IntexConnection"]);
+    options.UseSqlServer(builder.Configuration["ConnectionStrings:IntexConnection"])
+        .LogTo(Console.WriteLine, LogLevel.Information);
 });
 
 builder.Services.AddScoped<IIntexRepository, EFIntexRepository>();
+
+// Enable runtime compilation for Razor pages
+builder.Services.AddRazorPages()
+    .AddRazorRuntimeCompilation();
 
 var app = builder.Build();
 

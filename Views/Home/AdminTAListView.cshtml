@@ -30,8 +30,8 @@
                 <td>@x.LastName</td>
                 <td>@x.PermissionType</td>
 
-                <td><a class="btn btn-info" asp-controller="Home" asp-action="Edit" asp-route-id="@x.UserId">Edit</a></td>
-                <td><a class="btn btn-danger" asp-controller="Home" asp-action="Delete" asp-route-id="@x.UserId">Delete</a></td>
+                <td><a class="btn btn-info" asp-controller="Administration" asp-action="EditUser" asp-route-id="@x.UserId">Edit</a></td>
+                <td><a class="btn btn-danger" asp-controller="Administration" asp-action="DeleteUser" asp-route-id="@x.UserId">Delete</a></td>
             </tr>
         </tbody>
     }

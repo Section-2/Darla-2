@@ -156,7 +156,7 @@ public partial class IntexGraderContext : DbContext
             entity.Property(e => e.DemonstrationNotes).HasColumnName("demonstration_notes");
             entity.Property(e => e.DemonstrationScore).HasColumnName("demonstration_score");
             entity.Property(e => e.JudgeId)
-                .HasColumnType("NUMERIC")
+                .HasColumnType("NVARCHAR")
                 .HasColumnName("judge_id");
             entity.Property(e => e.TeamNumber).HasColumnName("team_number");
             entity.Property(e => e.TeamRank).HasColumnName("team_rank");
@@ -209,7 +209,7 @@ public partial class IntexGraderContext : DbContext
 
             entity.Property(e => e.AssignmentId).HasColumnName("assignment_id");
             entity.Property(e => e.ClassCode).HasColumnName("class_code");
-            entity.Property(e => e.Description).HasColumnName("decsription");
+            entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.InstructorNotes).HasColumnName("instructor_notes");
             entity.Property(e => e.MaxPoints).HasColumnName("max_points");
             entity.Property(e => e.Subcategory).HasColumnName("subcategory");

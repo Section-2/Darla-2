@@ -1,0 +1,40 @@
+﻿@using Darla.Models
+
+@{
+    ViewData["Title"] = "Add/Edit Task";
+}
+
+@model Rubric
+
+<div class="container">
+    <!-- Add a container to center the grid -->
+    <div class="row justify-content-center">
+        <!-- Use justify-content-center to center the column -->
+        <div class="col-lg-6">
+            <!-- Specify the column size -->
+            <h1>Input a Rubric Task!</h1>
+            <div>
+                <form method="post">
+                    <input type="hidden" asp-for="AssignmentId" />
+                    <label asp-for="Subcategory">Task Name</label>
+                    <input asp-for="Subcategory" /><br /><br />
+
+                    <label asp-for="ClassCode">Class</label>
+                    <input asp-for="ClassCode" /><br /><br />
+
+                    <label asp-for="Description">Description for Students</label>
+                    <input asp-for="Description" /><br /><br />
+
+                    <label asp-for="InstructorNotes">TA/Grading Notes</label>
+                    <input asp-for="InstructorNotes" /><br /><br />
+
+                    <label asp-for="MaxPoints">Max Points Possible</label>
+                    <input asp-for="MaxPoints" /><br /><br />
+
+                    <button type="submit">Submit</button>
+                    <div asp-validation-summary="All"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

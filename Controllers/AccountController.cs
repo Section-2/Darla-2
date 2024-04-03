@@ -86,8 +86,12 @@ namespace Darla.Controllers
         [HttpGet]
         public IActionResult Login(string? ReturnUrl = null)
         {
+            
+
+            // User is not logged in, redirect to login page or show an error
             ViewData["ReturnUrl"] = ReturnUrl;
             return View();
+
         }
 
         [HttpPost]
@@ -126,7 +130,7 @@ namespace Darla.Controllers
                     else
                     {
                         // Redirect to default page
-                        return RedirectToAction("StudentDashboard", "Home");
+                        return RedirectToAction("StudentDashboard", "Student");
                     }
                 }
                 if (result.RequiresTwoFactor)

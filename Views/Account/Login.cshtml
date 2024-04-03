@@ -12,7 +12,7 @@
 }
 
 <style>
-    .row-vh-20 {
+/*     .row-vh-20 {
         height: 20vh;
     }
 
@@ -22,59 +22,63 @@
 
     .row-vh-30 {
         height: 30vh;
-    }
+    } */
 </style>
+    <link rel="stylesheet" href="~/css/loginstyles.css" asp-append-version="true"/>
+
 
 <div class="container">
-    <div class="row row-vh-20">
-        <!-- First Row -->
-    </div>
 
-    <div class="row row-vh-half">
+    
         <!-- Second Row Content -->
-        <div class="col-md-4 offset-md-1 my-3">
-            <form method="post" class="border border-2 rounded p-4 h-100">
+        <div class="row justify-content-center">
+            <form method="post" class="border border-2 rounded col-12 col-md-6 mx-auto p-4 mt-4 shadow row gap-2">
                 <input type="hidden" name="ReturnUrl" value="@ViewData["ReturnUrl"]" />
 
                 <div asp-validation-summary="All" class="text-danger"></div>
 
-                <h1 class="text-center mb-4">Sign In</h1>
+                <h1 class="text-center">Sign In</h1>
 
-                <div class="form-group mt-4">
-                    <label asp-for="Username" class="text-left">Net ID:</label>
-                    <input asp-for="Username" class="form-control mt-2">
+                <div class="form-group">
+                    
+                    <input asp-for="Username" class="form-control mt-2" placeholder="Username">
                     <span asp-validation-for="Username" class="text-danger"></span>
                 </div>
 
-                <div class="form-group mt-4">
-                    <label asp-for="Password" class="text-left">Password:</label>
-                    <input asp-for="Password" class="form-control mt-2">
+                <div class="form-group">
+                    
+                    <input asp-for="Password" class="form-control mt-2" placeholder="Password">
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
 
-                <div class="form-group">
-                    <div class="checkbox">
+                <div class="form-group row checkbox">
+                    
                         <label asp-for="RememberMe">
                             <input asp-for="RememberMe" />
-                                @Html.DisplayNameFor(m => m.RememberMe)
+                            @Html.DisplayNameFor(m => m.RememberMe)
                         </label>
-                    </div>
+            
+                </div>
+                
+                <div class="form-group text-center row justify-content-center">
+                    <button type="submit" class="btn btn-primary">Sign In</button>
                 </div>
 
                 <div class="text-center mt-3">
-                    <a asp-controller="Account" asp-action="Register">Create a new account</a>
+                    <a asp-controller="Account" asp-action="Register" class="text-decoration-none">Create a new account</a>
                 </div>
 
-                <div class="form-group text-center">
-                    <button type="submit" class="btn btn-primary mt-3">Sign In</button>
-                </div>
+                
 
                 <div class="text-center mt-3">
-                    <a asp-controller="Account" asp-action="ForgotPassword">Forgot Password?</a>
+                    <a asp-controller="Account" asp-action="ForgotPassword" class="text-decoration-none">Forgot Password?</a>
                 </div>
             </form>
+        </div>
+        
+        
 
-            <!-- Third Row -->
+        <!-- Third Row -->
             <div class="col d-flex align-items-center justify-content-center">
                 <a asp-controller="Home" asp-action="JudgePage" class="btn btn-secondary">
                     Judge Sign In
@@ -83,17 +87,13 @@
                     </svg>
                 </a>
             </div>
-        </div>
-
-        <div class="col-md-4 offset-md-2 my-3 text-center">
+        
+        @*<div class="col-md-4 offset-md-2 my-3 text-center">
             <div>
                 <img src="../../assets/img/BYU_medallion.png" alt="BYU Medallion" class="img-fluid rounded">
             </div>
-        </div>
-    </div>
+        </div>*@
 
-    <div class="row row-vh-30">
-    </div>
 </div>
 
 

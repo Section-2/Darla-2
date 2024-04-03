@@ -1,0 +1,40 @@
+﻿@page
+@{
+}
+
+
+@model List<User>
+    <button type="button" asp-controller="Home" asp-action="AdminIndex">Go Back</button>
+
+    <button type="button" asp-controller="Home" asp-action="">TA list</button>
+    <button type="button" asp-controller="Home" asp-action="AdminJudgeListView">Judge list</button>
+    <button type="button" asp-controller="Administration" asp-action="CreateRole">Create Role!</button>
+
+
+    <table class="table table-striped">
+        <thead class="fw-bold">
+            <tr>
+                <td>User ID</td>
+                <td>Net ID</td>
+                <td>First Name</td>
+                <td>Last Name</td>
+                <td>Permission Type</td>
+            </tr>
+        </thead>
+
+        @foreach (var x in Model)
+    {
+        <tbody>
+            <tr>
+                <td>@x.UserId</td>
+                <td>@x.NetId</td>
+                <td>@x.FirstName</td>
+                <td>@x.LastName</td>
+                <td>@x.PermissionType</td>
+
+                <td><a class="btn btn-info" asp-controller="Home" asp-action="Edit" asp-route-id="@x.UserId">Edit</a></td>
+                <td><a class="btn btn-danger" asp-controller="Home" asp-action="" asp-route-id="@x.UserId">Delete</a></td>
+            </tr>
+        </tbody>
+    }
+    </table>
