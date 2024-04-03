@@ -1,4 +1,4 @@
-﻿
+﻿@model LoginViewModel
 @*
     Double check CSS (compare with BYU Login page) :)
 *@
@@ -56,17 +56,105 @@
     border-radius: 5px;
   }
 </style>
+    <link rel="stylesheet" href="~/css/loginstyles.css" asp-append-version="true"/>
 
-<body>
-    <div class="container">
+    <div class="container gap-4" style="position: absolute; top: 5%;">
         <div class="title">DARLA</div>
-        <br />
         <div class="subtitle">Digital Assistant for Reporting Learning Assessment</div>
-        <br />
-        <br />
-        <a class="btn btn-outline-secondary" asp-controller="Account" asp-action="Login">Continue</a>
         
+        <div class="row btn-group login-select-group">
+          <div class="login-select-btn btn-focus" id="byuLoginBtn" onclick="byuLogin()">BYU Login</div>
+          <div class="login-select-btn" id="judgeLoginBtn" onclick="judgeLogin()">Judge Login</div>
+        </div>
         
+        <div class="row justify-content-center" id="byuLoginForm">
+            <form method="post" asp-controller="Account" asp-action="Login" class="border border-2 rounded col-12 col-md-6 mx-auto p-4 shadow row gap-2">
+                <input type="hidden" name="ReturnUrl" value="@ViewData["ReturnUrl"]" />
+        
+                <div asp-validation-summary="All" class="text-danger"></div>
+        
+                <h1 class="text-center">Sign In</h1>
+        
+                <div class="form-group">
+                            
+                    <input asp-for="Username" class="form-control mt-2" placeholder="Username">
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+        
+                <div class="form-group">
+                            
+                    <input asp-for="Password" class="form-control mt-2" placeholder="Password">
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+        
+                <div class="form-group row checkbox">
+                            
+                    <label asp-for="RememberMe">
+                        <input asp-for="RememberMe" />
+                        @Html.DisplayNameFor(m => m.RememberMe)
+                    </label>
+                    
+                </div>
+                        
+                <div class="form-group text-center row justify-content-center">
+                    <button type="submit" class="btn btn-primary col-9 custom-sign-in">Sign In</button>
+                </div>
+        
+                <div class="text-center mt-3">
+                    <a asp-controller="Account" asp-action="Register" class="text-decoration-none">Create a new account</a>
+                </div>
+        
+                        
+        
+                <div class="text-center mt-3">
+                    <a asp-controller="Account" asp-action="ForgotPassword" class="text-decoration-none">Forgot Password?</a>
+                </div>
+            </form>
+                
+        </div>
+        
+
+                <div class="border-2 rounded col-12 col-md-6 mx-auto p-4 shadow row gap-2" id="judgeLoginForm" style="display: none;">
+                    <div class="title">INTEX JUDGING</div>
+                    <div class="subtitle">Please enter your room ID</div>
+                    <input type="number" id="room-id" placeholder="Enter Room ID">
+                    <button class="continue-button" onclick="continueJudging()">Continue</button>
+                </div>
+
     </div>
-</body>
+    
+    <script>
+        function continueJudging() {
+            var roomId = document.getElementById("room-id").value;
+            // Update the redirection URL to point to your controller and action method
+            // Replace `YourControllerName` with the actual name of your controller
+            // and ensure `ScheduleByRoomId` is the correct action method for handling the request
+            window.location.href = "/Home/ScheduleByRoomId?roomId=" + encodeURIComponent(roomId);
+        }
+        
+function byuLogin() {
+    var byuLoginForm = document.getElementById("byuLoginForm");
+    var judgeLoginForm = document.getElementById("judgeLoginForm");
+    var byuLoginBtn = document.getElementById("byuLoginBtn");
+    var judgeLoginBtn = document.getElementById("judgeLoginBtn");
+    judgeLoginForm.style.display = "none";
+    judgeLoginBtn.classList.remove("btn-focus");
+    byuLoginBtn.classList.add("btn-focus");
+    byuLoginForm.style.display = "flex";
+  }
+function judgeLogin() {
+    var byuLoginForm = document.getElementById("byuLoginForm");
+    var judgeLoginForm = document.getElementById("judgeLoginForm");
+    var byuLoginBtn = document.getElementById("byuLoginBtn");
+    var judgeLoginBtn = document.getElementById("judgeLoginBtn");
+    byuLoginBtn.classList.remove("btn-focus");
+    judgeLoginBtn.classList.add("btn-focus");
+    judgeLoginForm.style.display = "flex";
+    byuLoginForm.style.display = "none";
+    
+  }
+    
+                        
+                    </script>
+
 
