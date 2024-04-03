@@ -86,8 +86,12 @@ namespace Darla.Controllers
         [HttpGet]
         public IActionResult Login(string? ReturnUrl = null)
         {
+            
+
+            // User is not logged in, redirect to login page or show an error
             ViewData["ReturnUrl"] = ReturnUrl;
             return View();
+
         }
 
         [HttpPost]

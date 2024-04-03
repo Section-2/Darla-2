@@ -17,7 +17,18 @@ public class HomeController : Controller
     // START HERE!
     public IActionResult OpeningPage()
     {
-        return View();
+        if (User.Identity.IsAuthenticated == true)
+        {
+            // User is logged in, proceed with your logic
+                
+            // Change this logic later
+            return RedirectToAction("StudentDashboard", "Student");
+        }
+        else
+        {
+            // User is not logged in, redirect to the login page
+            return View();
+        }
     }
 
     // JUDGES SECTION
@@ -427,6 +438,72 @@ public class HomeController : Controller
 
             return View("AdminJudgeListView", users);
         }
+    }
+
+    [HttpGet]
+    public IActionResult AdminTAListView()
+    {
+        ViewBag.Permissions = _repo.Permissions.ToList()
+            .OrderBy(x => x.PermissionDescription)
+            .Where(x => x.PermissionType == 3)
+            .ToList();
+
+        List<User> users = new List<User> { new User() };
+
+        return View("AdminTAListView", users);
+    }
+
+    [HttpPost]
+    public IActionResult AdminTAListView(User addTAResponse)
+    {
+        if (ModelState.IsValid)
+        {
+            _repo.AddTA(addTAResponse);
+            return View("AdminAddTA", addTAResponse);
+        }
+        else
+        {
+            ViewBag.Permissions = _repo.Permissions.ToList()
+                .OrderBy(x => x.PermissionDescription)
+                .ToList();
+
+            List<User> users = new List<User> { new User() };
+
+            return View("AdminTAListView", users);
+        }
+    }
+
+    //[HttpGet]
+    //public IActionResult EditTA(string id)
+    //{
+    //    var recordToEdit = _repo.Users
+    //        .Single(x => x.UserId == id);
+    //    return View("AdminAddTA", recordToEdit);
+    //}
+
+    //[HttpPost]
+    //public IActionResult Edit(User updatedInfo)
+    //{
+    //    _repo.EditJudge(updatedInfo);
+    //    return RedirectToAction("");
+    //    /*return RedirectToAction("AdminJudgeListView");*/
+
+    //}
+
+
+    [HttpGet]
+    public IActionResult DeleteTA(string id)
+    {
+        var recordToDelete = _repo.Users
+            .Single(x => x.UserId == id);
+        return View("AdminDeleteTA", recordToDelete);
+    }
+
+    [HttpPost]
+    public IActionResult DeleteTA(User removedTAUser)
+    {
+        _repo.DeleteTA(removedTAUser);
+        return RedirectToAction("");
     }
 
 

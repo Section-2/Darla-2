@@ -23,7 +23,7 @@ namespace Darla.Controllers
             // Assuming you will get the user's ID from somewhere.
             var teamNumber = _intexRepo.StudentTeams
                 .Where(st => st.UserId == userId)
-                .Select(st => (int?)st.TeamNumber)
+                .Select(st => st.TeamNumber)
                 .FirstOrDefault();
 
 
@@ -31,11 +31,11 @@ namespace Darla.Controllers
 
 
             RoomSchedule roomSchedule = _intexRepo.RoomSchedules
-                .FirstOrDefault(rs => rs.TeamNumber == teamNumber.Value);
+                .FirstOrDefault(rs => rs.TeamNumber == teamNumber);
 
             // Get the list of UserIds for the team
             var userIds = _intexRepo.StudentTeams
-                .Where(st => st.TeamNumber == teamNumber.Value)
+                .Where(st => st.TeamNumber == teamNumber)
                 .Select(st => st.UserId.ToString())
                 .ToList();
 
