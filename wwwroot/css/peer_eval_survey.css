@@ -3,11 +3,13 @@
     padding: 20px;
 }
 
+
 .darla-peer-review label {
     color: #BFBDC1;
     display: inline-block;
     margin-right: 20px; /* Adjust as needed */
     padding: 5px;
+    
 }
 
 .darla-peer-review input[type="radio"] {
@@ -22,6 +24,6 @@
     cursor: pointer;
 }
 
-    .darla-peer-review input[type="radio"]:checked {
+.darla-peer-review input[type="radio"]:checked {
         background-color: #DEB841;
-    }
+}

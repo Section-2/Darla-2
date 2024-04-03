@@ -1,0 +1,110 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    // This line will retrieve the value from the ViewBag and assign it to a local variable.
+    var RoomSchedule = ViewBag.RoomSchedule;
+    var teamMemberNames = ViewBag.TeamMemberNames as List<string>;
+}
+
+<link rel="stylesheet" href="css/StudentDashboard.css">
+
+<section class="header-section">
+  <div class="container">
+    <h1 class="welcome-message">Welcome Student!</h1>
+    <button href="#" class="back-to-home">Back to Home</button>
+  </div>
+</section>
+
+<main class="main-content">
+  <section class="presentation-info">
+    <div class="container">
+      <div class="card presentation-card">
+        <div class="title">Your Presentation</div>
+        <div class="info">
+          <i class="fa-solid fa-clock icon" style="color: #2e91ff"></i>
+          <div class="text">@RoomSchedule.Timeslot</div>
+        </div>
+        <br />
+        <div class="info">
+          <i class="fa-solid fa-door-open icon" style="color: #2e91ff"></i>
+          <div class="text">@RoomSchedule.Room</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="group-info">
+    <div class="container">
+      <div class="card group-card">
+        <div class="title">@RoomSchedule.TeamNumber</div>
+        <div class="members">
+          @if (teamMemberNames != null && teamMemberNames.Any())
+          {
+            @foreach (var name in teamMemberNames)
+            {
+              <p>@name</p>
+            }
+          }
+          else
+          {
+            <p>No team members found for this team.</p>
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="countdown-info">
+    <div class="container">
+      <div class="card countdown-card">
+        <div class="title">Countdown</div>
+        <div class="timer">
+          <div class="label-digit">
+            <div class="label">DAYS</div>
+            <div class="digit">00</div>
+          </div>
+          <div class="label-digit">
+            <div class="label"></div>
+            <div class="digit">:</div>
+          </div>
+          <div class="label-digit">
+            <div class="label">HOURS</div>
+            <div class="digit">00</div>
+          </div>
+          <div class="label-digit">
+            <div class="label"></div>
+            <div class="digit">:</div>
+          </div>
+          <div class="label-digit">
+            <div class="label">MINUTES</div>
+            <div class="digit">00</div>
+          </div>
+          <div class="label-digit">
+            <div class="label"></div>
+            <div class="digit">:</div>
+          </div>
+          <div class="label-digit">
+            <div class="label">SECONDS</div>
+            <div class="digit">00</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="resources-info">
+    <div class="container">
+      <div class="card resources-card">
+        <div class="title">Resources and Submission</div>
+        <div class="links">
+          <a href="@Url.Action("StudentProgress", "Student")" class="btn btn-primary">Submission Form</a>
+          <a href="@Url.Action("StudentGroupPeerEvals", "Student")" class="btn btn-primary">Peer Evaluation</a>
+          <a href="#"  class="btn btn-primary">Sign Out</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="https://kit.fontawesome.com/4c16b1756d.js" crossorigin="anonymous"></script>

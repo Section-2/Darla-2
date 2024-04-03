@@ -1,0 +1,34 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_LayoutProf";
+}
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Darla.Models.User
+<h1>Add a TA!</h1>
+<button type="button" asp-controller="Home" asp-action="AdminTAListView">Go Back</button>
+<div>
+    <form>
+        <input type="hidden" asp-for="UserId" />
+        <label asp-for="FirstName">TA First Name</label>
+        <br /><input asp-for="FirstName" /><br /><br />
+
+        <label asp-for="LastName">TA Last Name</label>
+        <br /><input asp-for="LastName" /><br /><br />
+
+        <label asp-for="NetId">Net ID</label><br />
+        <input asp-for="NetId" /><br /><br />
+
+        <select asp-for="PermissionType">
+            Please select a Permission: 
+            <option value="">Select a Permission</option>
+            <option value="3">TA</option>
+        </select>
+        <br /><br />
+
+        <button type="submit">Submit TA!</button>
+
+        <div asp-validation-summary="All"></div>
+    </form>
+</div>

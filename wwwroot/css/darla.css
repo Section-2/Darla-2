@@ -91,6 +91,7 @@ span {
     border-radius: 15px;
     transition: .2s;
 }
+
 .darla-content button:hover {
     background-color: var(--color-yellow);
     color: var(--color-dark-gray);
@@ -112,8 +113,37 @@ button {
     border-radius: 15px;
     transition: .2s;
 }
+
 button:hover {
     background-color: var(--color-gray);
     color: var(--color-white);
 }
 
+.darla-peer-review .container {
+    background-color: #DEB841 !important; /* Override Bootstrap */
+    padding: 20px;
+}
+
+
+.darla-peer-review label {
+    color: #37323E !important;
+    display: inline-block;
+    margin-right: 20px; 
+    padding: 5px;
+}
+
+.darla-peer-review input[type="radio"] {
+    appearance: none; /* Remove default radio button appearance */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 16px; 
+    height: 16px; 
+    border: 2px solid #37323E !important;
+    border-radius: 50%; /* Make it circular */
+    outline: none;
+    cursor: pointer;
+}
+
+.darla-peer-review input[type="radio"]:checked {
+    background-color: #DEB841;
+}

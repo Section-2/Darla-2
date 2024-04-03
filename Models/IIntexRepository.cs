@@ -1,4 +1,5 @@
-﻿namespace Darla.Models
+﻿
+namespace Darla.Models
 {
     public interface IIntexRepository
     {
@@ -7,8 +8,8 @@
         IEnumerable<JudgeRoom> JudgeRooms { get; }
         IEnumerable<Permission> Permissions { get; }
         IEnumerable<Presentation> Presentations { get; }
+        public void AddPresentationScore(Presentation presentation);
         IEnumerable<RoomSchedule> RoomSchedules { get; }
-        IQueryable<RoomSchedule> RoomSchedulesWithRooms { get; }
         IEnumerable<StudentTeam> StudentTeams { get; }
         IEnumerable<UserPassword> UserPasswords { get; }
         IEnumerable<User> Users { get; }
@@ -17,8 +18,10 @@
         IEnumerable<Team> Teams { get; }
         IEnumerable<Room> Rooms { get; }
         IEnumerable<TeamSubmission> TeamSubmissions { get; }
+        void AddTeamSubmission(TeamSubmission submission);
+        void AddPeerEvaluation(PeerEvaluation evaluation);
 
-
+        IQueryable<StudentTeam> GetQueryableStudentTeams();
 
     }
 }
