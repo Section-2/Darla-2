@@ -62,7 +62,7 @@ namespace Darla.Controllers
         private List<TeamSubmission> GetSubmissions(string userId)
         {
 
-            var teamNumber = _intexRepo.StudentTeams
+            var teamNumber = _repo.StudentTeams
                 .FirstOrDefault(st => st.UserId == userId)?.TeamNumber;
 
             if (!teamNumber.HasValue)
@@ -70,7 +70,7 @@ namespace Darla.Controllers
                 throw new Exception("User is not part of a team.");
             }
 
-            List<TeamSubmission> submissions = _intexRepo.TeamSubmissions
+            List<TeamSubmission> submissions = _repo.TeamSubmissions
                 .Where(ts => ts.TeamNumber == teamNumber.Value)
                 .Select(ts => new TeamSubmission
                 {
@@ -88,7 +88,7 @@ namespace Darla.Controllers
     public IActionResult StudentRubricDetails(int classCode)
     {
         // Retrieve all rubrics with the given classId from the repository
-        List<Rubric> rubrics = _intexRepo.Rubrics.Where(r => r.ClassCode == classCode).ToList();
+        List<Rubric> rubrics = _repo.Rubrics.Where(r => r.ClassCode == classCode).ToList();
 
             // Assign the rubrics to the ViewBag
             ViewBag.Rubrics = rubrics;
@@ -101,7 +101,7 @@ namespace Darla.Controllers
         public IActionResult StudentProgress()
         {
             string userId = (string)TempData["UserId"];
-            var teamNumber = _intexRepo.StudentTeams
+            var teamNumber = _repo.StudentTeams
                 .FirstOrDefault(st => st.UserId == userId)?.TeamNumber;
 
             if (!teamNumber.HasValue)
@@ -110,7 +110,7 @@ namespace Darla.Controllers
             }
 
             // Throws error: no such column: r.decsription
-            List<int> classes = _intexRepo.Rubrics
+            List<int> classes = _repo.Rubrics
                 .Select(r => r.ClassCode)
                 .Distinct()
                 .ToList();
@@ -120,7 +120,7 @@ namespace Darla.Controllers
             // Retrieve rubrics for each class
             Dictionary<int, List<Rubric>> rubricsByClass = classes.ToDictionary(
                 classCode => classCode,
-                classCode => _intexRepo.Rubrics.Where(r => r.ClassCode == classCode).ToList()
+                classCode => _repo.Rubrics.Where(r => r.ClassCode == classCode).ToList()
             );
 
             ViewBag.Submissions = submissions;
@@ -156,11 +156,11 @@ namespace Darla.Controllers
         public async Task<IActionResult> Submit(string githubLink, string videoLink)
         {
             string userId = (string)TempData["UserId"];
-            var teamNumber = _intexRepo.StudentTeams
+            var teamNumber = _repo.StudentTeams
                                  .FirstOrDefault(st => st.UserId == userId)?.TeamNumber ??
                              0; // Provide a default value of 0 if TeamNumber is null
 
-            var submission = _intexRepo.TeamSubmissions
+            var submission = _repo.TeamSubmissions
                 .FirstOrDefault(s => s.TeamNumber == teamNumber);
 
             if (submission == null)
@@ -172,7 +172,7 @@ namespace Darla.Controllers
                     VideoLink = videoLink,
 
                 };
-                _intexRepo.AddTeamSubmission(submission);
+                _repo.AddTeamSubmission(submission);
             }
             else
             {
@@ -181,7 +181,7 @@ namespace Darla.Controllers
 
             }
 
-            await _intexRepo.SaveChangesAsync();
+            await _repo.SaveChangesAsync();
 
             TempData["SuccessMessage"] = "Submission updated successfully!";
             return View("StudentProgress");
@@ -193,7 +193,7 @@ namespace Darla.Controllers
             string userId = (string)TempData["UserId"]; // Hardcoded userId
 
             // Find the team number associated with this user
-            var teamNumber = _intexRepo.StudentTeams
+            var teamNumber = _repo.StudentTeams
                 .Where(st => st.UserId == userId)
                 .Select(st => st.TeamNumber)
                 .FirstOrDefault();
@@ -204,13 +204,13 @@ namespace Darla.Controllers
             }
 
             // Get all user IDs that are part of the team, excluding the current user
-            var teamMemberIds = _intexRepo.StudentTeams
+            var teamMemberIds = _repo.StudentTeams
                 .Where(st => st.TeamNumber == teamNumber && st.UserId != userId)
                 .Select(st => st.UserId)
                 .ToList();
 
             // Retrieve User objects that match the team member IDs
-            var teamMemberUsers = _intexRepo.Users
+            var teamMemberUsers = _repo.Users
                 .Where(u => teamMemberIds.Contains(u.UserId.ToString()))
                 .ToList();
 
@@ -226,11 +226,11 @@ namespace Darla.Controllers
         {
             string userId = (string)TempData["UserId"];
             // Retrieve the User object (subject) with the given ID
-            var subject = _intexRepo.Users.FirstOrDefault(u => u.UserId == subjectId.ToString());
+            var subject = _repo.Users.FirstOrDefault(u => u.UserId == subjectId.ToString());
 
 
             // Retrieve a list of all PeerEvaluationQuestions from the repository or context
-            var questions = _intexRepo.PeerEvaluationQuestions.ToList();
+            var questions = _repo.PeerEvaluationQuestions.ToList();
 
             // Pass the subject User object and the list of questions to the view using ViewBag
             ViewBag.Subject = subject;
@@ -278,10 +278,10 @@ namespace Darla.Controllers
                         QuestionId = evaluation.QuestionId,
                         Rating = evaluation.Rating
                     };
-                    _intexRepo.AddPeerEvaluation(newEvaluation);
+                    _repo.AddPeerEvaluation(newEvaluation);
                 }
 
-                await _intexRepo.SaveChangesAsync();
+                await _repo.SaveChangesAsync();
                 TempData["SuccessMessage"] = "Peer evaluations submitted successfully!";
                 return RedirectToAction("StudentDashboard");
             }
