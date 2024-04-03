@@ -55,17 +55,19 @@
     <div class="row">
         <div class="col d-flex justify-content-end">
             <div class="dropdown">
-                <button class="btn dropdown-toggle" type="button" id="sectionSortDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Sort by Section
-                </button>
-                <div class="dropdown-menu" aria-labelledby="sectionSortDropdown">
-                    <a class="dropdown-item section-sort-selector active" href="#" data-sort-section="all">All Sections</a>
-                    @foreach (var sect in new[] { "Section 1", "Section 2", "Section 3", "Section 4" })
-                    {
-                        <a class="dropdown-item section-sort-selector" href="#" data-sort-section="@sect">@sect</a>
-                    }
+                <div class="dropdown">
+                    <button class="btn btn-outline-primary dropdown-toggle" type="button" id="sectionSortDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Sort by Section
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="sectionSortDropdown">
+                        @* <a class="dropdown-item section-sort-selector active" href="#" data-sort-section="all">All Sections</a> *@
+                        @foreach (var sect in new[] { "Section 1", "Section 2", "Section 3", "Section 4" })
+                        {
+                            <a class="dropdown-item section-sort-selector" href="#" data-sort-section="@sect">@sect</a>
+                        }
+                    </div>
                 </div>
-            </div>
+            </div> 
         </div>
     </div>
 
