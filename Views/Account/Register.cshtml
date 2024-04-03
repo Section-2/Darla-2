@@ -126,8 +126,43 @@
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
 
-            <button type="submit" class="btn btn-primary mt-3 ms-5 me-2">Register</button>
-            <button type="button" class="btn btn-primary mt-3 ms-3" onclick="history.back()">Cancel</button>
+            <div class="form-group">
+                <label asp-for="StudentSection"></label>
+                <select asp-for="StudentSection" class="form-control">
+                    <option value="">&mdash; Select Section &mdash;</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+                <span asp-validation-for="StudentSection" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="StudentGroup"></label>
+                <select asp-for="StudentGroup" class="form-control">
+                    <option value="">&mdash; Select Group &mdash;</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                </select>
+                <span asp-validation-for="StudentGroup" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3 ms-5 me-2" style="font-size: 1rem;">Register</button>
+            <button type="button" class="btn btn-primary mt-3 ms-3" onclick="history.back()" style="font-size: 1rem;">Cancel</button>
         </form>
     </div>
 </div>

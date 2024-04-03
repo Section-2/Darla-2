@@ -28,12 +28,12 @@
 
 .login-select-group :nth-last-child(1) {
     border-left: 1px solid;
-    border-radius: 0 8px 8px 0;
+    border-radius: 0 7px 7px 0;
 }
 
 .login-select-group :nth-child(1) {
     border-right: 1px solid;
-    border-radius: 8px 0 0 8px;
+    border-radius: 7px 0 0 7px;
 }
 
 .login-select-btn {

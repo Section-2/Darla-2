@@ -30,5 +30,11 @@ namespace Darla.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "Password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Display(Name = "Section Number")]
+        public string? StudentSection { get; set; }
+
+        [Display(Name = "Group Number")]
+        public string? StudentGroup { get; set; }
     }
 }
