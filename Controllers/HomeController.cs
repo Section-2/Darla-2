@@ -503,6 +503,52 @@ public class HomeController : Controller
         return RedirectToAction("");
     }
 
+    public IActionResult MiscellaneousAwards()
+    {
+        // Retrieve all presentations from the database
+        List<Presentation> presentations = _repo.Presentations.ToList();
+
+        return View(presentations);
+    }
+
+    [HttpGet]
+    public IActionResult MiscellaneousAwardAdd(int teamNumber)
+    {
+        var presentations = _repo.Presentations.Where(x => x.TeamNumber == teamNumber).ToList();
+
+        _repo.AddAwards(presentations);
+        return RedirectToAction("MiscellaneousAwards");
+    }
+
+    [HttpGet]
+    public IActionResult MiscellaneousAwardEdit(int teamNumber)
+    {
+        // You may need to implement logic here to retrieve the presentation with the specified team number
+        Presentation presentation = _repo.Presentations.FirstOrDefault(p => p.TeamNumber == teamNumber);
+
+        if (presentation == null)
+        {
+            return NotFound(); // or handle accordingly if presentation is not found
+        }
+
+        return View(presentation);
+    }
+
+    [HttpPost]
+    public IActionResult MiscellaneousAwardEdit(Presentation presentation)
+    {
+        if (ModelState.IsValid)
+        {
+            // Update the presentation in the database
+            _repo.EditAwards(presentation);
+
+            return RedirectToAction("MiscellaneousAwards");
+        }
+
+        // If model state is not valid, return the edit view with validation errors
+        return View(presentation);
+    }
+
 
     /* Potential missing actions for views: TeacherViewPeerEvalSingle, ListTA, adminPeerEvalDashboard, 
      * AdminJudgeListView, AdminDeleteJudge

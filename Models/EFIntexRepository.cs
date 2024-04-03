@@ -167,5 +167,17 @@ namespace Darla.Models
             return groupedEvaluations;
         }
 
+        public void AddAwards(List<Presentation> presentation)
+        {
+            _context.Presentations.Add(presentation);
+            _context.SaveChanges();
+        }
+
+        public void EditAwards(Presentation presentation)
+        {
+            _context.Presentations.Update(presentation);
+            _context.SaveChanges();
+        }
+
     }
 }

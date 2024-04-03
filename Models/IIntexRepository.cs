@@ -25,7 +25,10 @@
         IQueryable<StudentTeam> GetQueryableStudentTeams();
         public void AddRubric(Rubric rubric);
         public void EditRubric(Rubric rubric);
+
         public void DeleteRubric(Rubric rubric);
+        public void AddAwards(List<Presentation> presentation);
+        public void EditAwards(Presentation presentation);
 
         public void EditJudge(User updatedInfo);
         public void DeleteJudge(User removedUser);

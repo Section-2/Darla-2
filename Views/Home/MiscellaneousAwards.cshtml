@@ -1,0 +1,51 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@using Darla.Models
+@model List<Presentation>
+
+<div class="row">
+    <div>
+        <h2>Groups</h2>
+        <!-- Middle column with dropdown for filtering -->
+        <select id="teamFilter">
+            <option value="1">Section 1</option>
+            <option value="2">Section 2</option>
+            <option value="3">Section 3</option>
+            <option value="4">Section 4</option>
+            <!-- Add other teams dynamically if needed -->
+        </select>
+        <!-- Display records from the database based on selected filter -->
+        <!-- For demonstration, assuming displaying records in a table -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Group Number</th>
+                    <th>Judge Comments</th>
+                    <th>Award</th>
+                    <th>Add</th>
+                    <th>Edit</th>
+                </tr>
+            </thead>
+            <tbody id="recordTableBody">
+                @foreach (var group in Model)
+                {
+                    <tr>
+                        <td>@group.TeamNumber</td>
+                        <td>@group.OverallJudgeNotes</td> <!-- Corrected property name -->
+                        <td>@group.Awards</td> <!-- Corrected property name -->
+                        <td>
+                            <a asp-controller="Home" asp-action="MiscellaneousAwardAdd" asp-route-teamNumber="@group.TeamNumber"><button>Add</button></a> <!-- Corrected route parameter name -->
+                        </td>
+                        <td>
+                            <a asp-controller="Home" asp-action="MiscellaneousAwardEdit" asp-route-teamNumber="@group.TeamNumber"><button>Edit</button></a> <!-- Corrected route parameter name -->
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
