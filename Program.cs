@@ -54,6 +54,10 @@ builder.Services.AddDbContext<IntexGraderContext>(options =>
 
 builder.Services.AddScoped<IIntexRepository, EFIntexRepository>();
 
+// Enable runtime compilation for Razor pages
+builder.Services.AddRazorPages()
+    .AddRazorRuntimeCompilation();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
